@@ -8,10 +8,10 @@ export function ScrollProgressBar() {
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
 
   useEffect(() => {
-    let frameId: number;
+    let frameId = 0;
 
     const handleScroll = () => {
-      cancelAnimationFrame(frameId);
+      if (frameId) cancelAnimationFrame(frameId);
       frameId = requestAnimationFrame(() => {
         const totalHeight =
           document.documentElement.scrollHeight - window.innerHeight;
@@ -31,7 +31,7 @@ export function ScrollProgressBar() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      cancelAnimationFrame(frameId);
+      if (frameId) cancelAnimationFrame(frameId);
     };
   }, []);
 

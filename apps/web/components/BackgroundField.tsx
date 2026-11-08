@@ -25,6 +25,7 @@ export function BackgroundField() {
     <div
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none -z-20 overflow-hidden select-none"
+      style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: -20, overflow: "hidden" }}
     >
       {/* Layer 1: Multi-Tone Celestial Aurora Light Orbs */}
       <div className="absolute -top-[15%] left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gradient-to-br from-cyan-400/18 via-sky-500/10 to-transparent rounded-full blur-[130px] animate-aurora-1" />
@@ -35,6 +36,7 @@ export function BackgroundField() {
       {/* Layer 2: Subtle Coordinate Graph Grid with Radial Edge Falloff */}
       <svg
         className="absolute inset-0 w-full h-full opacity-[0.045] [mask-image:radial-gradient(ellipse_at_center,black_35%,transparent_80%)]"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
@@ -59,6 +61,7 @@ export function BackgroundField() {
       {/* Layer 3: Flowing Animated Loss Trajectory Signal */}
       <svg
         className="absolute inset-0 w-full h-full opacity-35 [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_85%)]"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }}
         viewBox="0 0 1440 900"
         fill="none"
         preserveAspectRatio="xMidYMid slice"
