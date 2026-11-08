@@ -20,7 +20,7 @@ An interactive machine learning training replay, learning, and experiment intell
 
 <br />
 
-[**Explore Rewind Studio**](http://localhost:3000/studio) • [**Algorithm Forge**](http://localhost:3000/studio/forge) • [**Catalogue**](http://localhost:3000/studio/algorithms) • [**Interactive Lab**](http://localhost:3000/studio/lab) • [**Documentation**](./docs/README.md) • [**Checklist**](./PROJECT_CHECKLIST.md)
+[**Explore Rewind Studio**](http://localhost:3000/studio) • [**Algorithm Forge**](http://localhost:3000/studio/forge) • [**Catalogue**](http://localhost:3000/studio/algorithms) • [**Interactive Lab**](http://localhost:3000/studio/lab) • [**Documentation**](./docs/README.md)
 
 </div>
 
@@ -278,7 +278,7 @@ S3_BUCKET="rewind-traces"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-For complete credential setup instructions, refer to [`REQUIRED_CREDENTIALS_AND_CONFIG.md`](./REQUIRED_CREDENTIALS_AND_CONFIG.md).
+For complete environment variable configuration, refer to [`.env.example`](./.env.example).
 
 ---
 
@@ -408,28 +408,22 @@ RewindVerse was engineered from inception with strict security and privacy stand
 4. **Read-Only Cloud Tokens**: Shared traces use cryptographically randomized 16-character tokens with strictly read-only access to prevent unauthorized mutation.
 5. **Security Headers**: Production deployment enforces `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, and strict `Referrer-Policy`.
 
-For full details, read the [RewindVerse Security Architecture Standard](./docs/security/RewindVerse_Security_Architecture_and_Implementation_Standard.md).
+For full security and privacy architecture details, read [SECURITY.md](./SECURITY.md) or visit the `/security` page.
 
 ---
 
 ## 📚 Documentation Index
 
-Detailed architectural specifications and engineering standards are available in [`docs/`](./docs/README.md):
+Detailed documentation and guides are available in [`docs/`](./docs/README.md):
 
 | Document | Description |
 |---|---|
-| [`PROJECT_CHECKLIST.md`](./PROJECT_CHECKLIST.md) | Master tracking across all 16 engineering phases, algorithm catalogue, and cloud milestones. |
-| [`REQUIRED_CREDENTIALS_AND_CONFIG.md`](./REQUIRED_CREDENTIALS_AND_CONFIG.md) | Guide to Neon PostgreSQL and S3 environment variables. |
 | [`docs/algorithms/ALGORITHM_CATALOG.md`](./docs/algorithms/ALGORITHM_CATALOG.md) | Master algorithm catalogue covering mathematical foundations, optimization, models, RVTS trace requirements, and reference equations. |
-| [`docs/forge/ALGORITHM_FORGE_SPECIFICATION.md`](./docs/forge/ALGORITHM_FORGE_SPECIFICATION.md) | Algorithm Forge specification: 3 creation modes, manifest schema, allowlisted AST validator, worker execution contract, and security gates. |
-| [`docs/RewindVerse_Final_PRD.md`](./docs/RewindVerse_Final_PRD.md) | Core product requirements, persona workflows, and acceptance criteria. |
-| [`docs/RewindVerse_Technical_Stack_Final.md`](./docs/RewindVerse_Technical_Stack_Final.md) | Full architectural blueprint and technology decisions. |
-| [`docs/RewindVerse_Website_Design_and_Engineering_Standards.md`](./docs/RewindVerse_Website_Design_and_Engineering_Standards.md) | Design system tokens, color models, typography, and component standards. |
-| [`docs/RewindVerse_Security_Architecture_and_Implementation_Standard.md`](./docs/RewindVerse_Security_Architecture_and_Implementation_Standard.md) | Threat modeling, formula injection defense, and cryptographic sharing. |
-| [`docs/design/RewindVerse_Website_Visual_Experience_and_3D_Design_Specification.md`](./docs/design/RewindVerse_Website_Visual_Experience_and_3D_Design_Specification.md) | Website art direction, multi-layer background field, and hero 3D orbit. |
-| [`docs/engineering/RewindVerse_2D_3D_Visualization_Product_and_Optimization_Standard.md`](./docs/engineering/RewindVerse_2D_3D_Visualization_Product_and_Optimization_Standard.md) | Visualization parity, data provenance badges, and 3D surface shaders. |
-| [`docs/engineering/RewindVerse_3D_Visualization_and_Pending_Development_Plan.md`](./docs/engineering/RewindVerse_3D_Visualization_and_Pending_Development_Plan.md) | 3D surface execution plan, PCA projections, and WebGPU detection. |
-| [`docs/engineering/RewindVerse_Complete_Website_Performance_Optimization_Standard.md`](./docs/engineering/RewindVerse_Complete_Website_Performance_Optimization_Standard.md) | WebGL context-loss recovery, worker pooling, and bundle size limits. |
+| [`docs/README.md`](./docs/README.md) | Platform overview, RVTS specification guide, and quick start instructions. |
+| [`sdk/python/README.md`](./sdk/python/README.md) | Official Python SDK guide and CLI reference (`rewindverse-trace`). |
+| [`CONTRIBUTING.md`](./CONTRIBUTING.md) | Guidelines for contributing to the RewindVerse monorepo. |
+| [`SECURITY.md`](./SECURITY.md) | Vulnerability disclosure policy and security architecture overview. |
+| [`CHANGELOG.md`](./CHANGELOG.md) | Chronological platform release history and feature milestones. |
 
 ---
 
