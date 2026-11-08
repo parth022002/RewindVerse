@@ -17,6 +17,11 @@ import {
   Sparkles,
   Layers,
   Wrench,
+  Trophy,
+  ShieldCheck,
+  Eye,
+  GitBranch,
+  FileText,
 } from "lucide-react";
 import { listRecentRuns, deleteRunById, StoredRun } from "../../lib/storage";
 
@@ -81,15 +86,168 @@ export default function StudioHomePage() {
             <div className="flex items-center gap-2 mb-1.5">
               <h3 className="text-base font-bold text-white">Algorithm Forge</h3>
               <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                New
+                Research Studio
               </span>
             </div>
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-              Safe visual node builder, formula DSL editor, fork workflow, and local Web Worker interpreter.
+              Safe visual node builder, formula DSL editor with finite-difference Jacobian verification, and Web Worker runtime.
             </p>
           </div>
           <div className="mt-5 flex items-center text-xs font-semibold text-cyan-400 gap-1.5">
             Launch Forge <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Data-to-Algorithm Fit Lab */}
+        <Link
+          href="/studio/fit-lab"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between border-blue-500/30"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-blue-950/60 border border-blue-700/60 flex items-center justify-center text-blue-300 mb-4 group-hover:scale-110 transition-transform">
+              <Layers className="w-5 h-5" />
+            </div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base font-bold text-white">Algorithm Fit Lab</h3>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                Fit Engine
+              </span>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Define ProblemSpecs, evaluate candidate methods against baseline models, and export conditional fit reports.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-blue-400 gap-1.5">
+            Launch Fit Lab <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Data Lab & Statistical Profiler */}
+        <Link
+          href="/studio/data"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-teal-950/60 border border-teal-800/60 flex items-center justify-center text-teal-400 mb-4 group-hover:scale-110 transition-transform">
+              <Database className="w-5 h-5" />
+            </div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base font-bold text-white">Data Lab</h3>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 border border-teal-500/30">
+                Observatory
+              </span>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Schema inference, missingness analysis, zero-leakage partitions, and cryptographic dataset versioning.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-teal-400 gap-1.5">
+            Open Data Lab <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Experiment Intelligence & What-if Branching */}
+        <Link
+          href="/studio/experiments"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-violet-950/60 border border-violet-800/60 flex items-center justify-center text-violet-400 mb-4 group-hover:scale-110 transition-transform">
+              <GitBranch className="w-5 h-5" />
+            </div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base font-bold text-white">Experiment Intelligence</h3>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">
+                Branching
+              </span>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Multi-run lineage tracking, parameter-metric correlation matrices, and What-if checkpoint branching.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-violet-400 gap-1.5">
+            Manage Experiments <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* RewindBench */}
+        <Link
+          href="/studio/benchmarks"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-amber-950/60 border border-amber-800/60 flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition-transform">
+              <Trophy className="w-5 h-5" />
+            </div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base font-bold text-white">RewindBench</h3>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                Benchmarks
+              </span>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Standardized evaluation tracks with multi-tier verification (Verified, Reproducible, Self-Reported).
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-amber-400 gap-1.5">
+            View Leaderboard <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Model Trust Lab */}
+        <Link
+          href="/studio/trust"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-emerald-950/60 border border-emerald-800/60 flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-white mb-1.5">Model Trust & Reliability</h3>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Expected Calibration Error (ECE), reliability diagrams, noise stress testing, and covariate shift detection.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-emerald-400 gap-1.5">
+            Audit Trust <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Explainability Workbench */}
+        <Link
+          href="/studio/explainability"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-indigo-950/60 border border-indigo-800/60 flex items-center justify-center text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
+              <Eye className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-white mb-1.5">Explainability Workbench</h3>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Permutation feature importance (PFI), Partial Dependence Plots (PDP), and Individual Conditional Expectation.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-indigo-400 gap-1.5">
+            Inspect Features <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Research Notebook */}
+        <Link
+          href="/studio/notebook"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/60 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+              <FileText className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-white mb-1.5">Research Notebook</h3>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Interactive computational narratives combining markdown, KaTeX math, sandboxed code, and visualizer frames.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-cyan-400 gap-1.5">
+            Open Notebook <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
           </div>
         </Link>
 

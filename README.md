@@ -91,15 +91,24 @@ RewindVerse Platform
 │   └── /share/[token]    # Cloud-backed read-only trace playback view
 │
 └── Rewind Studio Hub (/studio)
-    ├── /studio/forge     # Algorithm Forge (Mode A: Fork, Mode B: Nodes, Mode C: Formula DSL)
-    ├── /studio/algorithms# Algorithm Catalogue & Registry (Math, Provenance, RVTS Signals)
-    ├── /studio/lab       # Interactive RewindML Optimizer Lab (Continuous & Classification)
-    ├── /studio/replay    # Replay Viewer with O(1) scrubbing & multi-view sync
-    ├── /studio/compare   # Dual-run trajectory comparison & convergence analytics
-    ├── /studio/insights  # Heuristic diagnostic detectors & evidence narratives
-    ├── /studio/embeddings# 3D Power Iteration PCA vector projector
-    ├── /studio/import    # Universal CSV & .rvtrace ingestion center
-    └── /studio/academy   # Interactive predict-before-run challenges
+    ├── /studio/forge        # Algorithm Forge (5 Research Studios: Data, Eq, Flow, Code, Bench)
+    ├── /studio/algorithms   # Algorithm Catalogue & Registry (Math, Provenance, RVTS Signals)
+    ├── /studio/fit-lab      # Data-to-Algorithm Fit Lab (ProblemSpec, Baseline Models, Fit Reports)
+    ├── /studio/data         # Data Lab (Multi-modal Ingestion, Profiler, Zero-Leakage Splits)
+    ├── /studio/experiments  # Experiment Intelligence & What-If Checkpoint Branching
+    ├── /studio/benchmarks   # RewindBench (Verifiable Leaderboards & Standardized Tracks)
+    ├── /studio/trust        # Model Trust & Reliability Lab (ECE Calibration, Noise Stress Testing)
+    ├── /studio/explainability # Explainability Workbench (PFI, PDP / ICE Attribution Curves)
+    ├── /studio/notebook     # Interactive Research Notebook (Markdown, KaTeX, Executable Cells)
+    ├── /studio/reproduce    # Reproduction Studio (.rvcapsule Parity & Tolerance Diff Checking)
+    ├── /studio/profiler     # Compute & Training Profiler (Step Latency, Throughput & Memory)
+    ├── /studio/lab          # Interactive RewindML Optimizer Lab (Continuous & Classification)
+    ├── /studio/replay       # Replay Viewer with O(1) scrubbing & multi-view sync
+    ├── /studio/compare      # Dual-run trajectory comparison & convergence analytics
+    ├── /studio/insights     # Heuristic diagnostic detectors & evidence narratives
+    ├── /studio/embeddings   # 3D Power Iteration PCA vector projector
+    ├── /studio/import       # Universal CSV & .rvtrace ingestion center
+    └── /studio/academy      # Interactive predict-before-run challenges
 ```
 
 ### Studio Modules in Detail

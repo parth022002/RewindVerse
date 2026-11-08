@@ -42,7 +42,20 @@ The platform is designed and governed by 8 foundational specification documents:
 - [`ALGORITHM_FORGE_SPECIFICATION.md`](./forge/ALGORITHM_FORGE_SPECIFICATION.md)  
   *Algorithm Forge Product & Engineering Specification (v1.0)*: Product definition, user roles, 3 creation modes (Mode A: Fork & customize, Mode B: Visual node DAG pipeline, Mode C: Formula DSL editor), manifest schema, allowlisted AST validation rules, sandboxed Web Worker execution contract, fuel budgets, versioning, and security gates.
 - [`ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md`](./algorithm-forge/ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md)  
-  *Advanced Algorithm Forge Research Workbench Specification (v1.0)*: Complete research-grade specification detailing the 5 specialized scientist workspaces: Data Workbench (synthetic generators, CSV statistical profilers, train/val/test splits, preprocessing pipelines), Equation Studio (mathematical token palette, live LaTeX rendering, central finite-difference Jacobian verification), Visual Algorithm Builder (lifecycle flowcharts, executable computational DAGs, DFS cycle detection), Code Studio (Python §8.3 & TypeScript §8.4 runtime contracts, AST allowlisting, 1-click standalone script export), and Benchmark Comparator (parallel multi-optimizer convergence races).
+  *Advanced Algorithm Forge Research Workbench Specification (v1.0)*: Complete research-grade specification detailing the 5 specialized scientist workspaces: Data Workbench, Equation Studio, Visual Flow Builder, Code Studio, and Benchmark Comparator.
+
+### 8. Implementation Governance & Architecture Blueprint
+- [`PROJECT_AUDIT.md`](./implementation/PROJECT_AUDIT.md) — Comprehensive technical stack, feature gap analysis, and security verification audit.
+- [`REQUIREMENTS_TRACEABILITY_MATRIX.md`](./implementation/REQUIREMENTS_TRACEABILITY_MATRIX.md) — Complete mapping of all product specifications to implementation code, acceptance criteria, and tests.
+- [`IMPLEMENTATION_ROADMAP.md`](./implementation/IMPLEMENTATION_ROADMAP.md) — Phased milestone execution plan across research workspaces.
+- [`ARCHITECTURE.md`](./architecture/ARCHITECTURE.md) — End-to-end component design, local-first computing model, and worker boundaries.
+- [`ARCHITECTURE_DECISIONS.md`](./architecture/ARCHITECTURE_DECISIONS.md) — Architecture Decision Records (ADRs) on RVTS, AST sandboxing, and visual parity.
+- [`DATA_FLOW.md`](./architecture/DATA_FLOW.md) — End-to-end dataflow pipeline from intake to simulation, replay, and reproducibility.
+- [`SECURITY_STATUS.md`](./security/SECURITY_STATUS.md) — Threat model, AST token allowlisting, fuel budgeting, and formula injection mitigations.
+- [`PERFORMANCE_REPORT.md`](./performance/PERFORMANCE_REPORT.md) — Core Web Vitals, shared JS bundle sizes (103 kB), and WebGL context loss recovery.
+- [`TEST_STRATEGY.md`](./testing/TEST_STRATEGY.md) — Unit, integration, and mathematical parity testing strategy (33/33 tests passing).
+- [`PENDING_WORK_REGISTER.md`](./implementation/PENDING_WORK_REGISTER.md) — Tracked feature backlog and versioned milestones.
+- [`RELEASE_READINESS_REPORT.md`](./implementation/RELEASE_READINESS_REPORT.md) — Operational release gate status across all dimensions.
 
 ---
 
@@ -51,8 +64,9 @@ The platform is designed and governed by 8 foundational specification documents:
 ```
 RewindVerse Code/
 ├── apps/
-│   └── web/                   # Next.js 15 Web Application & Rewind Studio (/studio/forge, /studio/algorithms)
-│       └── features/algorithm-forge/ # Advanced Forge Research Workbench UI components
+│   └── web/                   # Next.js 15 Web Application & Rewind Studio (39 production routes)
+│       ├── features/algorithm-forge/ # Advanced Forge Research Workbench UI components
+│       └── features/fit-lab/         # Data-to-Algorithm Fit Lab evaluation contracts
 ├── packages/
 │   ├── rvts/                  # RVTS JSON Schema, types, parsers, and CSV converters
 │   ├── rewindml/              # Browser ML simulation engine, optimizers & Algorithm Forge
@@ -64,8 +78,13 @@ RewindVerse Code/
 ├── fixtures/
 │   └── rvts/                  # Cross-language shared conformance test fixtures
 ├── tests/
-│   └── unit/                  # Vitest unit test suite (30/30 tests passing)
+│   └── unit/                  # Vitest unit test suite (33/33 tests passing)
 ├── docs/                      # Master engineering, architecture, design & algorithm specifications
+│   ├── implementation/        # Project audit, traceability matrix, roadmap, release readiness
+│   ├── architecture/          # Architecture, decision records, data flow
+│   ├── security/              # Security status & threat model
+│   ├── performance/           # Performance report & bundle budgets
+│   ├── testing/               # Test strategy
 │   ├── algorithms/            # ALGORITHM_CATALOG.md
 │   ├── forge/                 # ALGORITHM_FORGE_SPECIFICATION.md
 │   ├── algorithm-forge/       # ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md
@@ -86,10 +105,10 @@ pnpm install
 # Run TypeScript typecheck (0 errors)
 pnpm typecheck
 
-# Run Vitest test suite (30/30 tests passing)
+# Run Vitest test suite (33/33 tests passing)
 pnpm test
 
-# Run Next.js production build (30/30 routes compiled)
+# Run Next.js production build (39/39 routes compiled)
 pnpm build
 ```
 

@@ -18,6 +18,14 @@ import {
   Wrench,
   BookOpen,
   Settings,
+  Database,
+  Layers,
+  GitBranch,
+  Trophy,
+  Eye,
+  Zap,
+  FileCheck,
+  FileText,
 } from "lucide-react";
 
 const NAV_GROUPS = [
@@ -26,6 +34,15 @@ const NAV_GROUPS = [
     items: [
       { href: "/studio", label: "Studio Home", icon: Home },
       { href: "/studio/algorithms", label: "Algorithm Catalogue", icon: BookOpen },
+      { href: "/studio/notebook", label: "Research Notebook", icon: FileText },
+    ],
+  },
+  {
+    title: "Data & Problem Fit",
+    items: [
+      { href: "/studio/data", label: "Data Lab", icon: Database },
+      { href: "/studio/fit-lab", label: "Fit Lab", icon: Layers },
+      { href: "/studio/import", label: "Import Center", icon: UploadCloud },
     ],
   },
   {
@@ -37,23 +54,23 @@ const NAV_GROUPS = [
     ],
   },
   {
-    title: "Intelligence & Tools",
+    title: "Intelligence & Evaluation",
     items: [
+      { href: "/studio/experiments", label: "Experiments", icon: GitBranch },
       { href: "/studio/insights", label: "Diagnostics", icon: Sparkles },
       { href: "/studio/compare", label: "Run Compare", icon: GitCompare },
+      { href: "/studio/benchmarks", label: "RewindBench", icon: Trophy },
+      { href: "/studio/trust", label: "Model Trust Lab", icon: ShieldCheck },
+      { href: "/studio/explainability", label: "Explainability", icon: Eye },
       { href: "/studio/embeddings", label: "Embeddings 3D", icon: Compass },
+      { href: "/studio/profiler", label: "Profiler", icon: Zap },
+      { href: "/studio/reproduce", label: "Reproduction", icon: FileCheck },
     ],
   },
   {
-    title: "Learning & Import",
+    title: "Learning & System",
     items: [
       { href: "/studio/academy", label: "Academy", icon: GraduationCap },
-      { href: "/studio/import", label: "Import Center", icon: UploadCloud },
-    ],
-  },
-  {
-    title: "Preferences & System",
-    items: [
       { href: "/studio/settings", label: "Settings & Storage", icon: Settings },
     ],
   },
