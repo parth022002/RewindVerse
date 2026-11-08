@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Menu,
   X,
   Sparkles,
   ArrowRight,
-  BookOpen,
   Compass,
   GraduationCap,
   FileText,
@@ -18,11 +18,17 @@ import {
 } from "lucide-react";
 
 export function Navbar() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
 
+  const isActive = (path: string) => {
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#080b12]/80 backdrop-blur-xl transition-all">
+    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#080b12]/85 backdrop-blur-2xl transition-all shadow-lg shadow-black/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo Lockup */}
         <Link href="/" className="flex items-center gap-3 group">
@@ -41,18 +47,26 @@ export function Navbar() {
         {/* Desktop Navigation Links — 4 Primary Pillars */}
         <nav
           aria-label="Main Navigation"
-          className="hidden lg:flex items-center gap-7 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
+          className="hidden lg:flex items-center gap-6 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]"
         >
           <Link
             href="/product"
-            className="hover:text-white transition-colors"
+            className={`px-3 py-1.5 rounded-lg transition-all ${
+              isActive("/product")
+                ? "text-cyan-300 font-bold bg-white/[0.06] shadow-sm shadow-cyan-500/10"
+                : "hover:text-white hover:bg-white/[0.03]"
+            }`}
           >
             Product
           </Link>
 
           <Link
             href="/explore"
-            className="hover:text-cyan-300 transition-colors flex items-center gap-1.5"
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              isActive("/explore")
+                ? "text-cyan-300 font-bold bg-cyan-500/10 border border-cyan-500/30 shadow-sm shadow-cyan-500/20"
+                : "hover:text-cyan-300 hover:bg-white/[0.03]"
+            }`}
           >
             <Compass className="w-3.5 h-3.5 text-cyan-400" />
             <span>Explore</span>
@@ -60,7 +74,11 @@ export function Navbar() {
 
           <Link
             href="/learn"
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              isActive("/learn")
+                ? "text-cyan-300 font-bold bg-white/[0.06] shadow-sm shadow-cyan-500/10"
+                : "hover:text-white hover:bg-white/[0.03]"
+            }`}
           >
             <GraduationCap className="w-3.5 h-3.5" />
             <span>Learn</span>
@@ -74,7 +92,7 @@ export function Navbar() {
           >
             <button
               onClick={() => setResourcesOpen(!resourcesOpen)}
-              className="hover:text-white transition-colors flex items-center gap-1 py-2"
+              className="hover:text-white hover:bg-white/[0.03] px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
               aria-expanded={resourcesOpen}
             >
               <span>Resources</span>
@@ -82,27 +100,27 @@ export function Navbar() {
             </button>
 
             {resourcesOpen && (
-              <div className="absolute top-full left-0 w-48 p-2 rounded-xl border border-white/[0.08] bg-[#0e1422] shadow-2xl space-y-1">
+              <div className="absolute top-full left-0 w-52 p-2 rounded-xl border border-white/[0.1] bg-[#0c1220]/95 backdrop-blur-2xl shadow-2xl space-y-1 z-50">
                 <Link
                   href="/docs"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.05] transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.06] transition-colors"
                 >
                   <FileText className="w-3.5 h-3.5 text-cyan-400" />
                   <span>Documentation</span>
                 </Link>
                 <Link
                   href="/security"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.05] transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.06] transition-colors"
                 >
                   <Shield className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Security & Trust</span>
                 </Link>
                 <Link
                   href="/roadmap"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.05] transition-colors"
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.06] transition-colors"
                 >
                   <Milestone className="w-3.5 h-3.5 text-violet-400" />
-                  <span>Roadmap</span>
+                  <span>Platform Roadmap</span>
                 </Link>
               </div>
             )}
@@ -135,7 +153,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-white/[0.08] bg-[#0e1422] px-5 pt-3 pb-6 space-y-3 shadow-2xl">
+        <div className="lg:hidden border-b border-white/[0.1] bg-[#0c1220]/95 backdrop-blur-2xl px-5 pt-3 pb-6 space-y-3 shadow-2xl">
           <Link
             href="/product"
             onClick={() => setMobileMenuOpen(false)}
