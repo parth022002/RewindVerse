@@ -1,0 +1,5 @@
+{"type":"manifest","version":"0.1.0","run_id":"conformance_bad_step","name":"Bad Non-monotonic Steps"}
+{"type":"step","step":0,"metrics":{"loss":2.5}}
+{"type":"step","step":3,"metrics":{"loss":2.0}}
+{"type":"step","step":2,"metrics":{"loss":1.5}}
+

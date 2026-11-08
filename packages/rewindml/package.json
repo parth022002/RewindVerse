@@ -1,0 +1,17 @@
+{
+  "name": "@rewindverse/rewindml",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Deterministic browser ML training and computation engine for RewindVerse",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rewindverse/rvts": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

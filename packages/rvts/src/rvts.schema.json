@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rewindverse.com/schemas/rvts-v0.1.0.json",
+  "title": "RewindVerse Training Trace Specification (RVTS)",
+  "version": "0.1.0",
+  "description": "Canonical schema for an RVTS trace record (JSON Lines).",
+  "oneOf": [
+    { "$ref": "#/$defs/manifestRecord" },
+    { "$ref": "#/$defs/stepRecord" },
+    { "$ref": "#/$defs/eventRecord" },
+    { "$ref": "#/$defs/checkpointRecord" },
+    { "$ref": "#/$defs/footerRecord" }
+  ],
+  "$defs": {
+    "manifestRecord": {
+      "type": "object",
+      "required": ["type", "version", "run_id", "producer", "model_or_objective"],
+      "properties": {
+        "type": { "const": "manifest" },
+        "version": { "const": "0.1.0" },
+        "run_id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "created_at": { "type": "string" },
+        "producer": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "version": { "type": "string" },
+            "framework": { "type": "string" },
+            "environment": { "type": "string" }
+          }
+        },
+        "model_or_objective": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "type": { "type": "string" },
+            "dimension": { "type": "integer" },
+            "description": { "type": "string" }
+          }
+        },
+        "hyperparameters": { "type": "object" },
+        "declared_capabilities": { "type": "object" }
+      }
+    },
+    "stepRecord": {
+      "type": "object",
+      "required": ["type", "step", "metrics"],
+      "properties": {
+        "type": { "const": "step" },
+        "step": { "type": "integer", "minimum": 0 },
+        "timestamp_ms": { "type": "number" },
+        "metrics": {
+          "type": "object",
+          "required": ["loss"],
+          "properties": {
+            "loss": { "type": "number" },
+            "val_loss": { "type": "number" },
+            "lr": { "type": "number" },
+            "gradient_norm": { "type": "number" }
+          },
+          "additionalProperties": { "type": "number" }
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              { "type": "number" },
+              { "type": "array", "items": { "type": "number" } }
+            ]
+          }
+        },
+        "gradients": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              { "type": "number" },
+              { "type": "array", "items": { "type": "number" } }
+            ]
+          }
+        }
+      }
+    },
+    "eventRecord": {
+      "type": "object",
+      "required": ["type", "step", "event_type", "severity", "message"],
+      "properties": {
+        "type": { "const": "event" },
+        "step": { "type": "integer", "minimum": 0 },
+        "event_type": { "type": "string" },
+        "severity": { "enum": ["info", "warning", "critical"] },
+        "message": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "object" }
+      }
+    },
+    "checkpointRecord": {
+      "type": "object",
+      "required": ["type", "step", "parameters"],
+      "properties": {
+        "type": { "const": "checkpoint" },
+        "step": { "type": "integer", "minimum": 0 },
+        "name": { "type": "string" },
+        "parameters": { "type": "object" },
+        "metrics": { "type": "object" }
+      }
+    },
+    "footerRecord": {
+      "type": "object",
+      "required": ["type", "total_steps", "status"],
+      "properties": {
+        "type": { "const": "footer" },
+        "total_steps": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["completed", "interrupted", "failed"] },
+        "duration_ms": { "type": "number" },
+        "checksum": { "type": "string" }
+      }
+    }
+  }
+}

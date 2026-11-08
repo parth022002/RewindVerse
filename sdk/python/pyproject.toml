@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rewindverse-trace"
+version = "0.1.0"
+description = "Python recorder, CLI, and RVTS validator for the RewindVerse platform"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "RewindVerse Product & Engineering" }
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+]
+dependencies = [
+  "jsonschema>=4.20.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+]
+
+[project.scripts]
+rvtrace = "rewindverse_trace.cli:main"

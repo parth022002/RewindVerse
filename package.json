@@ -1,0 +1,31 @@
+{
+  "name": "rewindverse-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive ML Training Replay, Learning and Experiment Intelligence Platform",
+  "scripts": {
+    "dev": "pnpm --filter @rewindverse/web dev",
+    "build": "pnpm --filter \"@rewindverse/*\" build",
+    "test": "vitest run",
+    "test:python": "python -m unittest discover -s sdk/python/tests",
+    "audit:pilot": "node scripts/pilot-test.mjs",
+    "cloud:verify": "node scripts/verify-cloud-integration.mjs",
+    "lint": "pnpm --filter \"@rewindverse/*\" lint",
+    "typecheck": "pnpm --filter \"@rewindverse/*\" typecheck",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "packageManager": "pnpm@10.4.0",
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1164.0",
+    "@neon/config": "^1.13.0",
+    "@neon/env": "^2.1.0",
+    "@neondatabase/serverless": "^1.2.0",
+    "@types/node": "^22.13.4",
+    "dotenv": "^18.0.9",
+    "drizzle-kit": "^0.31.11",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}

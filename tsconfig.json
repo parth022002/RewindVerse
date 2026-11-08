@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@rewindverse/rvts": ["packages/rvts/src/index.ts"],
+      "@rewindverse/rewindml": ["packages/rewindml/src/index.ts"],
+      "@rewindverse/replay-engine": ["packages/replay-engine/src/index.ts"],
+      "@rewindverse/diagnostics": ["packages/diagnostics/src/index.ts"],
+      "@/*": ["apps/web/*"]
+    }
+  },
+  "include": [
+    "apps/web/**/*.ts",
+    "apps/web/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "tests/**/*.ts",
+    "drizzle.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules",
+    "**/node_modules/**",
+    ".next",
+    "**/.next",
+    "**/.next/**",
+    "dist",
+    "**/dist",
+    "**/dist/**",
+    "drizzle",
+    "drizzle/**",
+    "sdk/python",
+    "sdk/python/**"
+  ]
+}

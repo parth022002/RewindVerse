@@ -1,0 +1,4 @@
+{"type":"manifest","version":"0.1.0","run_id":"conformance_test_01","name":"Conformance Test Minimal","created_at":"2026-11-08T00:00:00Z","producer":{"name":"RewindML","version":"1.0.0"},"model_or_objective":{"name":"Quadratic","type":"2d_loss_landscape"},"declared_capabilities":{"has_loss":true,"step_unit":"step"}}
+{"type":"step","step":0,"metrics":{"loss":2.5,"grad_norm":0.8},"lr":0.01}
+{"type":"step","step":1,"metrics":{"loss":1.8,"grad_norm":0.5},"lr":0.01}
+{"type":"step","step":2,"metrics":{"loss":1.2,"grad_norm":0.3},"lr":0.01}

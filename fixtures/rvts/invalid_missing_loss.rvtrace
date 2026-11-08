@@ -1,0 +1,3 @@
+{"type":"manifest","version":"0.1.0","run_id":"conformance_missing_loss","name":"Missing Loss"}
+{"type":"step","step":0,"metrics":{"accuracy":0.95}}
+
