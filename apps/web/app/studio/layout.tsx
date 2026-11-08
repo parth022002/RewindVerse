@@ -15,10 +15,14 @@ import {
   ArrowLeft,
   ShieldCheck,
   Compass,
+  Wrench,
+  BookOpen,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/studio", label: "Studio Home", icon: Home },
+  { href: "/studio/algorithms", label: "Algorithm Catalog", icon: BookOpen },
+  { href: "/studio/forge", label: "Algorithm Forge", icon: Wrench },
   { href: "/studio/lab", label: "Optimizer Lab", icon: Cpu },
   { href: "/studio/replay/sample", label: "Replay Viewer", icon: RotateCcw },
   { href: "/studio/import", label: "Import Center", icon: UploadCloud },

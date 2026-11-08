@@ -72,5 +72,90 @@ export function createOptimizer(config: OptimizerConfig): OptimizerState {
         },
       };
     }
+
+    case "adamw": {
+      let m1 = 0;
+      let m2 = 0;
+      let v1 = 0;
+      let v2 = 0;
+      return {
+        config,
+        getLearningRate: () => config.learningRate,
+        step: (params, grads, t) => {
+          const lr = config.learningRate;
+          const b1 = config.beta1;
+          const b2 = config.beta2;
+          const eps = config.epsilon;
+          const wd = config.weightDecay;
+
+          // Update biased moments
+          m1 = b1 * m1 + (1 - b1) * grads[0];
+          m2 = b1 * m2 + (1 - b1) * grads[1];
+          v1 = b2 * v1 + (1 - b2) * (grads[0] * grads[0]);
+          v2 = b2 * v2 + (1 - b2) * (grads[1] * grads[1]);
+
+          // Bias corrections
+          const stepNum = Math.max(1, t);
+          const correction1 = 1 - Math.pow(b1, stepNum);
+          const correction2 = 1 - Math.pow(b2, stepNum);
+
+          const m1Hat = m1 / (correction1 || 1e-12);
+          const m2Hat = m2 / (correction1 || 1e-12);
+          const v1Hat = v1 / (correction2 || 1e-12);
+          const v2Hat = v2 / (correction2 || 1e-12);
+
+          // Decoupled weight decay: theta = theta - lr * m_hat / (sqrt(v_hat) + eps) - lr * wd * theta
+          const updateX = (lr * m1Hat) / (Math.sqrt(v1Hat) + eps) + lr * wd * params[0];
+          const updateY = (lr * m2Hat) / (Math.sqrt(v2Hat) + eps) + lr * wd * params[1];
+
+          return [params[0] - updateX, params[1] - updateY];
+        },
+      };
+    }
+
+    case "rmsprop": {
+      let v1 = 0;
+      let v2 = 0;
+      return {
+        config,
+        getLearningRate: () => config.learningRate,
+        step: (params, grads) => {
+          const lr = config.learningRate;
+          const decay = config.decayRate;
+          const eps = config.epsilon;
+
+          // Exponential moving average of squared gradients
+          v1 = decay * v1 + (1 - decay) * (grads[0] * grads[0]);
+          v2 = decay * v2 + (1 - decay) * (grads[1] * grads[1]);
+
+          const newX = params[0] - (lr * grads[0]) / (Math.sqrt(v1) + eps);
+          const newY = params[1] - (lr * grads[1]) / (Math.sqrt(v2) + eps);
+
+          return [newX, newY];
+        },
+      };
+    }
+
+    case "adagrad": {
+      let g1 = 0;
+      let g2 = 0;
+      return {
+        config,
+        getLearningRate: () => config.learningRate,
+        step: (params, grads) => {
+          const lr = config.learningRate;
+          const eps = config.epsilon;
+
+          // Accumulate sum of squared gradients
+          g1 += grads[0] * grads[0];
+          g2 += grads[1] * grads[1];
+
+          const newX = params[0] - (lr * grads[0]) / (Math.sqrt(g1) + eps);
+          const newY = params[1] - (lr * grads[1]) / (Math.sqrt(g2) + eps);
+
+          return [newX, newY];
+        },
+      };
+    }
   }
 }

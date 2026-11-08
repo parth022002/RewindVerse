@@ -309,9 +309,37 @@
 - [x] Root `.gitignore` updated to exclude Python bytecode caches (`__pycache__/`, `*.pyc`), `.pytest_cache/`, and egg info.
 - [x] Workspace verification confirmed:
   - [x] `pnpm typecheck` (0 errors)
-  - [x] `pnpm test` (18/18 tests passed)
+  - [x] `pnpm test` (28/28 tests passed)
   - [x] Python SDK test suite (3/3 passed)
-  - [x] `pnpm build` (24/24 routes generated statically)
+  - [x] `pnpm build` (26/26 routes generated statically)
+
+---
+
+## 🔬 Phase 16: Complete Algorithm Catalogue & Algorithm Forge Architecture (v1.0)
+
+- [x] **Master Specification Integration**:
+  - [x] Placed and partitioned specification into `docs/algorithms/ALGORITHM_CATALOG.md` (Sections 1–18, 20–23, 39, 40).
+  - [x] Placed and partitioned specification into `docs/forge/ALGORITHM_FORGE_SPECIFICATION.md` (Sections 19, 24–38, 40).
+  - [x] Documented explicit cross-references across `docs/README.md` and root `README.md`.
+- [x] **Core Algorithm Catalogue Registry (`packages/rewindml`)**:
+  - [x] Implemented TypeScript types: `AlgorithmEntry`, `AlgorithmProvenance`, `AlgorithmCategory`, `AlgorithmPriority`.
+  - [x] Populated full built-in registry (`ALGORITHM_CATALOG`) covering Optimization (SGD, Momentum, Adam, AdamW, RMSProp, Adagrad), Supervised ML (Linear Regression, Ridge, Lasso, Logistic Regression, kNN, Decision Trees), Unsupervised ML (K-Means, PCA), Neural Networks (MLP, Attention), and RL (Q-Learning).
+  - [x] Added native implementations of AdamW (decoupled weight decay), RMSProp, and Adagrad optimizers to `@rewindverse/rewindml`.
+- [x] **Algorithm Forge Engine (`packages/rewindml/src/forge`)**:
+  - [x] `types.ts`: Declarative `AlgorithmManifest`, `ForgeNode`, `ForgeEdge`, `ExecutionBudget`, and diagnostics schema.
+  - [x] `validator.ts`: Allowlisted AST operation checks (`add`, `sub`, `mul`, `div`, `pow`, `sqrt`, `clamp`, `abs`, `exp`, `log`, `min`, `max`, `scale`, `negate`), DAG cycle detection, parameter bounds, fuel budget validation, and strict rejection of arbitrary JavaScript execution (`eval`, `new Function`, dynamic import).
+  - [x] `interpreter.ts`: Safe recursive-descent algebraic formula parser, topological node evaluator, and fuel-metered execution loop generating valid `RvtsParsedTrace` outputs.
+  - [x] `templates.ts`: Pre-built forkable templates for Mode A (SGDW, Dampened Momentum), Mode B (Visual Momentum Pipeline), and Mode C (Signum, Power-Scaled Descent).
+- [x] **Rewind Studio Front-End Integration (`apps/web`)**:
+  - [x] `/studio/algorithms`: Master Algorithm Catalogue explorer with category filters, keyword search, provenance badges, LaTeX math formula displays, and modal detail views.
+  - [x] `/studio/forge`: Flagship Algorithm Forge workspace supporting Mode A (Fork & Customize with human-readable diff), Mode B (Visual Node Pipeline DAG), and Mode C (Formula DSL editor with live AST validation and token helpers).
+  - [x] Sandboxed Test Bench with Quadratic Bowl, Rosenbrock Valley, and Saddle Point surfaces, 2D contour canvas, scrubber, convergence metrics, and 1-click `.rvtrace` streaming JSONL export.
+  - [x] Updated Studio sidebar navigation (`apps/web/app/studio/layout.tsx`) and Studio Home dashboard (`apps/web/app/studio/page.tsx`).
+- [x] **Test Suite & Verification**:
+  - [x] `tests/unit/forge.test.ts` (7 tests covering manifest validation, cycle rejection, security code execution blocks, SGDW execution, Signum formula, divergence detection).
+  - [x] `tests/unit/optimizers.test.ts` (3 tests covering AdamW weight decay, RMSProp ravine dampening, Adagrad monotonic accumulation).
+  - [x] 100% unit tests passing (28/28 tests across 6 suites).
+  - [x] 0 TypeScript compiler errors across all monorepo workspaces.
 
 ---
 

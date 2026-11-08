@@ -113,6 +113,12 @@ export default function OptimizerLabPage() {
       optimizer:
         optimizerType === "adam"
           ? { type: "adam", learningRate, beta1: 0.9, beta2: 0.999, epsilon: 1e-8 }
+          : optimizerType === "adamw"
+          ? { type: "adamw", learningRate, beta1: 0.9, beta2: 0.999, epsilon: 1e-8, weightDecay: 0.01 }
+          : optimizerType === "rmsprop"
+          ? { type: "rmsprop", learningRate, decayRate: 0.99, epsilon: 1e-8 }
+          : optimizerType === "adagrad"
+          ? { type: "adagrad", learningRate, epsilon: 1e-8 }
           : optimizerType === "momentum"
           ? { type: "momentum", learningRate, momentum }
           : { type: "sgd", learningRate },
@@ -726,7 +732,7 @@ export default function OptimizerLabPage() {
                   Optimizer Algorithm
                 </label>
                 <div className="grid grid-cols-3 gap-2">
-                  {(["sgd", "momentum", "adam"] as OptimizerType[]).map((opt) => (
+                  {(["sgd", "momentum", "adam", "adamw", "rmsprop", "adagrad"] as OptimizerType[]).map((opt) => (
                     <button
                       key={opt}
                       onClick={() => {

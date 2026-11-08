@@ -14,13 +14,13 @@ An interactive machine learning training replay, learning, and experiment intell
 [![Neon Database](https://img.shields.io/badge/Neon-PostgreSQL-00e599.svg?logo=postgresql&logoColor=white)](https://neon.tech/)
 [![Neon S3](https://img.shields.io/badge/Neon-Object%20Storage-00d2ff.svg)](https://neon.tech/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab.svg?logo=python&logoColor=white)](https://python.org/)
-[![Vitest](https://img.shields.io/badge/Vitest-18%2F18%20Passed-brightgreen.svg?logo=vitest&logoColor=white)]()
-[![Routes](https://img.shields.io/badge/Next.js%20Routes-24%2F24%20Compiled-brightgreen.svg)]()
+[![Vitest](https://img.shields.io/badge/Vitest-28%2F28%20Passed-brightgreen.svg?logo=vitest&logoColor=white)]()
+[![Routes](https://img.shields.io/badge/Next.js%20Routes-26%2F26%20Compiled-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 <br />
 
-[**Explore Rewind Studio**](http://localhost:3000/studio) • [**Interactive Lab**](http://localhost:3000/studio/lab) • [**Documentation**](./docs/README.md) • [**Checklist**](./PROJECT_CHECKLIST.md) • [**Cloud Status**](./REQUIRED_CREDENTIALS_AND_CONFIG.md)
+[**Explore Rewind Studio**](http://localhost:3000/studio) • [**Algorithm Forge**](http://localhost:3000/studio/forge) • [**Catalogue**](http://localhost:3000/studio/algorithms) • [**Interactive Lab**](http://localhost:3000/studio/lab) • [**Documentation**](./docs/README.md) • [**Checklist**](./PROJECT_CHECKLIST.md)
 
 </div>
 
@@ -91,6 +91,8 @@ RewindVerse Platform
 │   └── /share/[token]    # Cloud-backed read-only trace playback view
 │
 └── Rewind Studio Hub (/studio)
+    ├── /studio/forge     # Algorithm Forge (Mode A: Fork, Mode B: Nodes, Mode C: Formula DSL)
+    ├── /studio/algorithms# Algorithm Catalogue & Registry (Math, Provenance, RVTS Signals)
     ├── /studio/lab       # Interactive RewindML Optimizer Lab (Continuous & Classification)
     ├── /studio/replay    # Replay Viewer with O(1) scrubbing & multi-view sync
     ├── /studio/compare   # Dual-run trajectory comparison & convergence analytics
@@ -102,8 +104,15 @@ RewindVerse Platform
 
 ### Studio Modules in Detail
 
+#### 0. Algorithm Forge (`/studio/forge`) & Master Catalogue (`/studio/algorithms`)
+- **Mode A: Fork & Customize**: Fork built-in baselines (SGD, Momentum, Adam, AdamW, RMSProp, Adagrad) into immutable personal manifests, adjust hyperparameter bounds, and review human-readable diffs.
+- **Mode B: Visual Node Builder**: Graph dataflow representation connecting parameters, gradients, momentum accumulators, learning rate scaling, and output states with acyclic DAG validation.
+- **Mode C: Declarative Formula Editor**: Algebraic update rule editor (`p - lr * clamp(g, -1, 1) - lr * wd * p`) backed by an allowlisted recursive-descent AST interpreter. Zero `eval()`, zero `new Function()`, zero dynamic imports.
+- **Sandboxed Worker Test Bench**: Execute custom algorithms against Quadratic Bowl, Rosenbrock, or Saddle surfaces with live fuel metering (up to 500,000 units), divergence detection, and instant `.rvtrace` streaming JSONL export.
+- **Algorithm Catalogue**: Comprehensive searchable registry covering mathematical definitions, explicit assumptions, hyperparameter ranges, and declared RVTS trace capabilities.
+
 #### 1. Interactive RewindML Lab (`/studio/lab`)
-- **Mode 1: Continuous Loss Landscapes**: Explore 2D and 3D surfaces (Quadratic, Rosenbrock, Saddle) with SGD, Momentum, and Adam optimizers. Adjust learning rate, momentum, noise levels, and starting coordinates in real-time.
+- **Mode 1: Continuous Loss Landscapes**: Explore 2D and 3D surfaces (Quadratic, Rosenbrock, Saddle) with SGD, Momentum, Adam, AdamW, RMSProp, and Adagrad optimizers. Adjust learning rate, momentum, noise levels, and starting coordinates in real-time.
 - **Mode 2: Binary Classification**: Train Logistic Regression on 2D Gaussian Blobs with moving decision boundary hyperplanes and accuracy metrics.
 - **Transport Controls**: Play, Pause, Step +1, Rewind, and Speed multipliers (0.5x, 1x, 2x, 5x).
 - **Export & Share**: Direct "Save to Workspace" (IndexedDB), "Export .rvtrace", and **"Share to Cloud"** (Neon S3 + PostgreSQL).
@@ -397,8 +406,10 @@ Detailed architectural specifications and engineering standards are available in
 
 | Document | Description |
 |---|---|
-| [`PROJECT_CHECKLIST.md`](./PROJECT_CHECKLIST.md) | Master tracking across all 15 engineering phases and cloud milestones. |
+| [`PROJECT_CHECKLIST.md`](./PROJECT_CHECKLIST.md) | Master tracking across all 16 engineering phases, algorithm catalogue, and cloud milestones. |
 | [`REQUIRED_CREDENTIALS_AND_CONFIG.md`](./REQUIRED_CREDENTIALS_AND_CONFIG.md) | Guide to Neon PostgreSQL and S3 environment variables. |
+| [`docs/algorithms/ALGORITHM_CATALOG.md`](./docs/algorithms/ALGORITHM_CATALOG.md) | Master algorithm catalogue covering mathematical foundations, optimization, models, RVTS trace requirements, and reference equations. |
+| [`docs/forge/ALGORITHM_FORGE_SPECIFICATION.md`](./docs/forge/ALGORITHM_FORGE_SPECIFICATION.md) | Algorithm Forge specification: 3 creation modes, manifest schema, allowlisted AST validator, worker execution contract, and security gates. |
 | [`docs/RewindVerse_Final_PRD.md`](./docs/RewindVerse_Final_PRD.md) | Core product requirements, persona workflows, and acceptance criteria. |
 | [`docs/RewindVerse_Technical_Stack_Final.md`](./docs/RewindVerse_Technical_Stack_Final.md) | Full architectural blueprint and technology decisions. |
 | [`docs/RewindVerse_Website_Design_and_Engineering_Standards.md`](./docs/RewindVerse_Website_Design_and_Engineering_Standards.md) | Design system tokens, color models, typography, and component standards. |

@@ -16,6 +16,7 @@ import {
   GitCompare,
   Sparkles,
   Layers,
+  Wrench,
 } from "lucide-react";
 import { listRecentRuns, deleteRunById, StoredRun } from "../../lib/storage";
 
@@ -68,6 +69,54 @@ export default function StudioHomePage() {
 
       {/* Quick Action Workspace Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Algorithm Forge */}
+        <Link
+          href="/studio/forge"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between border-cyan-500/30"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-950/80 to-blue-950/80 border border-cyan-700/60 flex items-center justify-center text-cyan-300 mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-cyan-500/10">
+              <Wrench className="w-5 h-5" />
+            </div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base font-bold text-white">Algorithm Forge</h3>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                New
+              </span>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Safe visual node builder, formula DSL editor, fork workflow, and local Web Worker interpreter.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-cyan-400 gap-1.5">
+            Launch Forge <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
+        {/* Algorithm Catalogue */}
+        <Link
+          href="/studio/algorithms"
+          className="p-6 rounded-2xl glass-panel glass-card-interactive group flex flex-col justify-between"
+        >
+          <div>
+            <div className="w-10 h-10 rounded-xl bg-purple-950/60 border border-purple-800/60 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-base font-bold text-white">Algorithm Catalogue</h3>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                Registry
+              </span>
+            </div>
+            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              Browse verified mathematical formulas, assumptions, RVTS trace capabilities, and provenance standards.
+            </p>
+          </div>
+          <div className="mt-5 flex items-center text-xs font-semibold text-purple-400 gap-1.5">
+            Explore Catalogue <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Link>
+
         {/* Launch Lab */}
         <Link
           href="/studio/lab"

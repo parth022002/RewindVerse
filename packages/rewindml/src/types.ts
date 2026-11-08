@@ -10,7 +10,7 @@ export interface ObjectiveFunction {
   globalMinimum?: [number, number];
 }
 
-export type OptimizerType = "sgd" | "momentum" | "adam";
+export type OptimizerType = "sgd" | "momentum" | "adam" | "adamw" | "rmsprop" | "adagrad";
 
 export interface SgdConfig {
   type: "sgd";
@@ -31,7 +31,35 @@ export interface AdamConfig {
   epsilon: number;
 }
 
-export type OptimizerConfig = SgdConfig | MomentumConfig | AdamConfig;
+export interface AdamWConfig {
+  type: "adamw";
+  learningRate: number;
+  beta1: number;
+  beta2: number;
+  epsilon: number;
+  weightDecay: number;
+}
+
+export interface RMSPropConfig {
+  type: "rmsprop";
+  learningRate: number;
+  decayRate: number;
+  epsilon: number;
+}
+
+export interface AdagradConfig {
+  type: "adagrad";
+  learningRate: number;
+  epsilon: number;
+}
+
+export type OptimizerConfig =
+  | SgdConfig
+  | MomentumConfig
+  | AdamConfig
+  | AdamWConfig
+  | RMSPropConfig
+  | AdagradConfig;
 
 export interface SimulationConfig {
   objective: ObjectiveType;
