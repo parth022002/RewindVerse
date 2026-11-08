@@ -57,6 +57,22 @@ The platform is designed and governed by 8 foundational specification documents:
 - [`PENDING_WORK_REGISTER.md`](./implementation/PENDING_WORK_REGISTER.md) — Tracked feature backlog and versioned milestones.
 - [`RELEASE_READINESS_REPORT.md`](./implementation/RELEASE_READINESS_REPORT.md) — Operational release gate status across all dimensions.
 
+### 9. Master Redesign & Repository Architecture Reports
+- [`REPOSITORY_AUDIT.md`](./architecture/repository/REPOSITORY_AUDIT.md) — Complete repository audit, code quality findings, and dependency inspection.
+- [`RESTRUCTURING_PLAN.md`](./architecture/repository/RESTRUCTURING_PLAN.md) — Monorepo structural consolidation, cleanup plan, and rollback strategy.
+- [`REPOSITORY_STRUCTURE.md`](./architecture/repository/REPOSITORY_STRUCTURE.md) — Package dependency graph and leaf-module hierarchy.
+- [`DEPENDENCY_AUDIT.md`](./architecture/repository/DEPENDENCY_AUDIT.md) — Monorepo dependency inventory, licenses, and bundle impact mitigation.
+- [`CODE_QUALITY_REPORT.md`](./architecture/repository/CODE_QUALITY_REPORT.md) — SOLID/DRY analysis, TypeScript strictness, and test execution results.
+- [`REPOSITORY_CLEANUP_REPORT.md`](./implementation/REPOSITORY_CLEANUP_REPORT.md) — Final summary of repository optimization and release gate sign-off.
+- [`REDESIGN_AUDIT.md`](./redesign/REDESIGN_AUDIT.md) — Public and Studio UX simplification and component consolidation audit.
+- [`REDESIGN_ROUTE_MATRIX.md`](./redesign/REDESIGN_ROUTE_MATRIX.md) — Complete 41-route inventory with primary actions and load priorities.
+- [`DESIGN_SYSTEM.md`](./redesign/DESIGN_SYSTEM.md) — OKLCH semantic design tokens and theme contrast baselines.
+- [`MOTION_SYSTEM.md`](./redesign/MOTION_SYSTEM.md) — Spring presets, non-layout animation tokens, and reduced-motion rules.
+- [`3D_AND_BACKGROUND_ASSET_REGISTER.md`](./redesign/3D_AND_BACKGROUND_ASSET_REGISTER.md) — Atmosphere layers and 4-tier 3D fallback ladder.
+- [`RESPONSIVE_AND_ACCESSIBILITY_REPORT.md`](./redesign/RESPONSIVE_AND_ACCESSIBILITY_REPORT.md) — WCAG 2.2 AA audit across 8 viewports (320px to 1920px).
+- [`PERFORMANCE_BEFORE_AFTER.md`](./redesign/PERFORMANCE_BEFORE_AFTER.md) — Core Web Vitals before/after (LCP: 1.2s, INP: 48ms, CLS: 0.00).
+- [`REDESIGN_ACCEPTANCE_REPORT.md`](./redesign/REDESIGN_ACCEPTANCE_REPORT.md) — Formal acceptance criteria sign-off report.
+
 ---
 
 ## 🏗 Monorepo Directory Organization

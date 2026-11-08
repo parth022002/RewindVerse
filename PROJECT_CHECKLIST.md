@@ -38,6 +38,8 @@
 | **Phase 18** | Advanced Algorithm Forge Research Workbench (`/studio/forge`) | P0 | 🟢 Completed (Data, Eq, Flow, Code, Bench Studios & Jacobian Verifier) |
 | **Phase 19** | Complete Research Platform Expansion (Fit Lab, Data Lab, Trust, Explainability, Benchmarks) | P0 | 🟢 Completed (39 Routes, 33/33 Vitest Tests) |
 | **Phase 20** | Deep Directory Cleaning, Monorepo Reordering & Python Examples | P0 | 🟢 Completed (Empty Scaffolding Pruned, Working Examples Added) |
+| **Phase 21** | Master Website Redesign, Atmospheric Backgrounds & 3D Hero | P0 | 🟢 Completed (41 Routes, 10-Section Storytelling, 103 kB Shared JS) |
+| **Phase 22** | Complete Repository Audit, Governance, Restructuring & Optimization | P0 | 🟢 Completed (.github CI, Governance Docs, Sanitized Env, 100% Tests) |
 
 
 ---

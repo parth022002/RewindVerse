@@ -58,8 +58,12 @@ __pycache__/
 **/*.egg-info/
 .pytest_cache/
 **/.pytest_cache/
+# Coverage & Test Outputs
 .coverage
 htmlcov/
+.playwright/
+playwright-report/
+test-results/
 .venv/
 venv/
 ENV/

@@ -14,8 +14,8 @@ An interactive machine learning training replay, learning, and experiment intell
 [![Neon Database](https://img.shields.io/badge/Neon-PostgreSQL-00e599.svg?logo=postgresql&logoColor=white)](https://neon.tech/)
 [![Neon S3](https://img.shields.io/badge/Neon-Object%20Storage-00d2ff.svg)](https://neon.tech/)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab.svg?logo=python&logoColor=white)](https://python.org/)
-[![Vitest](https://img.shields.io/badge/Vitest-28%2F28%20Passed-brightgreen.svg?logo=vitest&logoColor=white)]()
-[![Routes](https://img.shields.io/badge/Next.js%20Routes-26%2F26%20Compiled-brightgreen.svg)]()
+[![Vitest](https://img.shields.io/badge/Vitest-33%2F33%20Passed-brightgreen.svg?logo=vitest&logoColor=white)]()
+[![Routes](https://img.shields.io/badge/Next.js%20Routes-41%2F41%20Compiled-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 <br />
