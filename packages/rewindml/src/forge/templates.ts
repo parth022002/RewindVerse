@@ -122,3 +122,4 @@ export const FORGE_TEMPLATES: AlgorithmManifest[] = [
     },
   },
 ];
+

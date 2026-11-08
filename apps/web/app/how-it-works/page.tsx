@@ -98,6 +98,23 @@ const [pc1, pc2, pc3] = computeTop3PrincipalComponents(embeddings);
     highlight: "Explains WHY the run failed, pinpointing exact epochs and citing numerical evidence.",
     tags: ["Automated Heuristics", "Exact Step Citations", "Remediation Guides", "Explainable ML"],
   },
+  {
+    id: "forge",
+    num: "06",
+    title: "Algorithm Forge & Custom Rules",
+    subtitle: "Declarative Update Engineering",
+    desc: "Design new optimization algorithms or customize built-in baselines. Use Mode A (parameter fork), Mode B (visual node pipeline), or Mode C (algebraic formula DSL) validated by an allowlisted AST interpreter with zero eval risks.",
+    code: `// Algorithm Forge Declarative Manifest:
+{
+  "mode": "formula",
+  "formula": "p - lr * clamp(g, -1, 1) - lr * wd * p",
+  "parameters": { "learningRate": 0.05, "wd": 0.01 },
+  "executionBudget": { "fuelLimit": 50000, "maxSteps": 300 }
+}
+// Executes in client Web Worker sandbox with fuel accounting`,
+    highlight: "Safe in-browser algorithm experimentation without arbitrary code execution vulnerabilities.",
+    tags: ["AST Allowlist", "Fuel Accounting", "Worker Isolation", "Declarative Manifests"],
+  },
 ];
 
 export default function HowItWorksPage() {
@@ -114,7 +131,7 @@ export default function HowItWorksPage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-950/40 text-cyan-300 text-xs font-medium mb-5 backdrop-blur-md">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>The 5-Stage Core Workflow</span>
+              <span>The 6-Stage Core Workflow</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
@@ -123,14 +140,15 @@ export default function HowItWorksPage() {
             </h1>
 
             <p className="mt-4 text-base sm:text-lg text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed">
-              Understand the complete journey: how models log step telemetry, stream portable RVTS traces, and replay deterministically inside any browser.
+              Understand the complete journey: how models log step telemetry, stream portable RVTS traces,
+              replay deterministically inside any browser, and customize update rules in Algorithm Forge.
             </p>
           </div>
         </section>
 
-        {/* Interactive 5-Stage Stepper Navigation */}
+        {/* Interactive 6-Stage Stepper Navigation */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 p-2 rounded-2xl glass-panel">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 p-2 rounded-2xl glass-panel">
             {STAGES.map((stage) => (
               <button
                 key={stage.id}

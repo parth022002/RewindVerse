@@ -499,3 +499,4 @@ export function getAlgorithmById(id: string): AlgorithmEntry | undefined {
 export function getAlgorithmsByCategory(category: AlgorithmCategory): AlgorithmEntry[] {
   return ALGORITHM_CATALOG.filter((entry) => entry.category === category);
 }
+

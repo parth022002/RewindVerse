@@ -11,9 +11,88 @@ import {
   ShieldCheck,
   FileCode,
   ArrowRight,
+  Wrench,
+  BookOpen,
 } from "lucide-react";
 
 export default function ProductPage() {
+  const modules = [
+    {
+      title: "Algorithm Forge",
+      subtitle: "Custom Algorithm Studio",
+      desc: "Declarative algorithm builder supporting visual node pipelines, algebraic formula DSL, fork workflows, and safe sandboxed execution.",
+      icon: Wrench,
+      color: "text-violet-400",
+      href: "/studio/forge",
+      action: "Launch Forge",
+      featured: true,
+    },
+    {
+      title: "Algorithm Catalogue",
+      subtitle: "Master ML Registry",
+      desc: "Verified mathematical formulas, assumptions, RVTS trace signals, and execution provenance standards across classical and deep learning.",
+      icon: BookOpen,
+      color: "text-purple-400",
+      href: "/studio/algorithms",
+      action: "Explore Catalogue",
+      featured: true,
+    },
+    {
+      title: "RewindML",
+      subtitle: "Training & Computation Core",
+      desc: "Pure off-thread mathematical execution engine. Supports 2D landscapes, linear models, and neural nets with zero UI lag.",
+      icon: Cpu,
+      color: "text-cyan-400",
+      href: "/studio/lab",
+      action: "Explore Lab",
+    },
+    {
+      title: "Rewind Replay",
+      subtitle: "Deterministic Trace Viewer",
+      desc: "Frame-accurate scrubbing through training histories. Synchronizes metrics, parameters, and gradient norms across iterations.",
+      icon: RotateCcw,
+      color: "text-blue-400",
+      href: "/studio/replay/sample",
+      action: "Explore Replay",
+    },
+    {
+      title: "Rewind Insights",
+      subtitle: "Evidence-Backed Diagnostics",
+      desc: "Rule out guesswork with heuristic detectors that pinpoint loss plateaus, numerical divergence, and gradient explosion with exact step ranges.",
+      icon: Sparkles,
+      color: "text-cyan-300",
+      href: "/studio/insights",
+      action: "View Diagnostics",
+    },
+    {
+      title: "Rewind Compare",
+      subtitle: "Experiment Comparison",
+      desc: "Align compatible runs side-by-side. Inspect hyperparameter deltas and metric overlays without false unit equivalences.",
+      icon: GitCompare,
+      color: "text-emerald-400",
+      href: "/studio/compare",
+      action: "Compare Runs",
+    },
+    {
+      title: "Rewind Academy",
+      subtitle: "Interactive Guided Learning",
+      desc: "Master optimization dynamics through predict-before-run challenges. Formulate hypotheses and test them against real computation.",
+      icon: GraduationCap,
+      color: "text-amber-400",
+      href: "/studio/academy",
+      action: "Enter Academy",
+    },
+    {
+      title: "RVTS Specification",
+      subtitle: "Open Trace Standard",
+      desc: "A capability-declared, versioned JSON Lines contract. Ensures trace portability between browser and Python training pipelines.",
+      icon: FileCode,
+      color: "text-slate-400",
+      href: "/docs",
+      action: "Read Specs",
+    },
+  ];
+
   return (
     <div className="min-h-screen flex flex-col bg-[var(--background)]">
       <Navbar />
@@ -28,93 +107,41 @@ export default function ProductPage() {
           </h1>
           <p className="text-base text-[var(--text-muted)]">
             Explore the complete RewindVerse ecosystem. From browser Web Worker simulation to
-            portable trace formats and evidence-backed diagnostics.
+            safe algorithm customization, portable trace formats, and evidence-backed diagnostics.
           </p>
         </div>
 
         {/* Modules Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              title: "RewindML",
-              subtitle: "Training & Computation Core",
-              desc: "Pure off-thread mathematical execution engine. Supports 2D landscapes, linear models, and neural nets with zero UI lag.",
-              icon: Cpu,
-              color: "text-cyan-400",
-              href: "/studio/lab",
-              action: "Explore Lab",
-            },
-            {
-              title: "Rewind Replay",
-              subtitle: "Deterministic Trace Viewer",
-              desc: "Frame-accurate scrubbing through training histories. Synchronizes metrics, parameters, and gradient norms across iterations.",
-              icon: RotateCcw,
-              color: "text-blue-400",
-              href: "/studio/replay/sample",
-              action: "Explore Replay",
-            },
-            {
-              title: "Rewind Insights",
-              subtitle: "Evidence-Backed Diagnostics",
-              desc: "Rule out guesswork with heuristic detectors that pinpoint loss plateaus, numerical divergence, and gradient explosion with exact step ranges.",
-              icon: Sparkles,
-              color: "text-violet-400",
-              href: "/studio/insights",
-              action: "View Diagnostics",
-            },
-            {
-              title: "Rewind Compare",
-              subtitle: "Experiment Comparison",
-              desc: "Align compatible runs side-by-side. Inspect hyperparameter deltas and metric overlays without false unit equivalences.",
-              icon: GitCompare,
-              color: "text-emerald-400",
-              href: "/studio/compare",
-              action: "Compare Runs",
-            },
-            {
-              title: "Rewind Academy",
-              subtitle: "Interactive Guided Learning",
-              desc: "Master optimization dynamics through predict-before-run challenges. Formulate hypotheses and test them against real computation.",
-              icon: GraduationCap,
-              color: "text-amber-400",
-              href: "/studio/academy",
-              action: "Enter Academy",
-            },
-            {
-              title: "RVTS Specification",
-              subtitle: "Open Trace Standard",
-              desc: "A capability-declared, versioned JSON Lines contract. Ensures trace portability between browser and Python training pipelines.",
-              icon: FileCode,
-              color: "text-slate-400",
-              href: "/docs",
-              action: "Read Specs",
-            },
-          ].map((item) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {modules.map((item) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.title}
-                className="p-8 rounded-2xl bg-[var(--surface)] border border-[var(--border)] hover:border-cyan-500/40 transition-all flex flex-col justify-between"
+                className={`p-7 rounded-2xl glass-panel glass-card-interactive flex flex-col justify-between ${
+                  item.featured ? "border-cyan-500/40 shadow-lg shadow-cyan-500/5" : ""
+                }`}
               >
                 <div>
-                  <div className="w-12 h-12 rounded-xl bg-[var(--surface-raised)] border border-[var(--border)] flex items-center justify-center mb-6">
-                    <Icon className={`w-6 h-6 ${item.color}`} />
+                  <div className="w-11 h-11 rounded-xl bg-[var(--surface-raised)] border border-[var(--border)] flex items-center justify-center mb-5">
+                    <Icon className={`w-5 h-5 ${item.color}`} />
                   </div>
-                  <span className="text-xs font-mono text-[var(--text-muted)] block mb-1">
+                  <span className="text-[11px] font-mono text-[var(--text-muted)] block mb-1">
                     {item.subtitle}
                   </span>
-                  <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-sm text-[var(--text-muted)] leading-relaxed">
+                  <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                  <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-[var(--border)]">
+                <div className="pt-5 mt-5 border-t border-[var(--border)]">
                   <Link
                     href={item.href}
-                    className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1.5"
+                    className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 inline-flex items-center gap-1.5 group"
                   >
-                    {item.action} <ArrowRight className="w-3.5 h-3.5" />
+                    <span>{item.action}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </div>
@@ -127,4 +154,3 @@ export default function ProductPage() {
     </div>
   );
 }
-

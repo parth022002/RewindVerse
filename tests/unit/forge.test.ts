@@ -154,3 +154,4 @@ describe("Algorithm Forge Sandboxed Execution Engine", () => {
     expect(result.trace.events.some((e) => e.event_type === "divergence")).toBe(true);
   });
 });
+

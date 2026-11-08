@@ -2,48 +2,67 @@
 
 :root {
   color-scheme: dark;
-  --background: oklch(0.14 0.025 265);
-  --surface: oklch(0.18 0.025 265);
-  --surface-raised: oklch(0.22 0.028 265);
-  --surface-overlay: oklch(0.26 0.03 265);
-  --text: oklch(0.96 0.009 255);
-  --text-muted: oklch(0.72 0.02 255);
-  --border: oklch(0.32 0.025 265);
-  --border-strong: oklch(0.42 0.03 265);
-  --primary: oklch(0.78 0.15 210);
-  --primary-foreground: oklch(0.18 0.03 265);
-  --secondary: oklch(0.72 0.17 255);
-  --accent: oklch(0.73 0.19 315);
-  --success: oklch(0.76 0.15 155);
-  --warning: oklch(0.82 0.14 80);
-  --danger: oklch(0.72 0.18 25);
-  --focus-ring: oklch(0.78 0.15 210);
-  --brand-gradient: linear-gradient(110deg, #00d2ff, #3a7bd5, #9d50bb);
-  --glow-gradient: radial-gradient(circle at 50% 0%, rgba(58, 123, 213, 0.2) 0%, rgba(0, 210, 255, 0.05) 50%, transparent 80%);
+  /* Deep Space Obsidian Base */
+  --background: #080b12;
+  --surface: #0e1422;
+  --surface-raised: #141c2e;
+  --surface-overlay: #1c263d;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-glow: rgba(0, 242, 254, 0.35);
+
+  /* Vibrant Aurora & Electric Accent Colors */
+  --cyan: #00f2fe;
+  --cyan-glow: rgba(0, 242, 254, 0.25);
+  --blue: #38bdf8;
+  --violet: #8b5cf6;
+  --violet-glow: rgba(139, 92, 246, 0.25);
+  --magenta: #ec4899;
+  --emerald: #10b981;
+  --amber: #f59e0b;
+  --rose: #f43f5e;
+
+  /* Semantic UI Tokens */
+  --primary: #00f2fe;
+  --primary-foreground: #080b12;
+  --secondary: #8b5cf6;
+  --accent: #ec4899;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #f43f5e;
+  --focus-ring: #00f2fe;
+
+  /* Multi-Tone Radiant Brand Gradients */
+  --brand-gradient: linear-gradient(135deg, #00f2fe 0%, #38bdf8 30%, #8b5cf6 70%, #d946ef 100%);
+  --brand-gradient-alt: linear-gradient(135deg, #38bdf8 0%, #8b5cf6 50%, #ec4899 100%);
+  --glow-gradient: radial-gradient(ellipse at 50% -10%, rgba(0, 242, 254, 0.18) 0%, rgba(139, 92, 246, 0.12) 40%, transparent 75%);
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --background: oklch(0.985 0.006 255);
-  --surface: oklch(0.965 0.009 255);
-  --surface-raised: oklch(1 0 0);
-  --surface-overlay: oklch(0.995 0.004 255);
-  --text: oklch(0.21 0.025 260);
-  --text-muted: oklch(0.48 0.025 260);
-  --border: oklch(0.88 0.012 260);
-  --border-strong: oklch(0.80 0.018 260);
-  --primary: oklch(0.56 0.19 255);
-  --primary-foreground: oklch(0.99 0.004 255);
-  --secondary: oklch(0.61 0.15 225);
-  --accent: oklch(0.62 0.19 305);
-  --success: oklch(0.57 0.15 155);
-  --warning: oklch(0.68 0.15 75);
-  --danger: oklch(0.58 0.20 25);
-  --focus-ring: oklch(0.63 0.18 245);
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-raised: #f1f5f9;
+  --surface-overlay: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+  --border: rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.16);
+  --border-glow: rgba(14, 165, 233, 0.35);
+  --primary: #0284c7;
+  --primary-foreground: #ffffff;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -53,6 +72,8 @@ body {
   color: var(--text);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom RewindVerse Brand Utilities */
@@ -87,6 +108,13 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.brand-gradient-alt-text {
+  background: var(--brand-gradient-alt);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .brand-gradient-bg {
   background: var(--brand-gradient);
 }
@@ -95,36 +123,134 @@ body {
   background-image: var(--glow-gradient);
 }
 
-/* Glassmorphism & Micro-Interactions */
+/* Refined Glassmorphism & Micro-Interactions */
 .glass-panel {
-  background: rgba(11, 15, 25, 0.72);
+  background: rgba(14, 20, 34, 0.65);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-subtle {
+  background: rgba(14, 20, 34, 0.4);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .glass-card-interactive {
   transition:
     transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-interactive:hover {
-  border-color: rgba(0, 210, 255, 0.35);
-  box-shadow: 0 16px 40px -12px rgba(0, 210, 255, 0.15);
-  transform: translateY(-2px);
+  border-color: rgba(0, 242, 254, 0.4);
+  box-shadow: 0 20px 48px -12px rgba(0, 242, 254, 0.18), 0 0 1px 1px rgba(0, 242, 254, 0.2);
+  transform: translateY(-3px);
+  background-color: rgba(20, 28, 46, 0.75);
+}
+
+/* Luminous Glow Effects */
+.glow-cyan {
+  box-shadow: 0 0 25px -4px rgba(0, 242, 254, 0.35);
+}
+
+.glow-violet {
+  box-shadow: 0 0 25px -4px rgba(139, 92, 246, 0.35);
+}
+
+.glow-border-cyan {
+  border-color: rgba(0, 242, 254, 0.4);
+  box-shadow: 0 0 15px -3px rgba(0, 242, 254, 0.25);
+}
+
+/* Atmospheric Animations */
+@keyframes auroraDrift1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate3d(60px, -40px, 0) scale(1.12);
+    opacity: 0.85;
+  }
+}
+
+@keyframes auroraDrift2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(-50px, 35px, 0) scale(0.92);
+    opacity: 0.75;
+  }
+}
+
+@keyframes auroraDrift3 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate3d(40px, 50px, 0) scale(1.08);
+    opacity: 0.65;
+  }
+}
+
+@keyframes trajectoryFlow {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulseStar {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.25);
+  }
 }
 
 @keyframes floatSlow {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-aurora-1 {
+  animation: auroraDrift1 22s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: auroraDrift2 26s ease-in-out infinite;
+}
+
+.animate-aurora-3 {
+  animation: auroraDrift3 30s ease-in-out infinite;
+}
+
+.animate-trajectory-flow {
+  animation: trajectoryFlow 25s linear infinite;
+}
+
+.animate-pulse-star {
+  animation: pulseStar 4s ease-in-out infinite;
 }
 
 .animate-float {
-  animation: floatSlow 5s ease-in-out infinite;
+  animation: floatSlow 6s ease-in-out infinite;
 }
 
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -133,15 +259,14 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.16);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 210, 255, 0.4);
+  background: rgba(0, 242, 254, 0.45);
 }
 
 :where(button, a, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
-
