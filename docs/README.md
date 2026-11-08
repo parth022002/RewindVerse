@@ -14,7 +14,16 @@ Welcome to the official developer documentation for **RewindVerse** — an inter
   - **Classical Machine Learning:** Random Forests, Support Vector Machines, K-Means Clustering.
   - **Statistics & State Estimation:** Extended Kalman Filter, Metropolis-Hastings MCMC, PCA.
 
-### 2. RewindVerse Training Trace Specification (RVTS)
+### 2. Algorithm Forge Specifications
+- [`forge/ALGORITHM_FORGE_SPECIFICATION.md`](./forge/ALGORITHM_FORGE_SPECIFICATION.md)  
+  Foundational specification for the custom Algorithm Forge workspace, execution paths, templates, safety guardrails, and validation engine.
+- [`algorithm-forge/ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md`](./algorithm-forge/ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md)  
+  Advanced Algorithm Forge & Research Workbench architecture covering:
+  - Multi-paradigm authoring: Data-first, Equation-first (SymPy/MathJax/KaTeX), Flow-first (Visual Node Graph), Code-first (Sandboxed Python/TS), and Hybrid pipelines.
+  - Verification & validation suite: AST analysis, dimension checking, gradient checking, and local-first execution.
+  - Benchmark comparison matrices, sensitivity analysis, and export targets.
+
+### 3. RewindVerse Training Trace Specification (RVTS)
 The open standard format for recording, exchanging, and replaying machine learning experiments:
 - **Format:** Newline-delimited JSON Lines (`.rvtrace`).
 - **Structure:**
@@ -24,7 +33,7 @@ The open standard format for recording, exchanging, and replaying machine learni
   4. `footer` (completion status and final step summary)
 - **Validation:** Conforms to strict JSON Schema Draft 2020-12 validation via `@rewindverse/rvts`.
 
-### 3. Python SDK & CLI (`sdk/python`)
+### 4. Python SDK & CLI (`sdk/python`)
 - [`Python SDK Documentation`](../sdk/python/README.md)  
   The `rewindverse-trace` Python package provides non-blocking recording for PyTorch, Scikit-Learn, and custom training loops with a single context manager.
   ```bash

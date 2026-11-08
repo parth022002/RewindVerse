@@ -25,11 +25,11 @@ export function TraceWaveBackground({ className = "", opacity = 0.35 }: TraceWav
       >
         <defs>
           <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.05" />
-            <stop offset="25%" stopColor="#06b6d4" stopOpacity="0.8" />
-            <stop offset="60%" stopColor="#8b5cf6" stopOpacity="0.85" />
-            <stop offset="85%" stopColor="#3b82f6" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.05" />
+            <stop offset="0%" stopColor="#00f2fe" stopOpacity="0.05" />
+            <stop offset="25%" stopColor="#00f2fe" stopOpacity="0.85" />
+            <stop offset="60%" stopColor="#8b5cf6" stopOpacity="0.9" />
+            <stop offset="85%" stopColor="#ec4899" stopOpacity="0.75" />
+            <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.05" />
           </linearGradient>
         </defs>
 
@@ -39,7 +39,7 @@ export function TraceWaveBackground({ className = "", opacity = 0.35 }: TraceWav
           stroke={`url(#${gradId})`}
           strokeWidth="1.8"
           strokeDasharray="6 8"
-          className="motion-safe:animate-trajectory-flow"
+          className="animate-trajectory-flow"
         />
 
         {/* Secondary Harmonic Wave */}
@@ -49,25 +49,25 @@ export function TraceWaveBackground({ className = "", opacity = 0.35 }: TraceWav
           strokeWidth="1.2"
           strokeDasharray="4 6"
           strokeOpacity="0.4"
-          className="motion-safe:animate-trajectory-flow"
+          className="animate-trajectory-flow"
         />
 
         {/* Checkpoint Nodes along the primary wave */}
-        <circle cx="340" cy="190" r="4" fill="#06b6d4" className="motion-safe:animate-pulse-star" />
+        <circle cx="340" cy="190" r="4" fill="#00f2fe" className="animate-star-twinkle" />
         <circle
           cx="840"
           cy="280"
           r="5"
           fill="#8b5cf6"
-          className="motion-safe:animate-pulse-star"
+          className="animate-star-twinkle"
           style={{ animationDelay: "1.5s" }}
         />
         <circle
           cx="1210"
           cy="230"
           r="3.5"
-          fill="#3b82f6"
-          className="motion-safe:animate-pulse-star"
+          fill="#38bdf8"
+          className="animate-star-twinkle"
           style={{ animationDelay: "2.8s" }}
         />
       </svg>

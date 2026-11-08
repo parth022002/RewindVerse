@@ -167,57 +167,75 @@ body {
   box-shadow: 0 0 15px -3px rgba(0, 242, 254, 0.25);
 }
 
-/* Atmospheric Animations */
+/* Atmospheric Animations & Keyframes */
 @keyframes auroraDrift1 {
   0%, 100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.65;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 0.7;
   }
-  50% {
-    transform: translate3d(60px, -40px, 0) scale(1.12);
-    opacity: 0.85;
+  33% {
+    transform: translate3d(70px, -45px, 0) scale(1.16) rotate(4deg);
+    opacity: 0.95;
+  }
+  66% {
+    transform: translate3d(-35px, 30px, 0) scale(0.94) rotate(-3deg);
+    opacity: 0.65;
   }
 }
 
 @keyframes auroraDrift2 {
   0%, 100% {
-    transform: translate3d(0, 0, 0) scale(1.05);
-    opacity: 0.5;
+    transform: translate3d(0, 0, 0) scale(1.05) rotate(0deg);
+    opacity: 0.6;
   }
-  50% {
-    transform: translate3d(-50px, 35px, 0) scale(0.92);
-    opacity: 0.75;
+  40% {
+    transform: translate3d(-60px, 40px, 0) scale(0.9) rotate(-4deg);
+    opacity: 0.85;
+  }
+  80% {
+    transform: translate3d(45px, -30px, 0) scale(1.14) rotate(3deg);
+    opacity: 0.55;
   }
 }
 
 @keyframes auroraDrift3 {
   0%, 100% {
     transform: translate3d(0, 0, 0) scale(0.95);
-    opacity: 0.4;
+    opacity: 0.5;
   }
   50% {
-    transform: translate3d(40px, 50px, 0) scale(1.08);
-    opacity: 0.65;
+    transform: translate3d(50px, 60px, 0) scale(1.12);
+    opacity: 0.8;
   }
 }
 
 @keyframes trajectoryFlow {
   from {
-    stroke-dashoffset: 200;
+    stroke-dashoffset: 400;
   }
   to {
     stroke-dashoffset: 0;
   }
 }
 
-@keyframes pulseStar {
+@keyframes starTwinkle {
   0%, 100% {
-    opacity: 0.3;
+    opacity: 0.25;
     transform: scale(0.85);
   }
   50% {
     opacity: 1;
-    transform: scale(1.25);
+    transform: scale(1.35);
+    filter: drop-shadow(0 0 6px rgba(0, 242, 254, 0.9));
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px -3px rgba(0, 242, 254, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 35px 2px rgba(0, 242, 254, 0.55);
   }
 }
 
@@ -228,22 +246,29 @@ body {
 
 .animate-aurora-1 {
   animation: auroraDrift1 22s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .animate-aurora-2 {
   animation: auroraDrift2 26s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .animate-aurora-3 {
   animation: auroraDrift3 30s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .animate-trajectory-flow {
-  animation: trajectoryFlow 25s linear infinite;
+  animation: trajectoryFlow 22s linear infinite;
 }
 
-.animate-pulse-star {
-  animation: pulseStar 4s ease-in-out infinite;
+.animate-star-twinkle {
+  animation: starTwinkle 3.8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
 }
 
 .animate-float {

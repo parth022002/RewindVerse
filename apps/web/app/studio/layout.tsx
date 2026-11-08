@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { AmbientMeshBackground, SignalGridBackground } from "../../components/backgrounds";
 import {
   Cpu,
   RotateCcw,
@@ -184,7 +185,9 @@ export default function StudioLayout({ children }: { children: React.ReactNode }
   );
 
   return (
-    <div className="min-h-screen flex bg-[var(--background)] text-[var(--text)]">
+    <div className="relative min-h-screen flex bg-[var(--background)] text-[var(--text)]">
+      <AmbientMeshBackground intensity="subtle" showTrajectory={false} showStars={false} />
+      <SignalGridBackground opacity={0.02} />
       {/* Desktop Studio Sidebar */}
       <aside className="w-64 border-r border-white/[0.08] bg-[#080b12]/95 backdrop-blur-2xl flex flex-col justify-between shrink-0 hidden lg:flex">
         <div>

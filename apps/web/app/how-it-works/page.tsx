@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Navbar } from "../../components/Navbar";
 import { Footer } from "../../components/Footer";
+import { AmbientMeshBackground, SignalGridBackground } from "../../components/backgrounds";
 import {
   Sparkles,
   ArrowRight,
@@ -122,7 +123,9 @@ export default function HowItWorksPage() {
   const activeStage = STAGES.find((s) => s.id === activeStageId) || STAGES[0];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--background)] selection:bg-cyan-500 selection:text-black">
+    <div className="relative min-h-screen flex flex-col bg-[var(--background)] text-[var(--text)] selection:bg-cyan-500 selection:text-black">
+      <AmbientMeshBackground intensity="medium" />
+      <SignalGridBackground opacity={0.035} />
       <Navbar />
 
       <main className="flex-1">
