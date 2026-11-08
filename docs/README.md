@@ -41,6 +41,8 @@ The platform is designed and governed by 8 foundational specification documents:
   *Complete Machine Learning, AI & Deep Learning Algorithm Catalogue (v1.0)*: Master specification covering core mathematical foundations, optimization algorithms (SGD, Momentum, Adam, AdamW, RMSProp, Adagrad), loss functions, supervised & unsupervised models, deep neural architectures, time-series, RL, evaluation metrics, RVTS trace requirements, 2D/3D visualization capability matrices, and reference formulas.
 - [`ALGORITHM_FORGE_SPECIFICATION.md`](./forge/ALGORITHM_FORGE_SPECIFICATION.md)  
   *Algorithm Forge Product & Engineering Specification (v1.0)*: Product definition, user roles, 3 creation modes (Mode A: Fork & customize, Mode B: Visual node DAG pipeline, Mode C: Formula DSL editor), manifest schema, allowlisted AST validation rules, sandboxed Web Worker execution contract, fuel budgets, versioning, and security gates.
+- [`ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md`](./algorithm-forge/ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md)  
+  *Advanced Algorithm Forge Research Workbench Specification (v1.0)*: Complete research-grade specification detailing the 5 specialized scientist workspaces: Data Workbench (synthetic generators, CSV statistical profilers, train/val/test splits, preprocessing pipelines), Equation Studio (mathematical token palette, live LaTeX rendering, central finite-difference Jacobian verification), Visual Algorithm Builder (lifecycle flowcharts, executable computational DAGs, DFS cycle detection), Code Studio (Python §8.3 & TypeScript §8.4 runtime contracts, AST allowlisting, 1-click standalone script export), and Benchmark Comparator (parallel multi-optimizer convergence races).
 
 ---
 
@@ -50,6 +52,7 @@ The platform is designed and governed by 8 foundational specification documents:
 RewindVerse Code/
 ├── apps/
 │   └── web/                   # Next.js 15 Web Application & Rewind Studio (/studio/forge, /studio/algorithms)
+│       └── features/algorithm-forge/ # Advanced Forge Research Workbench UI components
 ├── packages/
 │   ├── rvts/                  # RVTS JSON Schema, types, parsers, and CSV converters
 │   ├── rewindml/              # Browser ML simulation engine, optimizers & Algorithm Forge
@@ -61,10 +64,11 @@ RewindVerse Code/
 ├── fixtures/
 │   └── rvts/                  # Cross-language shared conformance test fixtures
 ├── tests/
-│   └── unit/                  # Vitest unit test suite (28/28 tests passing)
+│   └── unit/                  # Vitest unit test suite (30/30 tests passing)
 ├── docs/                      # Master engineering, architecture, design & algorithm specifications
 │   ├── algorithms/            # ALGORITHM_CATALOG.md
 │   ├── forge/                 # ALGORITHM_FORGE_SPECIFICATION.md
+│   ├── algorithm-forge/       # ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md
 │   ├── design/                # Art direction & 3D visual specifications
 │   └── engineering/           # Performance, 2D/3D visualization & testing standards
 ├── PROJECT_CHECKLIST.md       # Master engineering progress tracker (v2.0)
@@ -82,10 +86,10 @@ pnpm install
 # Run TypeScript typecheck (0 errors)
 pnpm typecheck
 
-# Run Vitest test suite (18/18 tests passing)
+# Run Vitest test suite (30/30 tests passing)
 pnpm test
 
-# Run Next.js production build (24/24 routes compiled)
+# Run Next.js production build (30/30 routes compiled)
 pnpm build
 ```
 

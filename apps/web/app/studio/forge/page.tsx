@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
   AlgorithmManifest,
   ForgeCreationMode,
@@ -17,6 +18,7 @@ import {
   ShieldCheck,
   Zap,
   Play,
+  Pause,
   RotateCcw,
   Download,
   AlertTriangle,
@@ -26,19 +28,38 @@ import {
   GitBranch,
   Layers,
   ArrowRight,
-  Maximize2,
-  ExternalLink,
-  Info,
+  Database,
+  Calculator,
+  Compass,
   Flame,
+  FileText,
+  Sparkles,
 } from "lucide-react";
 
+import { DataWorkbench } from "../../../features/algorithm-forge/DataWorkbench";
+import { EquationStudio } from "../../../features/algorithm-forge/EquationStudio";
+import { FlowBuilder } from "../../../features/algorithm-forge/FlowBuilder";
+import { CodeStudio } from "../../../features/algorithm-forge/CodeStudio";
+import { BenchmarkComparator } from "../../../features/algorithm-forge/BenchmarkComparator";
+
+const ThreeSurfaceViewer = dynamic(
+  () =>
+    import("../../../components/visualization/ThreeSurfaceViewer").then(
+      (m) => m.ThreeSurfaceViewer
+    ),
+  { ssr: false }
+);
+
+type ActiveForgeTab = "equation" | "flow" | "code" | "data" | "customize";
+
 export default function AlgorithmForgePage() {
-  // Current active manifest state
+  const [activeTab, setActiveTab] = useState<ActiveForgeTab>("equation");
   const [manifest, setManifest] = useState<AlgorithmManifest>(FORGE_TEMPLATES[0]);
   const [selectedObjective, setSelectedObjective] = useState<ObjectiveType>("quadratic");
   const [initialX, setInitialX] = useState<number>(-2.8);
   const [initialY, setInitialY] = useState<number>(2.5);
   const [maxSteps, setMaxSteps] = useState<number>(100);
+  const [visDimension, setVisDimension] = useState<"2d" | "3d">("2d");
 
   // Execution Results
   const [runResult, setRunResult] = useState<ForgeRunResult | null>(null);
@@ -107,6 +128,7 @@ export default function AlgorithmForgePage() {
 
   // Draw 2D Contour & Trajectory Canvas
   useEffect(() => {
+    if (visDimension !== "2d") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -138,7 +160,7 @@ export default function AlgorithmForgePage() {
     }
 
     // Draw stylized contour ellipses
-    ctx.strokeStyle = "rgba(6, 182, 212, 0.18)";
+    ctx.strokeStyle = "rgba(0, 242, 254, 0.18)";
     for (let r = 1; r <= 7; r++) {
       ctx.beginPath();
       const radiusX = (r / 7) * (width * 0.45);
@@ -165,9 +187,9 @@ export default function AlgorithmForgePage() {
       const visibleSteps = runResult.stepResults.slice(0, activeStep + 1);
 
       if (visibleSteps.length > 1) {
-        ctx.strokeStyle = runResult.diverged ? "#ef4444" : "#06b6d4";
+        ctx.strokeStyle = runResult.diverged ? "#ef4444" : "#00f2fe";
         ctx.lineWidth = 2.5;
-        ctx.shadowColor = runResult.diverged ? "#ef4444" : "#06b6d4";
+        ctx.shadowColor = runResult.diverged ? "#ef4444" : "#00f2fe";
         ctx.shadowBlur = 8;
         ctx.beginPath();
         ctx.moveTo(toCanvasX(visibleSteps[0].x), toCanvasY(visibleSteps[0].y));
@@ -185,7 +207,7 @@ export default function AlgorithmForgePage() {
         const cy = toCanvasY(current.y);
 
         ctx.fillStyle = "#ffffff";
-        ctx.shadowColor = "#06b6d4";
+        ctx.shadowColor = "#00f2fe";
         ctx.shadowBlur = 12;
         ctx.beginPath();
         ctx.arc(cx, cy, 6, 0, Math.PI * 2);
@@ -193,7 +215,7 @@ export default function AlgorithmForgePage() {
         ctx.shadowBlur = 0;
       }
     }
-  }, [runResult, activeStep, selectedObjective]);
+  }, [runResult, activeStep, selectedObjective, visDimension]);
 
   // Export Trace File
   const handleDownloadTrace = () => {
@@ -218,25 +240,67 @@ export default function AlgorithmForgePage() {
     URL.revokeObjectURL(url);
   };
 
+  // Export Markdown Research Report
+  const handleExportResearchReport = () => {
+    const lastStep = runResult?.stepResults[runResult.stepResults.length - 1];
+    const md = [
+      `# Algorithm Forge Research Report`,
+      ``,
+      `**Algorithm ID:** \`${manifest.id}\`  `,
+      `**Algorithm Name:** ${manifest.name}  `,
+      `**Mode:** \`${manifest.mode}\`  `,
+      `**Author:** ${manifest.author || "Research Scientist"}  `,
+      `**Date:** ${new Date().toISOString()}  `,
+      ``,
+      `---`,
+      ``,
+      `## 1. Mathematical Formulation & Architecture`,
+      `- **Equation / Update Rule:** \`${manifest.formula || "Custom AST Nodes"}\``,
+      `- **Objective Loss:** \`${selectedObjective}\` (Starting Point: [${initialX}, ${initialY}])`,
+      `- **Declared Capabilities:** \`metrics.loss, parameters.snapshot, gradients.summary\``,
+      `- **Fuel Limit:** ${manifest.executionBudget.fuelLimit.toLocaleString()} steps`,
+      ``,
+      `## 2. Convergence Telemetry`,
+      `- **Final Convergence Loss:** ${lastStep?.loss.toFixed(6) || "N/A"}`,
+      `- **Total Recorded Steps:** ${runResult?.stepResults.length || 0}`,
+      `- **Divergence Status:** ${runResult?.diverged ? "DIVERGED" : "CONVERGED"}`,
+      `- **AST Validation:** ${validation.valid ? "PASSED (Safe)" : "FAILED"}`,
+      ``,
+      `## 3. Provenance & Research Governance`,
+      `- **Standard:** RVTS v0.1.0 & ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md`,
+      `- **Security Invariant:** Zero JavaScript eval() execution; allowlisted recursive AST evaluation.`,
+    ].join("\n");
+
+    const blob = new Blob([md], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${manifest.id}_research_report.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
       {/* Top Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[var(--border)] pb-6">
         <div>
-          <div className="flex items-center gap-2 text-cyan-400 text-sm font-semibold tracking-wider uppercase mb-1">
+          <div className="flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-wider uppercase mb-1">
             <Wrench className="w-4 h-4" />
-            <span>Algorithm Workspace</span>
+            <span>Algorithm Research Workbench</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+          <h1 className="text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
             <span>Algorithm Forge</span>
             <span className="text-xs font-mono font-medium text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-1 rounded-full flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Safe Worker Sandbox</span>
+              <span>Full Research Control</span>
             </span>
           </h1>
-          <p className="text-sm text-[var(--text-muted)] mt-1 max-w-2xl">
-            Design, fork, customize, and validate optimization update rules. Safe execution via a
-            constrained allowlisted AST with strict fuel accounting — zero arbitrary JavaScript evaluation.
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1 max-w-2xl">
+            Design, craft, and evaluate machine learning algorithms. Full authoring control across
+            data datasets, mathematical equations, flowchart node graphs, and Python research contracts.
           </p>
         </div>
 
@@ -244,30 +308,30 @@ export default function AlgorithmForgePage() {
         <div className="flex flex-wrap items-center gap-2.5">
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-xs text-slate-300">
             <Flame className="w-3.5 h-3.5 text-amber-400" />
-            <span>Fuel Limit: {manifest.executionBudget.fuelLimit.toLocaleString()}</span>
+            <span>Fuel: {manifest.executionBudget.fuelLimit.toLocaleString()}</span>
           </div>
           <Link
             href="/studio/algorithms"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] text-xs text-cyan-400 hover:text-white transition-colors"
           >
             <GitBranch className="w-3.5 h-3.5" />
-            <span>Browse Built-in Catalogue</span>
+            <span>Catalogue</span>
           </Link>
         </div>
       </div>
 
-      {/* Main Workspace Layout */}
+      {/* Main Workspace Layout (Two Columns on Large Screens) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left Column: Creator / Editor Controls (7 cols) */}
+        {/* Left Column: 5 Research Authoring Studios (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Template Selector Banner */}
-          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5 space-y-3">
+          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs uppercase font-semibold text-[var(--text-muted)]">
-                Starter Algorithm Templates
+                Starter Research Templates
               </span>
               <span className="text-xs font-mono text-cyan-400">
-                Mode: {manifest.mode.toUpperCase()}
+                Mode: {activeTab.toUpperCase()}
               </span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -275,7 +339,7 @@ export default function AlgorithmForgePage() {
                 <button
                   key={tmpl.id}
                   onClick={() => handleSelectTemplate(tmpl.id)}
-                  className={`text-left p-3 rounded-lg border text-xs transition-all ${
+                  className={`text-left p-3 rounded-xl border text-xs transition-all ${
                     manifest.id === tmpl.id
                       ? "bg-cyan-500/15 border-cyan-500/50 text-white font-medium"
                       : "bg-[var(--surface-raised)] border-[var(--border)] text-[var(--text-muted)] hover:text-white"
@@ -290,23 +354,23 @@ export default function AlgorithmForgePage() {
             </div>
           </div>
 
-          {/* Creation Mode Tabs */}
-          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl overflow-hidden">
-            <div className="flex border-b border-[var(--border)] bg-[var(--surface-raised)]">
-              {(
-                [
-                  { mode: "customize", label: "Mode A: Fork & Customize", icon: Sliders },
-                  { mode: "formula", label: "Mode C: Formula DSL", icon: Code2 },
-                  { mode: "visual_nodes", label: "Mode B: Visual Pipeline", icon: Layers },
-                ] as const
-              ).map((tab) => {
+          {/* Research Studio Tabs */}
+          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-xl">
+            <div className="flex flex-wrap border-b border-[var(--border)] bg-[var(--surface-raised)]">
+              {[
+                { id: "equation", label: "Equation Studio", icon: Calculator },
+                { id: "flow", label: "Visual Flowchart", icon: Layers },
+                { id: "code", label: "Code Studio", icon: Code2 },
+                { id: "data", label: "Data Workbench", icon: Database },
+                { id: "customize", label: "Customize Hyperparams", icon: Sliders },
+              ].map((tab) => {
                 const Icon = tab.icon;
-                const isActive = manifest.mode === tab.mode;
+                const isActive = activeTab === tab.id;
                 return (
                   <button
-                    key={tab.mode}
-                    onClick={() => setManifest({ ...manifest, mode: tab.mode })}
-                    className={`flex-1 py-3 px-4 text-xs font-semibold flex items-center justify-center gap-2 border-b-2 transition-all ${
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id as ActiveForgeTab)}
+                    className={`flex-1 py-3 px-3 text-xs font-semibold flex items-center justify-center gap-1.5 border-b-2 transition-all min-w-[110px] ${
                       isActive
                         ? "border-cyan-400 text-cyan-300 bg-[var(--surface)]"
                         : "border-transparent text-[var(--text-muted)] hover:text-white"
@@ -319,21 +383,48 @@ export default function AlgorithmForgePage() {
               })}
             </div>
 
-            {/* Mode Content Panes */}
+            {/* Tab Panes */}
             <div className="p-6">
-              {/* MODE A: FORK & CUSTOMIZE */}
-              {manifest.mode === "customize" && (
+              {activeTab === "data" && <DataWorkbench />}
+
+              {activeTab === "equation" && (
+                <EquationStudio
+                  formula={manifest.formula || "theta - lr * grad"}
+                  onFormulaChange={(val) =>
+                    setManifest({
+                      ...manifest,
+                      mode: "formula",
+                      formula: val,
+                    })
+                  }
+                />
+              )}
+
+              {activeTab === "flow" && (
+                <FlowBuilder
+                  nodes={manifest.nodes || []}
+                  edges={manifest.edges || []}
+                  onNodesChange={(nodes) =>
+                    setManifest({ ...manifest, mode: "visual_nodes", nodes })
+                  }
+                  onEdgesChange={(edges) =>
+                    setManifest({ ...manifest, mode: "visual_nodes", edges })
+                  }
+                />
+              )}
+
+              {activeTab === "code" && <CodeStudio />}
+
+              {activeTab === "customize" && (
                 <div className="space-y-5">
                   <div className="text-xs text-[var(--text-muted)]">
-                    Fork a verified baseline optimizer and tune hyperparameter schedules, momentum
-                    dampening, decoupled decay, and gradient clipping bounds.
+                    Tune hyperparameter schedules, momentum damping, decoupled weight decay, and execution limits.
                   </div>
 
-                  {/* Hyperparameter Inputs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="text-xs font-medium text-slate-300 block mb-1">
-                        Learning Rate (&eta;)
+                        Learning Rate (η)
                       </label>
                       <input
                         type="number"
@@ -350,13 +441,13 @@ export default function AlgorithmForgePage() {
                             },
                           })
                         }
-                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
+                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
                       />
                     </div>
 
                     <div>
                       <label className="text-xs font-medium text-slate-300 block mb-1">
-                        Momentum Factor (&mu;)
+                        Momentum Factor (μ)
                       </label>
                       <input
                         type="number"
@@ -373,13 +464,13 @@ export default function AlgorithmForgePage() {
                             },
                           })
                         }
-                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
+                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
                       />
                     </div>
 
                     <div>
                       <label className="text-xs font-medium text-slate-300 block mb-1">
-                        Decoupled Weight Decay (&lambda;)
+                        Decoupled Weight Decay (λ)
                       </label>
                       <input
                         type="number"
@@ -396,356 +487,230 @@ export default function AlgorithmForgePage() {
                             },
                           })
                         }
-                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
+                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
                       />
                     </div>
 
                     <div>
                       <label className="text-xs font-medium text-slate-300 block mb-1">
-                        Gradient Norm Clip Threshold
+                        Max Steps Budget
                       </label>
                       <input
                         type="number"
-                        step="0.5"
-                        min="0.5"
-                        max="50"
-                        value={manifest.parameters.gradClip ?? 5.0}
-                        onChange={(e) =>
-                          setManifest({
-                            ...manifest,
-                            parameters: {
-                              ...manifest.parameters,
-                              gradClip: parseFloat(e.target.value) || 5.0,
-                            },
-                          })
-                        }
-                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
+                        step="10"
+                        min="10"
+                        max="500"
+                        value={maxSteps}
+                        onChange={(e) => setMaxSteps(parseInt(e.target.value) || 50)}
+                        className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none focus:border-cyan-500"
                       />
                     </div>
                   </div>
-
-                  {/* Human-Readable Diff View */}
-                  <div className="p-4 rounded-lg bg-black/40 border border-[var(--border)] space-y-2">
-                    <span className="text-[11px] uppercase font-semibold text-[var(--text-muted)]">
-                      Specification Diff Against Parent Baseline
-                    </span>
-                    <div className="font-mono text-xs text-slate-300 space-y-1">
-                      <div className="text-cyan-400">
-                        + parent: {manifest.parentAlgorithmId || "optim.sgd"} (v1.0.0)
-                      </div>
-                      <div>
-                        + learningRate:{" "}
-                        <span className="text-emerald-400">
-                          {manifest.parameters.learningRate}
-                        </span>
-                      </div>
-                      <div>
-                        + momentum:{" "}
-                        <span className="text-emerald-400">{manifest.parameters.momentum}</span>
-                      </div>
-                      <div>
-                        + weightDecay:{" "}
-                        <span className="text-emerald-400">
-                          {manifest.parameters.weightDecay}
-                        </span>
-                      </div>
-                      <div>
-                        + gradClip:{" "}
-                        <span className="text-emerald-400">{manifest.parameters.gradClip}</span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               )}
-
-              {/* MODE C: FORMULA DSL */}
-              {manifest.mode === "formula" && (
-                <div className="space-y-4">
-                  <div className="text-xs text-[var(--text-muted)]">
-                    Define parameter update steps as declarative algebraic expressions. Supports
-                    variables <code className="text-cyan-400">p</code> (parameter),{" "}
-                    <code className="text-cyan-400">g</code> (gradient),{" "}
-                    <code className="text-cyan-400">lr</code>,{" "}
-                    <code className="text-cyan-400">wd</code>, and safe functions{" "}
-                    <code className="text-cyan-400">clamp()</code>,{" "}
-                    <code className="text-cyan-400">sqrt()</code>,{" "}
-                    <code className="text-cyan-400">abs()</code>.
-                  </div>
-
-                  {/* Formula Code Input */}
-                  <div>
-                    <label className="text-xs font-medium text-slate-300 block mb-1">
-                      Update Rule Expression (p_{"{t+1}"} =)
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={manifest.formula || "p - lr * g"}
-                      onChange={(e) => setManifest({ ...manifest, formula: e.target.value })}
-                      className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-lg p-3 text-sm font-mono text-cyan-300 focus:outline-none focus:border-cyan-500"
-                      placeholder="e.g. p - lr * clamp(g, -2, 2) - lr * wd * p"
-                    />
-                  </div>
-
-                  {/* Token Helpers */}
-                  <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="text-[var(--text-muted)]">Insert:</span>
-                    {["p - lr * g", "clamp(g, -1, 1)", "g / (abs(g) + 1e-8)", "lr * wd * p"].map(
-                      (snippet) => (
-                        <button
-                          key={snippet}
-                          onClick={() =>
-                            setManifest({
-                              ...manifest,
-                              formula: (manifest.formula || "") + " - " + snippet,
-                            })
-                          }
-                          className="font-mono text-[11px] bg-[var(--surface-raised)] hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 border border-[var(--border)] px-2 py-0.5 rounded"
-                        >
-                          +{snippet}
-                        </button>
-                      )
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* MODE B: VISUAL NODE PIPELINE */}
-              {manifest.mode === "visual_nodes" && (
-                <div className="space-y-4">
-                  <div className="text-xs text-[var(--text-muted)]">
-                    Interactive dataflow pipeline. Operations execute in verified topological order.
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-black/50 border border-[var(--border)] space-y-3">
-                    <div className="flex items-center justify-between text-xs font-semibold text-slate-300 border-b border-[var(--border)]/50 pb-2">
-                      <span>Node Pipeline Topology</span>
-                      <span className="text-emerald-400">DAG Verified (Acyclic)</span>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 text-center text-xs">
-                      <div className="p-3 rounded-lg bg-cyan-950/40 border border-cyan-800/60 text-cyan-300">
-                        <div className="font-mono font-bold">Input Nodes</div>
-                        <div className="text-[11px] text-[var(--text-muted)] mt-1">p_t, g_t, lr</div>
-                      </div>
-                      <div className="p-3 rounded-lg bg-purple-950/40 border border-purple-800/60 text-purple-300">
-                        <div className="font-mono font-bold">Velocity Node</div>
-                        <div className="text-[11px] text-[var(--text-muted)] mt-1">&mu;v + g_t</div>
-                      </div>
-                      <div className="p-3 rounded-lg bg-blue-950/40 border border-blue-800/60 text-blue-300">
-                        <div className="font-mono font-bold">Scale & Decay</div>
-                        <div className="text-[11px] text-[var(--text-muted)] mt-1">&eta;v + &lambda;p</div>
-                      </div>
-                      <div className="p-3 rounded-lg bg-emerald-950/40 border border-emerald-800/60 text-emerald-300">
-                        <div className="font-mono font-bold">Output Node</div>
-                        <div className="text-[11px] text-[var(--text-muted)] mt-1">p_{"{t+1}"}</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Validation Feedback Footer */}
-            <div className="px-6 py-4 bg-[var(--surface-raised)] border-t border-[var(--border)] flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {validation.valid ? (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-400">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Static Manifest & AST Valid</span>
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-1.5 text-xs font-semibold text-rose-400">
-                    <AlertTriangle className="w-4 h-4" />
-                    <span>{validation.diagnostics[0]?.message || "Validation Error"}</span>
-                  </span>
-                )}
-              </div>
-              <div className="text-xs text-[var(--text-muted)] font-mono">
-                Est. Fuel: ~{validation.estimatedFuel.toLocaleString()} units
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Sandboxed Test Bench & Replay Visualizer (5 cols) */}
+        {/* Right Column: Research Test Bench & Live Replay Simulator (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
-          {/* Test Bench Configuration Box */}
-          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-[var(--border)] pb-3">
-              <span className="text-xs uppercase font-semibold text-[var(--text-muted)] flex items-center gap-1.5">
-                <Sliders className="w-3.5 h-3.5" />
-                <span>Test Bench Surface</span>
-              </span>
-              <span className="text-xs text-cyan-400 font-mono">
-                {selectedObjective.toUpperCase()}
-              </span>
-            </div>
+          {/* Test Bench Card */}
+          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 space-y-5 shadow-xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-cyan-400 font-semibold text-xs uppercase tracking-wider">
+                <Compass className="w-4 h-4" />
+                <span>Research Test Bench</span>
+              </div>
 
-            {/* Objective Selector */}
-            <div className="grid grid-cols-3 gap-2">
-              {(
-                [
-                  { id: "quadratic", label: "Quadratic Bowl" },
-                  { id: "rosenbrock", label: "Rosenbrock" },
-                  { id: "saddle", label: "Saddle Point" },
-                ] as const
-              ).map((obj) => (
+              {/* 2D / 3D Dimension Switcher */}
+              <div className="flex items-center gap-1 bg-[var(--surface-raised)] p-0.5 rounded-lg border border-[var(--border)] text-xs font-mono font-bold">
                 <button
-                  key={obj.id}
-                  onClick={() => setSelectedObjective(obj.id)}
-                  className={`py-2 px-2.5 rounded-lg text-xs font-medium border text-center transition-all ${
-                    selectedObjective === obj.id
-                      ? "bg-cyan-500/20 text-cyan-300 border-cyan-500/50"
-                      : "bg-[var(--surface-raised)] text-[var(--text-muted)] hover:text-white border-[var(--border)]"
+                  onClick={() => setVisDimension("2d")}
+                  className={`px-2 py-1 rounded transition-colors ${
+                    visDimension === "2d"
+                      ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/40"
+                      : "text-[var(--text-muted)] hover:text-white"
                   }`}
                 >
-                  {obj.label}
+                  2D
                 </button>
-              ))}
+                <button
+                  onClick={() => setVisDimension("3d")}
+                  className={`px-2 py-1 rounded transition-colors ${
+                    visDimension === "3d"
+                      ? "bg-violet-500/20 text-violet-300 border border-violet-500/40"
+                      : "text-[var(--text-muted)] hover:text-white"
+                  }`}
+                >
+                  3D
+                </button>
+              </div>
             </div>
 
-            {/* Coordinate Sliders */}
-            <div className="grid grid-cols-2 gap-4 pt-1">
+            {/* Test Landscape Selector */}
+            <div className="space-y-1.5">
+              <label className="text-xs text-[var(--text-muted)] block">
+                Objective Landscape f(x, y)
+              </label>
+              <select
+                value={selectedObjective}
+                onChange={(e) => setSelectedObjective(e.target.value as ObjectiveType)}
+                className="w-full bg-[var(--surface-raised)] border border-[var(--border)] text-xs text-white rounded-xl px-3 py-2.5 outline-none focus:border-cyan-500"
+              >
+                <option value="quadratic">Quadratic Ravine (Curvature κ = 10)</option>
+                <option value="rosenbrock">Rosenbrock Banana Valley (Non-Convex)</option>
+                <option value="saddle">Saddle Point (Unstable Equilibria)</option>
+              </select>
+            </div>
+
+            {/* Initial Point Coordinates */}
+            <div className="grid grid-cols-2 gap-3 text-xs">
               <div>
-                <div className="flex justify-between text-xs text-[var(--text-muted)] mb-1">
-                  <span>Start X</span>
-                  <span className="font-mono text-white">{initialX.toFixed(1)}</span>
-                </div>
+                <label className="text-[var(--text-muted)] block mb-1">Start θ_x</label>
                 <input
-                  type="range"
-                  min="-3.5"
-                  max="3.5"
-                  step="0.1"
+                  type="number"
+                  step="0.2"
                   value={initialX}
-                  onChange={(e) => setInitialX(parseFloat(e.target.value))}
-                  className="w-full accent-cyan-400"
+                  onChange={(e) => setInitialX(parseFloat(e.target.value) || 0)}
+                  className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-xl px-3 py-2 text-white font-mono"
                 />
               </div>
-
               <div>
-                <div className="flex justify-between text-xs text-[var(--text-muted)] mb-1">
-                  <span>Start Y</span>
-                  <span className="font-mono text-white">{initialY.toFixed(1)}</span>
-                </div>
+                <label className="text-[var(--text-muted)] block mb-1">Start θ_y</label>
                 <input
-                  type="range"
-                  min="-3.5"
-                  max="3.5"
-                  step="0.1"
+                  type="number"
+                  step="0.2"
                   value={initialY}
-                  onChange={(e) => setInitialY(parseFloat(e.target.value))}
-                  className="w-full accent-cyan-400"
+                  onChange={(e) => setInitialY(parseFloat(e.target.value) || 0)}
+                  className="w-full bg-[var(--surface-raised)] border border-[var(--border)] rounded-xl px-3 py-2 text-white font-mono"
                 />
               </div>
             </div>
 
-            {/* Run Button */}
-            <button
-              onClick={handleRunAlgorithm}
-              disabled={!validation.valid || isRunning}
-              className="w-full py-2.5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 hover:brightness-110 disabled:opacity-50 text-white font-medium text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all"
-            >
-              <Play className="w-4 h-4 fill-white" />
-              <span>{isRunning ? "Simulating in Worker..." : "Execute Test Run"}</span>
-            </button>
-          </div>
-
-          {/* Canvas & Replay Box */}
-          <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-xs uppercase font-semibold text-[var(--text-muted)]">
-                2D Loss Landscape Trajectory
-              </span>
-              {runResult && (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className="p-1.5 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] text-xs text-white hover:text-cyan-400"
-                  >
-                    {isPlaying ? "Pause" : "Play"}
-                  </button>
-                  <button
-                    onClick={() => setActiveStep(0)}
-                    className="p-1.5 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] text-xs text-[var(--text-muted)] hover:text-white"
-                  >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+            {/* Visualizer Viewport */}
+            <div className="rounded-xl overflow-hidden border border-[var(--border)] bg-[#05070e] relative aspect-square flex items-center justify-center">
+              {visDimension === "2d" ? (
+                <canvas
+                  ref={canvasRef}
+                  width={400}
+                  height={400}
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <ThreeSurfaceViewer
+                  objectiveType={selectedObjective}
+                  trajectory={runResult?.stepResults || []}
+                  currentStepIndex={activeStep}
+                  className="w-full h-full"
+                />
               )}
+
+              {/* HUD Badge */}
+              <div className="absolute top-3 left-3 px-2 py-1 rounded bg-black/60 backdrop-blur-md text-[10px] font-mono text-cyan-300 border border-white/10 pointer-events-none">
+                Step: {activeStep} / {Math.max(0, (runResult?.stepResults.length || 1) - 1)}
+              </div>
             </div>
 
-            {/* 2D Canvas */}
-            <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-black border border-[var(--border)]">
-              <canvas
-                ref={canvasRef}
-                width={400}
-                height={400}
-                className="w-full h-full object-contain"
-              />
-            </div>
+            {/* Run & Player Controls */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleRunAlgorithm}
+                  disabled={isRunning || !validation.valid}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-violet-600 text-[#080b12] text-xs font-bold hover:shadow-cyan-500/25 transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <Sparkles className="w-4 h-4 fill-[#080b12]" />
+                  <span>Execute Algorithm</span>
+                </button>
+                <button
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  disabled={!runResult}
+                  className="p-2.5 rounded-xl bg-[var(--surface-raised)] border border-[var(--border)] text-white hover:border-cyan-500 transition-colors"
+                  title={isPlaying ? "Pause" : "Play"}
+                >
+                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                </button>
+                <button
+                  onClick={() => setActiveStep(0)}
+                  disabled={!runResult}
+                  className="p-2.5 rounded-xl bg-[var(--surface-raised)] border border-[var(--border)] text-white hover:border-cyan-500 transition-colors"
+                  title="Reset to Step 0"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+              </div>
 
-            {/* Scrubber slider */}
-            {runResult && runResult.stepResults.length > 0 && (
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs text-[var(--text-muted)] font-mono">
-                  <span>Step {activeStep}</span>
-                  <span>Total {runResult.stepResults.length - 1} steps</span>
-                </div>
+              {/* Scrubber slider */}
+              {runResult && (
                 <input
                   type="range"
                   min="0"
-                  max={runResult.stepResults.length - 1}
+                  max={Math.max(0, runResult.stepResults.length - 1)}
                   value={activeStep}
-                  onChange={(e) => setActiveStep(parseInt(e.target.value))}
-                  className="w-full accent-cyan-400"
+                  onChange={(e) => {
+                    setIsPlaying(false);
+                    setActiveStep(parseInt(e.target.value));
+                  }}
+                  className="w-full accent-cyan-400 cursor-pointer"
                 />
-              </div>
-            )}
+              )}
+            </div>
 
-            {/* Run Convergence Metrics */}
+            {/* Telemetry Metrics */}
             {runResult && (
-              <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[var(--border)]/60 text-center">
-                <div className="p-2.5 rounded-lg bg-[var(--surface-raised)]">
-                  <div className="text-[10px] text-[var(--text-muted)] uppercase">Initial Loss</div>
-                  <div className="text-xs font-mono font-bold text-white mt-0.5">
-                    {runResult.stepResults[0]?.loss.toFixed(4)}
-                  </div>
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                <div className="p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--text-muted)] block">Initial Loss</span>
+                  <span className="text-white font-bold">
+                    {(runResult.stepResults[0]?.loss ?? 0).toFixed(4)}
+                  </span>
                 </div>
-                <div className="p-2.5 rounded-lg bg-[var(--surface-raised)]">
-                  <div className="text-[10px] text-[var(--text-muted)] uppercase">Final Loss</div>
-                  <div className="text-xs font-mono font-bold text-emerald-400 mt-0.5">
-                    {runResult.stepResults[runResult.stepResults.length - 1]?.loss.toFixed(4)}
-                  </div>
-                </div>
-                <div className="p-2.5 rounded-lg bg-[var(--surface-raised)]">
-                  <div className="text-[10px] text-[var(--text-muted)] uppercase">Fuel Used</div>
-                  <div className="text-xs font-mono font-bold text-cyan-400 mt-0.5">
-                    {runResult.fuelConsumed}
-                  </div>
+                <div className="p-3 rounded-xl bg-[var(--surface-raised)] border border-[var(--border)]">
+                  <span className="text-[10px] text-[var(--text-muted)] block">Final Step Loss</span>
+                  <span className="text-cyan-300 font-bold">
+                    {(runResult.stepResults[runResult.stepResults.length - 1]?.loss ?? 0).toFixed(4)}
+                  </span>
                 </div>
               </div>
             )}
 
-            {/* Trace Export Buttons */}
-            {runResult && (
-              <div className="pt-2 flex items-center gap-2">
-                <button
-                  onClick={handleDownloadTrace}
-                  className="flex-1 py-2 px-3 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] hover:border-cyan-500/40 text-xs font-medium text-white flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <Download className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Export .rvtrace</span>
-                </button>
-                <button
-                  onClick={handleDownloadManifest}
-                  className="flex-1 py-2 px-3 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] hover:border-cyan-500/40 text-xs font-medium text-white flex items-center justify-center gap-1.5 transition-colors"
-                >
-                  <Code2 className="w-3.5 h-3.5 text-purple-400" />
-                  <span>Manifest JSON</span>
-                </button>
-              </div>
-            )}
+            {/* Export Actions */}
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[var(--border)]">
+              <button
+                onClick={handleDownloadTrace}
+                disabled={!runResult}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] hover:border-cyan-500/50 text-xs font-mono text-cyan-300 transition-all disabled:opacity-40"
+              >
+                <Download className="w-3 h-3" />
+                <span>Export .rvtrace</span>
+              </button>
+              <button
+                onClick={handleDownloadManifest}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] hover:border-violet-500/50 text-xs font-mono text-violet-300 transition-all"
+              >
+                <Download className="w-3 h-3" />
+                <span>Manifest .json</span>
+              </button>
+              <button
+                onClick={handleExportResearchReport}
+                disabled={!runResult}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--surface-raised)] border border-[var(--border)] hover:border-emerald-500/50 text-xs font-mono text-emerald-300 transition-all disabled:opacity-40"
+              >
+                <FileText className="w-3 h-3" />
+                <span>Report .md</span>
+              </button>
+            </div>
           </div>
+
+          {/* Multi-Algorithm Benchmark Comparison */}
+          <BenchmarkComparator
+            objective={selectedObjective}
+            initialPoint={[initialX, initialY]}
+            maxSteps={maxSteps}
+            customFinalLoss={runResult?.stepResults[runResult.stepResults.length - 1]?.loss}
+            customStepsCount={runResult?.stepResults.length}
+            customDiverged={runResult?.diverged}
+          />
         </div>
       </div>
     </div>

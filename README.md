@@ -104,12 +104,15 @@ RewindVerse Platform
 
 ### Studio Modules in Detail
 
-#### 0. Algorithm Forge (`/studio/forge`) & Master Catalogue (`/studio/algorithms`)
-- **Mode A: Fork & Customize**: Fork built-in baselines (SGD, Momentum, Adam, AdamW, RMSProp, Adagrad) into immutable personal manifests, adjust hyperparameter bounds, and review human-readable diffs.
-- **Mode B: Visual Node Builder**: Graph dataflow representation connecting parameters, gradients, momentum accumulators, learning rate scaling, and output states with acyclic DAG validation.
-- **Mode C: Declarative Formula Editor**: Algebraic update rule editor (`p - lr * clamp(g, -1, 1) - lr * wd * p`) backed by an allowlisted recursive-descent AST interpreter. Zero `eval()`, zero `new Function()`, zero dynamic imports.
-- **Sandboxed Worker Test Bench**: Execute custom algorithms against Quadratic Bowl, Rosenbrock, or Saddle surfaces with live fuel metering (up to 500,000 units), divergence detection, and instant `.rvtrace` streaming JSONL export.
+#### 0. Advanced Algorithm Forge Research Workbench (`/studio/forge`) & Master Catalogue (`/studio/algorithms`)
+- **Data Workbench**: Synthetic objective generator (Anisotropic Ravine, Rosenbrock Banana, 2D Gaussian Blobs) + Custom CSV/TSV statistical profiler (count, nulls, mean, std dev, min, max, dtype) + Train/Val/Test partitioning slider + Preprocessing pipelines (Raw, Z-score, Min-Max).
+- **Equation Studio**: Mathematical token palette with 1-click insertion + Live LaTeX rendering + **Central Finite-Difference Jacobian & Gradient Verification** ($g_i \approx \frac{f(\theta+\epsilon e_i) - f(\theta-\epsilon e_i)}{2\epsilon}$) with real-time pass/fail precision badges.
+- **Visual Algorithm Builder**: Dual-mode workflow containing a **Conceptual Algorithmic Lifecycle Flowchart** (Intake $\to$ Forward $\to$ Loss $\to$ Backprop $\to$ Update $\to$ Convergence $\to$ Checkpoint) and an **Executable Computational DAG** with real-time DFS cycle detection.
+- **Code Studio**: Tabbed research runtime contracts for **Python (§8.3)** and **TypeScript (§8.4)** with allowlisted static safety analysis (zero dynamic `eval()`) and 1-Click "Export .py Script" (`run_custom_algorithm.py`) with NumPy harness and RVTS recorder.
+- **Benchmark Comparator**: Side-by-side simultaneous convergence race benchmarking user forge algorithms against **Vanilla SGD**, **Polyak Momentum**, and **Adam** on identical test coordinates and objective functions.
+- **Sandboxed Test Bench**: Execute custom algorithms against Quadratic Bowl, Rosenbrock, or Saddle surfaces with live fuel metering (up to 500,000 units), divergence detection, interactive 2D contour & 3D Three.js wireframe viewer, and instant `.rvtrace`, `manifest.json`, and `report.md` exports.
 - **Algorithm Catalogue**: Comprehensive searchable registry covering mathematical definitions, explicit assumptions, hyperparameter ranges, and declared RVTS trace capabilities.
+- **Specifications**: See [`docs/algorithm-forge/ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md`](docs/algorithm-forge/ADVANCED_ALGORITHM_FORGE_SPECIFICATION.md) and [`docs/algorithms/ALGORITHM_CATALOG.md`](docs/algorithms/ALGORITHM_CATALOG.md).
 
 #### 1. Interactive RewindML Lab (`/studio/lab`)
 - **Mode 1: Continuous Loss Landscapes**: Explore 2D and 3D surfaces (Quadratic, Rosenbrock, Saddle) with SGD, Momentum, Adam, AdamW, RMSProp, and Adagrad optimizers. Adjust learning rate, momentum, noise levels, and starting coordinates in real-time.
