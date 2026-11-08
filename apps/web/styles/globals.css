@@ -275,20 +275,106 @@ body {
   animation: floatSlow 6s ease-in-out infinite;
 }
 
-/* Custom Scrollbar */
+/* ==========================================================================
+   Master Futuristic Scrollbar System
+   ========================================================================== */
+
+/* 1. Global Standard Scrollbar (Firefox, Chrome 121+, Safari 16+) */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 254, 0.35) rgba(5, 7, 14, 0.65);
+  scrollbar-gutter: stable;
+}
+
+/* 2. WebKit Scrollbar Styling (Chrome, Edge, Opera, Safari) */
 ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(5, 7, 14, 0.7);
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 242, 254, 0.35) 0%,
+    rgba(139, 92, 246, 0.35) 100%
+  );
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  box-shadow: inset 0 0 6px rgba(0, 242, 254, 0.25);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 242, 254, 0.75) 0%,
+    rgba(139, 92, 246, 0.8) 100%
+  );
+  border: 2px solid transparent;
+  background-clip: content-box;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 242, 254, 0.95) 0%,
+    rgba(168, 85, 247, 0.95) 100%
+  );
+  border: 2px solid transparent;
+  background-clip: content-box;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.75);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(5, 7, 14, 0.85);
+}
+
+/* 3. Sleek Inner Container Scrollbars (Code blocks, Studio tabs, Modals) */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 242, 254, 0.3) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-::-webkit-scrollbar-track {
+
+.scrollbar-thin::-webkit-scrollbar-track {
   background: transparent;
+  border-left: none;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.16);
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: content-box;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 242, 254, 0.45);
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 242, 254, 0.65);
+  border: 1px solid transparent;
+  background-clip: content-box;
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.45);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 :where(button, a, input, select, textarea, [tabindex]):focus-visible {
