@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   Database,
   UploadCloud,
@@ -109,6 +109,7 @@ const SYNTHETIC_DATASETS: DatasetManifestState[] = [
 ];
 
 export function DataWorkbench() {
+  const [datasets, setDatasets] = useState<DatasetManifestState[]>(SYNTHETIC_DATASETS);
   const [activeDataset, setActiveDataset] = useState<DatasetManifestState>(SYNTHETIC_DATASETS[0]);
   const [splitTrain, setSplitTrain] = useState<number>(70);
   const [splitVal, setSplitVal] = useState<number>(15);
@@ -116,6 +117,71 @@ export function DataWorkbench() {
   const [preprocessing, setPreprocessing] = useState<"none" | "standardize" | "minmax">("none");
   const [customCsvName, setCustomCsvName] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
+
+  // Hydrate active dataset from Data Lab if previously imported
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const saved = localStorage.getItem("rewindverse_active_dataset");
+      if (saved) {
+        const data = JSON.parse(saved);
+        if (data && data.manifest && data.schema) {
+          const targetCol =
+            data.schema.find((s: any) => s.semanticRole === "TARGET")?.name ||
+            data.schema[data.schema.length - 1]?.name;
+          const importedManifest: DatasetManifestState = {
+            id: data.manifest.id || `lab_ds_${Date.now()}`,
+            name: `${data.manifest.name} (Data Lab)`,
+            type: "uploaded",
+            totalRows: data.manifest.rows || 100,
+            featureCount: Math.max(1, (data.schema.length || 1) - 1),
+            targetColumn: targetCol,
+            split: data.splits || { train: 70, val: 15, test: 15 },
+            preprocessing:
+              data.preprocessing?.scaling === "standardize"
+                ? "standardize"
+                : data.preprocessing?.scaling === "minmax"
+                ? "minmax"
+                : "none",
+            profiles: data.schema.map((s: any) => ({
+              name: s.name,
+              dtype:
+                typeof s.dtype === "string" && s.dtype.startsWith("int")
+                  ? "integer"
+                  : typeof s.dtype === "string" && s.dtype.startsWith("float")
+                  ? "float"
+                  : "string",
+              count: s.missingCount !== undefined ? data.manifest.rows - s.missingCount : data.manifest.rows,
+              nullCount: s.missingCount || 0,
+              mean: s.mean,
+              std: s.std,
+              min: s.min,
+              max: s.max,
+            })),
+            previewRows: data.previewRows || [],
+          };
+          setDatasets([importedManifest, ...SYNTHETIC_DATASETS]);
+          setActiveDataset(importedManifest);
+          if (data.splits?.train) setSplitTrain(data.splits.train);
+          if (data.splits?.val) setSplitVal(data.splits.val);
+          if (data.splits?.test) setSplitTest(data.splits.test);
+          if (data.preprocessing?.scaling) {
+            setPreprocessing(
+              data.preprocessing.scaling === "standardize"
+                ? "standardize"
+                : data.preprocessing.scaling === "minmax"
+                ? "minmax"
+                : "none"
+            );
+          }
+          setFeedback(`Dataset "${data.manifest.name}" synchronized from Data Lab.`);
+          setTimeout(() => setFeedback(null), 4000);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load active dataset from storage", err);
+    }
+  }, []);
 
   // Handle CSV file upload and parse preview
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,6 +238,7 @@ export function DataWorkbench() {
         previewRows: rows,
       };
 
+      setDatasets((prev) => [customManifest, ...prev.filter((d) => d.id !== customManifest.id)]);
       setActiveDataset(customManifest);
       setFeedback(`Custom dataset "${file.name}" loaded and profiled (${lines.length - 1} samples).`);
       setTimeout(() => setFeedback(null), 3500);
@@ -188,6 +255,24 @@ export function DataWorkbench() {
   };
 
   const handleAttachDataset = () => {
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(
+          "rewindverse_forge_attached_dataset",
+          JSON.stringify({
+            id: activeDataset.id,
+            name: activeDataset.name,
+            split: { train: splitTrain, val: splitVal, test: splitTest },
+            preprocessing,
+            targetColumn: activeDataset.targetColumn,
+            totalRows: activeDataset.totalRows,
+            timestamp: Date.now(),
+          })
+        );
+      } catch (err) {
+        console.error("Failed to attach dataset to storage", err);
+      }
+    }
     setFeedback(`Dataset "${activeDataset.name}" attached to active Forge execution context.`);
     setTimeout(() => setFeedback(null), 3500);
   };
@@ -232,7 +317,7 @@ export function DataWorkbench() {
 
       {/* Dataset Picker Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {SYNTHETIC_DATASETS.map((ds) => {
+        {datasets.map((ds) => {
           const isSelected = activeDataset.id === ds.id;
           return (
             <button

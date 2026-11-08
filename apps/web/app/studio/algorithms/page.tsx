@@ -29,7 +29,9 @@ const CATEGORIES: (AlgorithmCategory | "All")[] = [
   "Supervised ML",
   "Unsupervised ML",
   "Deep Learning",
+  "Generative AI",
   "Reinforcement Learning",
+  "Metrics & Diagnostics",
 ];
 
 export default function AlgorithmCatalogPage() {

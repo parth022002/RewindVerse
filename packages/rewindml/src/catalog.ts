@@ -566,6 +566,825 @@ export const ALGORITHM_CATALOG: AlgorithmEntry[] = [
     demoRoute: "/studio/insights",
     forkable: false,
     status: "verified"
+  },
+  // --- ADDITIONAL OPTIMIZERS (P0, P1, P2) ---
+  {
+    id: "optim.bgd",
+    name: "Batch Gradient Descent (BGD)",
+    category: "Optimization",
+    priority: "P0",
+    provenance: "native",
+    tagline: "Exact full-batch empirical risk gradient descent",
+    description: "Evaluates the exact empirical gradient over the entire dataset before applying each deterministic parameter update.",
+    mathEquation: "\\theta_{t+1} = \\theta_t - \\eta \\frac{1}{N} \\sum_{i=1}^N \\nabla_\\theta \\ell(f(x_i; \\theta), y_i)",
+    learningObjectives: [
+      "Understand deterministic descent trajectories without mini-batch noise",
+      "Inspect orthogonal steps relative to loss contour lines",
+      "Observe computational cost scaling linearly with dataset size N"
+    ],
+    assumptions: ["Objective function is continuously differentiable; full dataset fits in memory"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.05, min: 0.0001, max: 2.0, step: 0.01, description: "Step size scale factor" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.minibatch",
+    name: "Mini-Batch Gradient Descent",
+    category: "Optimization",
+    priority: "P0",
+    provenance: "native",
+    tagline: "Stochastic mini-batch gradient descent with variance reduction",
+    description: "Computes parameter updates over uniformly sampled sub-batches B of size |B|, balancing computational efficiency with gradient variance reduction.",
+    mathEquation: "\\theta_{t+1} = \\theta_t - \\eta \\frac{1}{|B|} \\sum_{i \\in B} \\nabla_\\theta \\ell(f(x_i; \\theta), y_i)",
+    learningObjectives: [
+      "Observe variance reduction as batch size scales from 1 to N",
+      "Understand escape from saddle points facilitated by stochastic mini-batch noise",
+      "Inspect memory efficiency and GPU parallel throughput tradeoffs"
+    ],
+    assumptions: ["Sub-batches are independent identically distributed uniform samples"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.05, min: 0.0001, max: 2.0, step: 0.01, description: "Base step size" },
+      { name: "batchSize", type: "number", defaultVal: 32, min: 2, max: 512, step: 2, description: "Mini-batch sample size |B|" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.adadelta",
+    name: "AdaDelta",
+    category: "Optimization",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Adaptive learning rate method eliminating monotonic step decay",
+    description: "Restricts accumulation of past gradients to a fixed window using exponential moving averages and matches update units using RMS parameter step history.",
+    mathEquation: "\\Delta \\theta_t = - \\frac{\\sqrt{RMS[\\Delta \\theta]_{t-1} + \\epsilon}}{\\sqrt{RMS[g]_t + \\epsilon}} g_t, \\quad \\theta_{t+1} = \\theta_t + \\Delta \\theta_t",
+    learningObjectives: [
+      "Observe how AdaDelta eliminates the need for an explicit global learning rate hyperparameter",
+      "Understand unit matching between parameter gradients and step increments",
+      "Compare robustness against AdaGrad's premature learning rate freeze"
+    ],
+    assumptions: ["Gradient history window can be approximated via exponential decay rho"],
+    hyperparameters: [
+      { name: "rho", type: "number", defaultVal: 0.95, min: 0.8, max: 0.999, step: 0.01, description: "Decay rate parameter for moving average of squared gradients" },
+      { name: "epsilon", type: "number", defaultVal: 1e-6, min: 1e-9, max: 1e-3, step: 1e-6, description: "Numerical stability constant" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.amsgrad",
+    name: "AMSGrad",
+    category: "Optimization",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Guaranteed convergence adaptive optimizer with non-decreasing second moments",
+    description: "Modifies Adam to maintain a monotonic maximum of all past squared gradient estimates, preventing step size explosion in non-convex settings.",
+    mathEquation: "\\hat{v}_t = \\max(\\hat{v}_{t-1}, v_t), \\quad \\theta_{t+1} = \\theta_t - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} m_t",
+    learningObjectives: [
+      "Understand the counter-examples where standard Adam fails to converge",
+      "Inspect the non-decreasing second-moment envelope over non-convex ravines",
+      "Compare trajectory dampening against standard Adam"
+    ],
+    assumptions: ["Bounded gradient variance across parameter space"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.001, min: 0.00001, max: 0.5, step: 0.0005, description: "Base step size" },
+      { name: "beta1", type: "number", defaultVal: 0.9, min: 0.5, max: 0.999, step: 0.01, description: "First moment decay" },
+      { name: "beta2", type: "number", defaultVal: 0.999, min: 0.5, max: 0.9999, step: 0.001, description: "Second moment decay" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.nadam",
+    name: "NAdam (Nesterov-accelerated Adaptive Moment Estimation)",
+    category: "Optimization",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Incorporates Nesterov momentum directly into the Adam adaptive update",
+    description: "Combines Adam with Nesterov accelerated gradient by evaluating momentum at the current look-ahead step, accelerating convergence in steep valleys.",
+    mathEquation: "\\bar{m}_t = \\beta_1 \\hat{m}_t + \\frac{(1 - \\beta_1) g_t}{1 - \\beta_1^t}, \\quad \\theta_{t+1} = \\theta_t - \\frac{\\eta}{\\sqrt{\\hat{v}_t} + \\epsilon} \\bar{m}_t",
+    learningObjectives: [
+      "Understand the integration of Nesterov momentum into adaptive gradient scalers",
+      "Compare convergence speed in Rosenbrock valley landscapes",
+      "Observe dampening of overshoot oscillations"
+    ],
+    assumptions: ["Locally smooth objective; bounded gradient noise"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.002, min: 0.0001, max: 0.1, step: 0.0005, description: "Base step size" },
+      { name: "beta1", type: "number", defaultVal: 0.9, min: 0.5, max: 0.99, step: 0.01, description: "First moment decay" },
+      { name: "beta2", type: "number", defaultVal: 0.999, min: 0.5, max: 0.9999, step: 0.001, description: "Second moment decay" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.lbfgs",
+    name: "L-BFGS (Limited-memory BFGS)",
+    category: "Optimization",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Quasi-Newton optimization using limited history curvature approximations",
+    description: "Approximates inverse Hessian curvature matrices using a sliding window of past parameter increments and gradient displacements, achieving superlinear convergence.",
+    mathEquation: "H_{k+1} \\approx H_k + \\frac{s_k y_k^T + y_k s_k^T}{s_k^T y_k} - \\dots, \\quad \\theta_{t+1} = \\theta_t - H_k \\nabla f(\\theta_t)",
+    learningObjectives: [
+      "Understand quasi-Newton second-order curvature approximations without explicit Hessian inversion",
+      "Observe superlinear convergence on ill-conditioned convex quadratic landscapes",
+      "Inspect memory-scaling trade-offs governed by history buffer m"
+    ],
+    assumptions: ["Twice continuously differentiable objective; strictly positive-definite curvature updates s_k^T y_k > 0"],
+    hyperparameters: [
+      { name: "historySize", type: "number", defaultVal: 10, min: 3, max: 50, step: 1, description: "Number of past vector pairs (s_k, y_k) to retain in memory" },
+      { name: "tolerance", type: "number", defaultVal: 1e-5, min: 1e-9, max: 1e-2, step: 1e-5, description: "Gradient norm convergence threshold" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.newton",
+    name: "Newton-Raphson Method",
+    category: "Optimization",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Second-order optimization using exact Hessian curvature matrices",
+    description: "Applies exact second derivative curvature information to take quadratic model minimizer steps directly towards stationary points.",
+    mathEquation: "\\theta_{t+1} = \\theta_t - [\\nabla^2 f(\\theta_t)]^{-1} \\nabla f(\\theta_t)",
+    learningObjectives: [
+      "Observe one-step convergence on pure quadratic bowl functions",
+      "Understand pathological behavior when the Hessian is indefinite or near saddle points",
+      "Inspect Hessian condition numbers and eigenvalue conditioning"
+    ],
+    assumptions: ["Objective function is twice differentiable; Hessian is positive-definite and non-singular"],
+    hyperparameters: [
+      { name: "damping", type: "number", defaultVal: 1e-4, min: 0.0, max: 1.0, step: 1e-4, description: "Levenberg-Marquardt diagonal regularization parameter (H + lambda * I)" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.coordinate_descent",
+    name: "Coordinate Descent",
+    category: "Optimization",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Successive line search along individual coordinate axes",
+    description: "Optimizes multi-variable loss functions by successively minimizing along one coordinate dimension at a time while holding all others fixed.",
+    mathEquation: "\\theta_j^{(t+1)} = \\arg\\min_z f(\\theta_1^{(t+1)}, \\dots, \\theta_{j-1}^{(t+1)}, z, \\theta_{j+1}^{(t)}, \\dots, \\theta_d^{(t)})",
+    learningObjectives: [
+      "Observe orthogonal axis-aligned staircase trajectories on 2D contours",
+      "Understand failure modes when ravines are non-separable and non-smooth",
+      "Observe exact analytical closed-form updates in Lasso and Elastic Net problems"
+    ],
+    assumptions: ["Objective is coordinate-wise strictly convex or separable"],
+    hyperparameters: [
+      { name: "maxCycles", type: "number", defaultVal: 100, min: 10, max: 1000, step: 10, description: "Maximum coordinate sweep cycles" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.proximal_gradient",
+    name: "Proximal Gradient Descent (ISTA)",
+    category: "Optimization",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Composite optimization for non-smooth penalties via soft-thresholding",
+    description: "Splits composite objectives into smooth f(theta) and non-smooth g(theta) terms, executing a gradient step on f followed by a proximal soft-thresholding operator on g.",
+    mathEquation: "\\theta_{t+1} = \\mathrm{prox}_{\\eta g}(\\theta_t - \\eta \\nabla f(\\theta_t)) = \\mathrm{sign}(\\cdot) \\max(0, |\\cdot| - \\eta \\lambda)",
+    learningObjectives: [
+      "Understand why subgradient descent is slow compared to proximal operators",
+      "Observe exact sparse zero-parameter setting during iterative soft-thresholding",
+      "Compare convergence with accelerated proximal methods (FISTA)"
+    ],
+    assumptions: ["Smooth component f is convex with Lipschitz gradient; regularizer g is convex and prox-friendly"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.05, min: 0.0001, max: 1.0, step: 0.01, description: "Step size for smooth gradient update" },
+      { name: "lambda", type: "number", defaultVal: 0.1, min: 0.0, max: 5.0, step: 0.05, description: "Non-smooth regularizer penalty strength" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  // --- ADDITIONAL SUPERVISED ML ---
+  {
+    id: "supervised.polynomial_regression",
+    name: "Polynomial Regression",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Non-linear feature expansion via polynomial basis transformations",
+    description: "Transforms input features into degree-d polynomial monomials before fitting an ordinary least squares regression hyperplane, capturing non-linear curvatures.",
+    mathEquation: "\\hat{y} = w_0 + w_1 x + w_2 x^2 + \\dots + w_d x^d = \\Phi(x)^T w",
+    learningObjectives: [
+      "Observe bias-variance trade-offs as polynomial degree d increases",
+      "Understand Runge's phenomenon and severe edge oscillations under high degree",
+      "Inspect the condition number explosion of the Vandermonde matrix"
+    ],
+    assumptions: ["Continuously differentiable underlying non-linear relationship"],
+    hyperparameters: [
+      { name: "degree", type: "number", defaultVal: 2, min: 1, max: 10, step: 1, description: "Maximum polynomial monomial power" },
+      { name: "includeBias", type: "boolean", defaultVal: true, description: "Include intercept column x^0" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "supervised.elastic_net",
+    name: "Elastic Net Regularization",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Convex combination of L1 (Lasso) and L2 (Ridge) penalties",
+    description: "Balances feature selection sparsity with grouping effects among highly correlated predictors by combining L1 and L2 penalties in a single convex loss.",
+    mathEquation: "\\min_w \\frac{1}{2n} \\|y - Xw\\|_2^2 + \\lambda \\left(\\alpha \\|w\\|_1 + \\frac{1-\\alpha}{2} \\|w\\|_2^2\\right)",
+    learningObjectives: [
+      "Observe grouping effect: correlated features are selected together rather than randomly chosen",
+      "Trace coefficient paths as the mixing parameter alpha sweeps from 0 (Ridge) to 1 (Lasso)",
+      "Understand singular vs round regularizer contour geometries"
+    ],
+    assumptions: ["Linear response model; standardized feature scale"],
+    hyperparameters: [
+      { name: "alpha", type: "number", defaultVal: 0.5, min: 0.0, max: 1.0, step: 0.05, description: "L1 ratio (1 = Lasso, 0 = Ridge)" },
+      { name: "lambda", type: "number", defaultVal: 0.1, min: 0.001, max: 5.0, step: 0.01, description: "Overall regularization penalty intensity" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "supervised.gaussian_nb",
+    name: "Gaussian Naive Bayes",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Probabilistic classifier with conditional independence and Gaussian likelihoods",
+    description: "Computes posterior class probabilities using Bayes theorem under the assumption that continuous features within each class follow independent normal distributions.",
+    mathEquation: "P(y|x) \\propto P(y) \\prod_{j=1}^d \\frac{1}{\\sqrt{2\\pi \\sigma_{y,j}^2}} \\exp\\left(-\\frac{(x_j - \\mu_{y,j})^2}{2\\sigma_{y,j}^2}\\right)",
+    learningObjectives: [
+      "Understand closed-form maximum likelihood estimation of class priors, means, and variances",
+      "Inspect parabolic and linear decision boundaries under equal vs unequal covariance",
+      "Observe robustness against the curse of dimensionality despite feature correlation violations"
+    ],
+    assumptions: ["Features are conditionally independent given class label y; Gaussian marginal distributions"],
+    hyperparameters: [
+      { name: "varSmoothing", type: "number", defaultVal: 1e-9, min: 1e-12, max: 1e-2, step: 1e-9, description: "Portion of largest variance added for numerical stability" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "supervised.multinomial_nb",
+    name: "Multinomial Naive Bayes",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Discrete frequency event model with Laplace smoothing",
+    description: "Models discrete count vectors (such as word frequencies in document classification) through multinomially distributed feature likelihoods.",
+    mathEquation: "P(y|x) \\propto P(y) \\prod_{j=1}^d \\theta_{y, j}^{x_j}, \\quad \\theta_{y, j} = \\frac{N_{y,j} + \\alpha}{N_y + \\alpha d}",
+    learningObjectives: [
+      "Understand Laplace and Lidstone smoothing to prevent zero-probability lockouts",
+      "Inspect log-sum-exp numerical stabilization for high-dimensional text token vectors",
+      "Analyze relative token importance across topic classes"
+    ],
+    assumptions: ["Feature vectors represent non-negative discrete counts generated by a multinomial process"],
+    hyperparameters: [
+      { name: "alpha", type: "number", defaultVal: 1.0, min: 0.01, max: 5.0, step: 0.1, description: "Additive Laplace smoothing parameter" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "supervised.svm_linear",
+    name: "Linear Support Vector Machine (SVM)",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Maximum margin separating hyperplane with soft slack penalty",
+    description: "Finds the optimal separating hyperplane that maximizes the geometric margin between two classes, penalizing boundary violations via hinge loss.",
+    mathEquation: "\\min_{w, b, \\xi} \\frac{1}{2}\\|w\\|^2 + C \\sum_{i=1}^n \\xi_i \\quad \\text{s.t. } y_i(w^T x_i + b) \\ge 1 - \\xi_i, \\; \\xi_i \\ge 0",
+    learningObjectives: [
+      "Identify active support vectors lying on or within the margin boundary",
+      "Inspect margin thickness 2/||w|| response to varying penalty hyperparameter C",
+      "Understand primal quadratic programming formulation vs dual representation"
+    ],
+    assumptions: ["Classes are approximately linearly separable in feature space"],
+    hyperparameters: [
+      { name: "C", type: "number", defaultVal: 1.0, min: 0.01, max: 100.0, step: 0.1, description: "Slack penalty cost trading margin width against training errors" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "supervised.svm_rbf",
+    name: "Kernel SVM (Radial Basis Function)",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Non-linear classification via infinite-dimensional Gaussian kernel mapping",
+    description: "Maps inputs implicitly into an infinite-dimensional Hilbert space via the RBF kernel trick, constructing complex curved non-linear decision boundaries.",
+    mathEquation: "K(x, x') = \\exp(-\\gamma \\|x - x'\\|^2), \\quad f(x) = \\mathrm{sign}\\left(\\sum_{i=1}^n \\alpha_i y_i K(x_i, x) + b\\right)",
+    learningObjectives: [
+      "Understand the kernel trick and dual representation without explicit feature coordinate expansion",
+      "Observe the interaction between kernel bandwidth gamma and margin penalty C",
+      "Inspect island formation and overfitting under overly large gamma values"
+    ],
+    assumptions: ["Labels are separable in reproducing kernel Hilbert space (RKHS)"],
+    hyperparameters: [
+      { name: "C", type: "number", defaultVal: 1.0, min: 0.01, max: 50.0, step: 0.1, description: "Regularization parameter" },
+      { name: "gamma", type: "number", defaultVal: 0.5, min: 0.01, max: 10.0, step: 0.05, description: "Kernel coefficient determining single-sample radius of influence" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "supervised.random_forest",
+    name: "Random Forest Classifier",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Bagging ensemble of decorrelated decision trees with random subspace sampling",
+    description: "Constructs an ensemble of deep decision trees trained on bootstrap resamples with randomized feature subsets, drastically reducing variance through majority voting.",
+    mathEquation: "\\hat{f}(x) = \\frac{1}{B} \\sum_{b=1}^B T_b(x; \\Theta_b), \\quad \\Theta_b \\sim \\text{Bootstrap + Random Subspace}",
+    learningObjectives: [
+      "Understand variance reduction through tree decorrelation and bootstrap aggregation (bagging)",
+      "Inspect out-of-bag (OOB) error estimates as an unbiased internal validation metric",
+      "Evaluate Gini importance and mean decrease in impurity across features"
+    ],
+    assumptions: ["Individual decision trees are sufficiently deep and decorrelated"],
+    hyperparameters: [
+      { name: "nEstimators", type: "number", defaultVal: 50, min: 10, max: 300, step: 10, description: "Number of ensemble trees" },
+      { name: "maxDepth", type: "number", defaultVal: 6, min: 2, max: 20, step: 1, description: "Maximum split depth per tree" },
+      { name: "maxFeatures", type: "number", defaultVal: 2, min: 1, max: 10, step: 1, description: "Random subset feature count sampled per split" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "supervised.gbdt",
+    name: "Gradient Boosted Decision Trees (GBDT)",
+    category: "Supervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Sequential additive boosting fitting weak learners to pseudo-residuals",
+    description: "Builds an additive model in a forward stage-wise manner by fitting shallow decision trees iteratively to negative loss gradients (pseudo-residuals).",
+    mathEquation: "F_m(x) = F_{m-1}(x) + \\nu \\sum_{j=1}^{J_m} \\gamma_{jm} \\mathbf{1}(x \\in R_{jm}), \\quad r_{im} = -\\left[\\frac{\\partial L(y_i, F(x_i))}{\\partial F(x_i)}\\right]_{F=F_{m-1}}",
+    learningObjectives: [
+      "Understand gradient descent in function space",
+      "Observe learning rate shrinkage nu preventing individual tree dominance",
+      "Compare residual shrinkage progression across successive boosting iterations"
+    ],
+    assumptions: ["Differentiable loss function L(y, F); weak learners have bounded depth"],
+    hyperparameters: [
+      { name: "nEstimators", type: "number", defaultVal: 40, min: 10, max: 200, step: 5, description: "Number of boosting stages" },
+      { name: "learningRate", type: "number", defaultVal: 0.1, min: 0.01, max: 1.0, step: 0.02, description: "Shrinkage factor scaling tree contributions" },
+      { name: "maxDepth", type: "number", defaultVal: 3, min: 1, max: 8, step: 1, description: "Maximum depth of individual regression trees" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  // --- ADDITIONAL UNSUPERVISED ML ---
+  {
+    id: "unsupervised.gmm",
+    name: "Gaussian Mixture Model (GMM) with EM",
+    category: "Unsupervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Soft probabilistic clustering using Expectation-Maximization",
+    description: "Represents data as a weighted sum of K multivariate Gaussian distributions, iteratively alternating between computing posterior responsibilities (E-step) and updating parameters (M-step).",
+    mathEquation: "p(x) = \\sum_{k=1}^K \\pi_k \\mathcal{N}(x; \\mu_k, \\Sigma_k), \\quad \\gamma_{ik} = \\frac{\\pi_k \\mathcal{N}(x_i; \\mu_k, \\Sigma_k)}{\\sum_{j=1}^K \\pi_j \\mathcal{N}(x_i; \\mu_j, \\Sigma_j)}",
+    learningObjectives: [
+      "Understand soft probabilistic cluster assignment vs hard K-Means Voronoi partitions",
+      "Observe covariance shape flexibility (spherical, diagonal, full ellipsoidal)",
+      "Track log-likelihood monotonicity guaranteed by Jensen's inequality in EM"
+    ],
+    assumptions: ["Data points are independently sampled from a mixture of K Gaussian components"],
+    hyperparameters: [
+      { name: "k", type: "number", defaultVal: 3, min: 2, max: 10, step: 1, description: "Number of mixture components" },
+      { name: "maxIter", type: "number", defaultVal: 50, min: 10, max: 200, step: 10, description: "Maximum EM iterations" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "unsupervised.dbscan",
+    name: "DBSCAN (Density-Based Spatial Clustering)",
+    category: "Unsupervised ML",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Arbitrary-shaped density clustering with robust noise detection",
+    description: "Groups together points that are closely packed within neighborhood radius epsilon, discovering arbitrary non-convex geometries and isolating low-density outliers.",
+    mathEquation: "N_\\epsilon(p) = \\{q \\in D \\mid \\mathrm{dist}(p, q) \\le \\epsilon\\}, \\quad |N_\\epsilon(p)| \\ge \\mathrm{MinPts}",
+    learningObjectives: [
+      "Identify core points, border points, and unassigned noise points",
+      "Observe discovery of concentric ring and spiral clusters where K-Means fails",
+      "Understand sensitivity to neighborhood distance scale epsilon"
+    ],
+    assumptions: ["Dense cluster regions are separated by lower density regions"],
+    hyperparameters: [
+      { name: "eps", type: "number", defaultVal: 0.35, min: 0.05, max: 2.0, step: 0.05, description: "Maximum distance radius between two samples for neighborhood consideration" },
+      { name: "minSamples", type: "number", defaultVal: 5, min: 2, max: 20, step: 1, description: "Minimum sample count required to form a core point" }
+    ],
+    traceCapabilities: ["parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "unsupervised.tsne",
+    name: "t-SNE (t-Distributed Stochastic Neighbor Embedding)",
+    category: "Unsupervised ML",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Non-linear manifold dimensionality reduction preserving local neighborhoods",
+    description: "Converts pairwise high-dimensional Euclidean distances into probabilities and minimizes the Kullback-Leibler divergence with low-dimensional Student-t probabilities.",
+    mathEquation: "p_{j|i} = \\frac{\\exp(-\\|x_i - x_j\\|^2 / 2\\sigma_i^2)}{\\sum_{k \\neq i} \\exp(-\\|x_i - x_k\\|^2 / 2\\sigma_i^2)}, \\quad q_{ij} = \\frac{(1 + \\|y_i - y_j\\|^2)^{-1}}{\\sum_{k \\neq l} (1 + \\|y_k - y_l\\|^2)^{-1}}",
+    learningObjectives: [
+      "Understand the crowding problem and why Student-t distributions alleviate local crushing",
+      "Inspect gradient descent forces: attractive springs vs repulsive charges",
+      "Analyze the impact of perplexity hyperparameter on cluster separation"
+    ],
+    assumptions: ["High-dimensional data lies on or near an embedded non-linear manifold"],
+    hyperparameters: [
+      { name: "perplexity", type: "number", defaultVal: 30, min: 5, max: 50, step: 5, description: "Effective number of local nearest neighbors" },
+      { name: "learningRate", type: "number", defaultVal: 200, min: 10, max: 1000, step: 10, description: "Gradient descent step size in embedding space" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  // --- ADDITIONAL DEEP LEARNING ARCHITECTURES ---
+  {
+    id: "neural.residual_block",
+    name: "ResNet Residual Block",
+    category: "Deep Learning",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Skip identity connection enabling training of very deep networks",
+    description: "Introduces identity shortcut mappings that add the input directly to the residual function F(x), ensuring unbroken gradient flow during backpropagation.",
+    mathEquation: "y = \\mathcal{F}(x, \\{W_i\\}) + x, \\quad \\frac{\\partial \\mathcal{E}}{\\partial x} = \\frac{\\partial \\mathcal{E}}{\\partial y}\\left(\\frac{\\partial \\mathcal{F}}{\\partial x} + I\\right)",
+    learningObjectives: [
+      "Inspect gradient highway dynamics preventing vanishing gradients across hundreds of layers",
+      "Understand why residual learning makes learning identity functions trivially easy (F(x) -> 0)",
+      "Compare convergence trajectories with plain un-skipped feedforward networks"
+    ],
+    assumptions: ["Input and output feature maps share compatible dimensional channel shapes"],
+    hyperparameters: [
+      { name: "channels", type: "number", defaultVal: 64, min: 16, max: 512, step: 16, description: "Internal feature channel width" },
+      { name: "bottleneck", type: "boolean", defaultVal: false, description: "Use 1x1-3x3-1x1 bottleneck architecture" }
+    ],
+    traceCapabilities: ["activations.tensor", "gradients.summary"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "neural.multihead_attention",
+    name: "Multi-Head Scaled Dot-Product Attention",
+    category: "Deep Learning",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Parallel representation subspaces capturing multi-faceted token relationships",
+    description: "Projects queries, keys, and values h times with independent learned linear projections, computing scaled dot-product attention concurrently across diverse representation subspaces.",
+    mathEquation: "\\mathrm{MultiHead}(Q, K, V) = \\mathrm{Concat}(\\mathrm{head}_1, \\dots, \\mathrm{head}_h) W^O, \\quad \\mathrm{head}_i = \\mathrm{softmax}\\left(\\frac{Q W_i^Q (K W_i^K)^T}{\\sqrt{d_k}}\\right) V W_i^V",
+    learningObjectives: [
+      "Understand why 1/sqrt(d_k) scaling prevents softmax gradient vanishing at large dimensions",
+      "Inspect individual attention head maps focusing on syntax, positioning, and semantics",
+      "Analyze full O(N^2) quadratic sequence length memory and compute scaling"
+    ],
+    assumptions: ["Inputs are projected into unified embedding dimensional space"],
+    hyperparameters: [
+      { name: "numHeads", type: "number", defaultVal: 4, min: 1, max: 16, step: 1, description: "Number of parallel attention heads" },
+      { name: "dModel", type: "number", defaultVal: 64, min: 16, max: 512, step: 16, description: "Total embedding feature dimension" }
+    ],
+    traceCapabilities: ["activations.tensor", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "neural.layernorm",
+    name: "Layer Normalization & RMSNorm",
+    category: "Deep Learning",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Sequence token normalization across feature dimensions",
+    description: "Normalizes the activations across all feature channels for each individual token independently of mini-batch size, stabilizing deep transformer training.",
+    mathEquation: "y = \\frac{x - \\mu}{\\sqrt{\\sigma^2 + \\epsilon}} \\odot \\gamma + \\beta, \\quad \\mathrm{RMSNorm}(x) = \\frac{x}{\\sqrt{\\frac{1}{d}\\sum_{i=1}^d x_i^2 + \\epsilon}} \\odot \\gamma",
+    learningObjectives: [
+      "Observe invariance to shift and scaling in activation inputs",
+      "Compare standard LayerNorm with zero-centering vs lightweight RMSNorm",
+      "Understand why LayerNorm succeeds in recurrent and transformer settings where BatchNorm fails"
+    ],
+    assumptions: ["Feature dimension d is sufficient for reliable empirical variance estimation"],
+    hyperparameters: [
+      { name: "epsilon", type: "number", defaultVal: 1e-5, min: 1e-8, max: 1e-3, step: 1e-5, description: "Numerical variance stabilization constant" },
+      { name: "mode", type: "select", defaultVal: "LayerNorm", options: ["LayerNorm", "RMSNorm"], description: "Normalization formulation" }
+    ],
+    traceCapabilities: ["activations.tensor"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "neural.positional_encoding",
+    name: "Sinusoidal Positional Encoding",
+    category: "Deep Learning",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Deterministic trigonometric order representation for permutation-invariant attention",
+    description: "Adds static sinusoidal frequency waves of varying wavelengths to token embeddings, imparting sequential order awareness to self-attention mechanisms.",
+    mathEquation: "PE_{(pos, 2i)} = \\sin\\left(\\frac{pos}{10000^{2i/d}}\\right), \\quad PE_{(pos, 2i+1)} = \\cos\\left(\\frac{pos}{10000^{2i/d}}\\right)",
+    learningObjectives: [
+      "Understand why dot products between PE vectors depend solely on relative distance (k - j)",
+      "Inspect geometric frequency wave patterns across sequence positions",
+      "Analyze sequence length extrapolation properties beyond fixed training windows"
+    ],
+    assumptions: ["Linear combination with token embedding retains semantic information"],
+    hyperparameters: [
+      { name: "maxLen", type: "number", defaultVal: 128, min: 16, max: 2048, step: 16, description: "Maximum supported context sequence length" },
+      { name: "dModel", type: "number", defaultVal: 64, min: 16, max: 512, step: 16, description: "Embedding vector dimension" }
+    ],
+    traceCapabilities: ["activations.tensor"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "neural.rnn_lstm",
+    name: "Long Short-Term Memory (LSTM)",
+    category: "Deep Learning",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Gated recurrent neural network maintaining constant error carousels",
+    description: "Controls the flow of temporal information across long sequential time horizons using forget, input, and output gates that update an explicit cell memory state.",
+    mathEquation: "f_t = \\sigma(W_f x_t + U_f h_{t-1} + b_f), \\quad c_t = f_t \\odot c_{t-1} + i_t \\odot \\tanh(W_c x_t + U_c h_{t-1} + b_c), \\quad h_t = o_t \\odot \\tanh(c_t)",
+    learningObjectives: [
+      "Inspect constant error carousels preventing exponential vanishing of gradients through time",
+      "Observe gate activation patterns (forget vs write vs expose) during pattern recall",
+      "Compare memory persistence against vanilla RNN units"
+    ],
+    assumptions: ["Sequential dependency in input token streams"],
+    hyperparameters: [
+      { name: "hiddenDim", type: "number", defaultVal: 32, min: 8, max: 256, step: 8, description: "Hidden state and cell vector dimension" }
+    ],
+    traceCapabilities: ["activations.tensor", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  // --- GENERATIVE AI ---
+  {
+    id: "genai.vae",
+    name: "Variational Autoencoder (VAE)",
+    category: "Generative AI",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Stochastic latent variable generative model optimized via the ELBO",
+    description: "Encodes inputs into parameterized Gaussian distributions in latent space, using the reparameterization trick to backpropagate through reconstruction loss and KL divergence.",
+    mathEquation: "\\mathcal{L}_{\\text{ELBO}}(\\theta, \\phi; x) = \\mathbb{E}_{q_\\phi(z|x)}[\\log p_\\theta(x|z)] - D_{\\mathrm{KL}}(q_\\phi(z|x) \\,\\|\\, p(z)), \\quad z = \\mu + \\sigma \\odot \\epsilon",
+    learningObjectives: [
+      "Understand the reparameterization trick separating stochastic randomness epsilon from parameters",
+      "Inspect latent manifold continuity and smooth linear interpolations between data modes",
+      "Analyze KL divergence regularization forcing the latent space into an isotropic standard normal prior"
+    ],
+    assumptions: ["Latent prior follows a standard multivariate Gaussian p(z) = N(0, I)"],
+    hyperparameters: [
+      { name: "latentDim", type: "number", defaultVal: 2, min: 2, max: 64, step: 1, description: "Latent space bottleneck dimension" },
+      { name: "klWeight", type: "number", defaultVal: 1.0, min: 0.0, max: 5.0, step: 0.1, description: "Beta-VAE hyperparameter balancing reconstruction fidelity vs prior alignment" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot", "activations.tensor"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "genai.diffusion_ddpm",
+    name: "Denoising Diffusion Probabilistic Model (DDPM)",
+    category: "Generative AI",
+    priority: "P3",
+    provenance: "native",
+    tagline: "Iterative reverse Langevin sampling from forward Gaussian noise schedules",
+    description: "Destroys data structure over T steps via forward Gaussian noise addition, then trains a neural network to predict and subtract noise at each reverse step.",
+    mathEquation: "q(x_t|x_0) = \\mathcal{N}(x_t; \\sqrt{\\bar{\\alpha}_t} x_0, (1 - \\bar{\\alpha}_t) I), \\quad L_{\\text{simple}}(\\theta) = \\mathbb{E}_{t, x_0, \\epsilon} [\\|\\epsilon - \\epsilon_\\theta(x_t, t)\\|^2]",
+    learningObjectives: [
+      "Understand forward analytical diffusion at arbitrary timestep t without evaluating prior steps",
+      "Inspect score matching and reverse Langevin sampling trajectories from white noise to data",
+      "Observe sampling quality vs step count trade-offs"
+    ],
+    assumptions: ["Forward noise transition kernels are Gaussian; reverse transitions approximate Gaussians for small beta"],
+    hyperparameters: [
+      { name: "timesteps", type: "number", defaultVal: 50, min: 10, max: 1000, step: 10, description: "Total forward and reverse diffusion steps T" },
+      { name: "betaStart", type: "number", defaultVal: 0.0001, min: 0.00001, max: 0.001, step: 0.00005, description: "Initial variance schedule" },
+      { name: "betaEnd", type: "number", defaultVal: 0.02, min: 0.005, max: 0.1, step: 0.005, description: "Final variance schedule" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  // --- REINFORCEMENT LEARNING ---
+  {
+    id: "rl.bandit_ucb",
+    name: "UCB1 Multi-Armed Bandit",
+    category: "Reinforcement Learning",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Optimism in the face of uncertainty for multi-armed bandit exploration",
+    description: "Selects actions that maximize the upper bound of a confidence interval, balancing empirical estimated payout with an exploration bonus derived from Hoeffding's inequality.",
+    mathEquation: "A_t = \\arg\\max_a \\left[ Q_t(a) + c \\sqrt{\\frac{\\ln t}{N_t(a)}} \\right]",
+    learningObjectives: [
+      "Understand logarithmic cumulative regret bounds over time",
+      "Observe how infrequently pulled arms receive boosted exploration bonuses",
+      "Compare exploitation vs exploration dynamics against epsilon-greedy policies"
+    ],
+    assumptions: ["Rewards are bounded within [0, 1] and stationary"],
+    hyperparameters: [
+      { name: "explorationConst", type: "number", defaultVal: 1.414, min: 0.1, max: 5.0, step: 0.1, description: "Exploration scale parameter c (theoretical sqrt(2))" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "rl.sarsa",
+    name: "SARSA (On-Policy Temporal Difference)",
+    category: "Reinforcement Learning",
+    priority: "P2",
+    provenance: "native",
+    tagline: "On-policy TD control evaluating state-action-reward-state-action tuples",
+    description: "Updates state-action Q-values using the actual next action chosen by the behavior policy, making it cautious near dangerous environment cliffs.",
+    mathEquation: "Q(S_t, A_t) \\leftarrow Q(S_t, A_t) + \\alpha [R_{t+1} + \\gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t)]",
+    learningObjectives: [
+      "Observe on-policy conservative paths avoiding cliff edges under exploratory noise",
+      "Compare policy paths and convergence trajectories with off-policy Q-Learning",
+      "Inspect eligibility traces and temporal credit assignment"
+    ],
+    assumptions: ["Markov decision process with discrete state and action spaces"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.1, min: 0.01, max: 1.0, step: 0.05, description: "TD update step size alpha" },
+      { name: "gamma", type: "number", defaultVal: 0.95, min: 0.5, max: 0.999, step: 0.01, description: "Future discount factor" },
+      { name: "epsilon", type: "number", defaultVal: 0.1, min: 0.0, max: 0.5, step: 0.05, description: "Epsilon-greedy exploration probability" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "rl.dqn",
+    name: "Deep Q-Network (DQN)",
+    category: "Reinforcement Learning",
+    priority: "P3",
+    provenance: "native",
+    tagline: "Deep reinforcement learning with experience replay and target networks",
+    description: "Approximates high-dimensional state-action values using deep neural networks, breaking autocorrelation with an experience replay buffer and stabilizing targets with delayed parameter copies.",
+    mathEquation: "L_i(\\theta_i) = \\mathbb{E}_{(s, a, r, s')} \\left[ \\left( r + \\gamma \\max_{a'} Q(s', a'; \\theta_i^-) - Q(s, a; \\theta_i) \\right)^2 \\right]",
+    learningObjectives: [
+      "Understand why naive neural TD learning diverges without experience replay decorrelation",
+      "Observe how periodic target network updates freeze target targets for stable regression",
+      "Analyze policy performance and score growth across training episodes"
+    ],
+    assumptions: ["Environment transitions conform to an unknown MDP"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.0005, min: 0.00005, max: 0.01, step: 0.0001, description: "Optimizer learning rate" },
+      { name: "gamma", type: "number", defaultVal: 0.99, min: 0.8, max: 0.999, step: 0.01, description: "Discount factor" },
+      { name: "targetUpdateFreq", type: "number", defaultVal: 50, min: 10, max: 500, step: 10, description: "Timestep interval for syncing target network weights" }
+    ],
+    traceCapabilities: ["metrics.loss", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "rl.ppo",
+    name: "Proximal Policy Optimization (PPO)",
+    category: "Reinforcement Learning",
+    priority: "P3",
+    provenance: "native",
+    tagline: "Clipped surrogate policy gradient ensuring monotonic policy improvements",
+    description: "Maximizes a clipped surrogate objective that penalizes policy changes moving probability ratios outside an interval [1 - epsilon, 1 + epsilon], preventing destructive updates.",
+    mathEquation: "L^{\\text{CLIP}}(\\theta) = \\hat{\\mathbb{E}}_t \\left[ \\min\\left(r_t(\\theta)\\hat{A}_t, \\, \\mathrm{clip}(r_t(\\theta), 1-\\epsilon, 1+\\epsilon)\\hat{A}_t\\right) \\right]",
+    learningObjectives: [
+      "Understand trust-region policy updates without expensive second-order conjugate gradient matrix inversions",
+      "Inspect probability ratio clipping when advantage estimates are positive vs negative",
+      "Observe stable sample-efficient policy training on continuous and discrete control tasks"
+    ],
+    assumptions: ["Generalized Advantage Estimation (GAE) provides reliable variance-reduced advantage estimates"],
+    hyperparameters: [
+      { name: "clipEpsilon", type: "number", defaultVal: 0.2, min: 0.05, max: 0.4, step: 0.05, description: "Clipping threshold epsilon for surrogate ratio r_t(theta)" },
+      { name: "learningRate", type: "number", defaultVal: 0.0003, min: 0.00001, max: 0.01, step: 0.00005, description: "Actor-critic optimizer step size" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  // --- EXPLAINABILITY & DIAGNOSTICS ---
+  {
+    id: "xai.shap",
+    name: "SHAP (SHapley Additive exPlanations)",
+    category: "Metrics & Diagnostics",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Game-theoretic local feature attribution satisfying axiomatic efficiency",
+    description: "Computes fair Shapley attribution values across all feature coalition subsets, allocating exact credit to each feature for pushing predictions away from the base value.",
+    mathEquation: "\\phi_i(v) = \\sum_{S \\subseteq N \\setminus \\{i\\}} \\frac{|S|!(|N|-|S|-1)!}{|N|!} (v(S \\cup \\{i\\}) - v(S))",
+    learningObjectives: [
+      "Understand the four fundamental Shapley axioms: Efficiency, Symmetry, Dummy, and Additivity",
+      "Inspect beeswarm plots and waterfall charts showing directional feature pushes",
+      "Compare exact exponential coalition evaluation against KernelSHAP sampling approximations"
+    ],
+    assumptions: ["Feature interaction games satisfy cooperative game theory assumptions"],
+    hyperparameters: [
+      { name: "nSamples", type: "number", defaultVal: 100, min: 20, max: 1000, step: 20, description: "Monte Carlo background sample size for marginal expectation evaluations" }
+    ],
+    traceCapabilities: ["parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "xai.integrated_gradients",
+    name: "Integrated Gradients",
+    category: "Metrics & Diagnostics",
+    priority: "P2",
+    provenance: "native",
+    tagline: "Path-integral axiomatic attribution for differentiable neural networks",
+    description: "Integrates gradients along the straight-line interpolation path from a neutral reference baseline to the input, satisfying Completeness and Implementation Invariance.",
+    mathEquation: "\\mathrm{IG}_i(x) = (x_i - x_i') \\times \\int_0^1 \\frac{\\partial F(x' + \\alpha(x - x'))}{\\partial x_i} d\\alpha",
+    learningObjectives: [
+      "Understand why standard input gradients suffer from saturation and fail the sensitivity axiom",
+      "Observe numerical Gauss-Legendre quadrature along the interpolation trajectory",
+      "Verify the completeness axiom: sum of attributions exactly equals F(x) - F(x_baseline)"
+    ],
+    assumptions: ["Prediction function F is continuously differentiable almost everywhere along straight path from baseline"],
+    hyperparameters: [
+      { name: "steps", type: "number", defaultVal: 50, min: 10, max: 200, step: 10, description: "Riemann or Gauss quadrature integration step count" }
+    ],
+    traceCapabilities: ["gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "xai.permutation_importance",
+    name: "Permutation Feature Importance",
+    category: "Metrics & Diagnostics",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Model-agnostic feature importance via test feature shuffling",
+    description: "Measures the increase in prediction error after randomly permuting the values of a feature, breaking its relationship with the target.",
+    mathEquation: "I(f_j) = L(X^{\\text{perm}(j)}, y) - L(X, y)",
+    learningObjectives: [
+      "Observe global importance rankings across black-box models without architectural assumptions",
+      "Understand how collinear features share permutation drop and dilute individual scores",
+      "Inspect statistical confidence intervals over repeated random permutations"
+    ],
+    assumptions: ["Evaluation partition is representative and independent of training partition"],
+    hyperparameters: [
+      { name: "nRepeats", type: "number", defaultVal: 5, min: 1, max: 30, step: 1, description: "Number of random permutation repeats per column" }
+    ],
+    traceCapabilities: ["metrics.loss"],
+    visualizationModes: ["2D", "Auto"],
+    forkable: true,
+    status: "verified"
   }
 ];
 

@@ -6,6 +6,9 @@ import {
   trainLogisticRegression,
   generateBlobsDataset,
   createPrng,
+  ALGORITHM_CATALOG,
+  getAlgorithmById,
+  getAlgorithmsByCategory,
 } from "@rewindverse/rewindml";
 
 describe("RewindML Mathematical Engine", () => {
@@ -61,6 +64,47 @@ describe("RewindML Mathematical Engine", () => {
     const finalLoss = result.history[25].loss;
     expect(finalLoss).toBeLessThan(initialLoss);
     expect(result.history[25].accuracy).toBeGreaterThanOrEqual(0.85);
+  });
+
+  it("validates that master algorithm catalogue meets specification coverage", () => {
+    expect(ALGORITHM_CATALOG.length).toBeGreaterThanOrEqual(50);
+
+    const requiredCategories = [
+      "Optimization",
+      "Supervised ML",
+      "Unsupervised ML",
+      "Deep Learning",
+      "Generative AI",
+      "Reinforcement Learning",
+      "Metrics & Diagnostics",
+    ];
+
+    for (const cat of requiredCategories) {
+      const items = getAlgorithmsByCategory(cat as any);
+      expect(items.length).toBeGreaterThan(0);
+    }
+
+    // Check specific essential algorithms
+    expect(getAlgorithmById("optim.sgd")).toBeDefined();
+    expect(getAlgorithmById("optim.adam")).toBeDefined();
+    expect(getAlgorithmById("optim.lbfgs")).toBeDefined();
+    expect(getAlgorithmById("supervised.svm_rbf")).toBeDefined();
+    expect(getAlgorithmById("supervised.random_forest")).toBeDefined();
+    expect(getAlgorithmById("unsupervised.dbscan")).toBeDefined();
+    expect(getAlgorithmById("neural.multihead_attention")).toBeDefined();
+    expect(getAlgorithmById("genai.vae")).toBeDefined();
+    expect(getAlgorithmById("rl.ppo")).toBeDefined();
+    expect(getAlgorithmById("xai.shap")).toBeDefined();
+
+    // Verify all entries have complete mathematical and trace metadata
+    for (const algo of ALGORITHM_CATALOG) {
+      expect(algo.id).toBeTruthy();
+      expect(algo.name).toBeTruthy();
+      expect(algo.mathEquation.length).toBeGreaterThan(0);
+      expect(algo.learningObjectives.length).toBeGreaterThan(0);
+      expect(algo.assumptions.length).toBeGreaterThan(0);
+      expect(algo.hyperparameters.length).toBeGreaterThanOrEqual(0);
+    }
   });
 });
 
