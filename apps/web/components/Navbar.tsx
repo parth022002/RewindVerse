@@ -82,6 +82,12 @@ export function Navbar() {
           >
             Docs
           </Link>
+          <Link
+            href="/settings"
+            className="hover:text-white transition-colors flex items-center gap-1.5"
+          >
+            Settings
+          </Link>
         </nav>
 
         {/* Right Action: Open Studio Button */}
@@ -161,6 +167,13 @@ export function Navbar() {
             className="block py-2 text-sm font-semibold text-white hover:text-cyan-400"
           >
             Documentation & SDK
+          </Link>
+          <Link
+            href="/settings"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block py-2 text-sm font-semibold text-white hover:text-cyan-400"
+          >
+            Settings & Storage
           </Link>
           <div className="pt-2">
             <Link

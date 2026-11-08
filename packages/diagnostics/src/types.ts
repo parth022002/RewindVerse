@@ -4,7 +4,7 @@ export interface DiagnosticFinding {
   id: string;
   detectorName: string;
   detectorVersion: string;
-  category: "convergence" | "stability" | "gradient" | "learning_rate";
+  category: "convergence" | "stability" | "gradient" | "learning_rate" | "overfitting";
   title: string;
   severity: DiagnosticSeverity;
   stepRange: [number, number];

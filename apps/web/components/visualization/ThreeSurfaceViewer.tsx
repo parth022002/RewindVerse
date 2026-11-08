@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { ObjectiveType, OBJECTIVES } from "@rewindverse/rewindml";
-import { RotateCcw, AlertTriangle, Layers } from "lucide-react";
+import { RotateCcw, AlertTriangle, Layers, Grid, Compass } from "lucide-react";
 
 interface ThreeSurfaceViewerProps {
   objectiveType: ObjectiveType;
@@ -24,7 +24,10 @@ export function ThreeSurfaceViewer({
   const mountRef = useRef<HTMLDivElement | null>(null);
   const [webglSupported, setWebglSupported] = useState<boolean>(true);
   const [gpuBackend, setGpuBackend] = useState<string>("WebGL 2 (Active)");
+  const [wireframeOn, setWireframeOn] = useState<boolean>(true);
   const controlsRef = useRef<OrbitControls | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const wireframeMeshRef = useRef<THREE.Mesh | null>(null);
 
   // Progressive enhancement check for WebGPU hardware support
   useEffect(() => {
@@ -67,6 +70,7 @@ export function ThreeSurfaceViewer({
     // 2. Camera setup
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.set(12, 14, 18);
+    cameraRef.current = camera;
 
     // 3. Renderer setup
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
@@ -158,6 +162,7 @@ export function ThreeSurfaceViewer({
       opacity: 0.12,
     });
     const wireframeMesh = new THREE.Mesh(geometry, wireframeMat);
+    wireframeMeshRef.current = wireframeMesh;
     scene.add(wireframeMesh);
 
     // Grid floor
@@ -290,13 +295,36 @@ export function ThreeSurfaceViewer({
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
+      cameraRef.current = null;
+      wireframeMeshRef.current = null;
     };
   }, [objectiveType, trajectory, currentStepIndex, secondaryTrajectory]);
+
+  // Synchronize wireframe overlay visibility dynamically
+  useEffect(() => {
+    if (wireframeMeshRef.current) {
+      wireframeMeshRef.current.visible = wireframeOn;
+    }
+  }, [wireframeOn]);
 
   const handleResetCamera = () => {
     if (controlsRef.current) {
       controlsRef.current.reset();
     }
+  };
+
+  const handleSetPreset = (preset: "iso" | "top" | "side") => {
+    if (!cameraRef.current || !controlsRef.current) return;
+    if (preset === "iso") {
+      cameraRef.current.position.set(12, 14, 18);
+    } else if (preset === "top") {
+      cameraRef.current.position.set(0, 26, 0.001);
+    } else if (preset === "side") {
+      cameraRef.current.position.set(24, 4, 0);
+    }
+    cameraRef.current.lookAt(0, 0, 0);
+    controlsRef.current.target.set(0, 0, 0);
+    controlsRef.current.update();
   };
 
   if (!webglSupported) {
@@ -327,17 +355,57 @@ export function ThreeSurfaceViewer({
         )}
       </div>
 
-      <div className="absolute top-4 right-4 flex items-center gap-2">
+      <div className="absolute top-4 right-4 flex flex-wrap items-center gap-1.5">
         <span className="hidden sm:inline-block bg-black/60 backdrop-blur-md px-2.5 py-1.5 rounded-lg text-[10px] font-mono text-cyan-300 border border-white/10">
           {gpuBackend}
         </span>
+
+        {/* Wireframe Toggle */}
+        <button
+          onClick={() => setWireframeOn((prev) => !prev)}
+          className={`backdrop-blur-md px-2.5 py-1.5 rounded-lg text-xs font-mono border transition-colors flex items-center gap-1 ${
+            wireframeOn
+              ? "bg-cyan-950/80 border-cyan-500/50 text-cyan-300"
+              : "bg-black/60 hover:bg-black/80 border-white/10 text-[var(--text-muted)] hover:text-white"
+          }`}
+          title="Toggle 3D Wireframe Overlay"
+        >
+          <Grid className="w-3 h-3" />
+          <span className="hidden md:inline">Mesh</span>
+        </button>
+
+        {/* Camera Angle Presets */}
+        <div className="flex items-center bg-black/60 backdrop-blur-md rounded-lg border border-white/10 p-0.5 text-[11px] font-mono">
+          <button
+            onClick={() => handleSetPreset("iso")}
+            className="px-2 py-1 rounded text-[var(--text-muted)] hover:text-white hover:bg-white/10 transition-colors"
+            title="Isometric Angle"
+          >
+            Iso
+          </button>
+          <button
+            onClick={() => handleSetPreset("top")}
+            className="px-2 py-1 rounded text-[var(--text-muted)] hover:text-white hover:bg-white/10 transition-colors"
+            title="Top-Down View"
+          >
+            Top
+          </button>
+          <button
+            onClick={() => handleSetPreset("side")}
+            className="px-2 py-1 rounded text-[var(--text-muted)] hover:text-white hover:bg-white/10 transition-colors"
+            title="Side Elevation View"
+          >
+            Side
+          </button>
+        </div>
+
         <button
           onClick={handleResetCamera}
           className="bg-black/60 hover:bg-black/80 backdrop-blur-md px-2.5 py-1.5 rounded-lg text-xs font-mono text-white border border-white/10 flex items-center gap-1.5 transition-colors"
           title="Reset Camera Angle"
         >
           <RotateCcw className="w-3 h-3 text-cyan-400" />
-          Reset Camera
+          <span className="hidden lg:inline">Reset</span>
         </button>
       </div>
 

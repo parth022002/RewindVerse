@@ -75,6 +75,11 @@ export function Footer() {
                   Diagnostic Insights
                 </Link>
               </li>
+              <li>
+                <Link href="/settings" className="hover:text-white transition-colors">
+                  Settings & Storage
+                </Link>
+              </li>
             </ul>
           </div>
 

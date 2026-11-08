@@ -13,13 +13,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/security",
     "/about",
     "/roadmap",
+    "/settings",
     "/studio",
+    "/studio/algorithms",
+    "/studio/forge",
     "/studio/lab",
     "/studio/import",
     "/studio/compare",
     "/studio/insights",
     "/studio/academy",
     "/studio/embeddings",
+    "/studio/settings",
   ];
 
   return routes.map((route) => ({

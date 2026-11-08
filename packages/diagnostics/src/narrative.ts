@@ -5,6 +5,7 @@ import {
   detectPlateau,
   detectGradientIssues,
   detectLrInstability,
+  detectOverfitting,
 } from "./detectors";
 
 /**
@@ -26,6 +27,11 @@ export function analyzeTraceDiagnostics(trace: RvtsParsedTrace): DiagnosticsRepo
 
   const gradIssues = detectGradientIssues(trace.steps);
   findings.push(...gradIssues);
+
+  const overfit = detectOverfitting(trace.steps);
+  if (overfit) {
+    findings.push(overfit);
+  }
 
   // If no divergence or extreme instability, check for plateau
   if (!divergence) {

@@ -489,6 +489,83 @@ export const ALGORITHM_CATALOG: AlgorithmEntry[] = [
     visualizationModes: ["2D", "3D", "Auto"],
     forkable: true,
     status: "preview"
+  },
+
+  // --- MODERN FIRST-ORDER OPTIMIZERS (CATALOG EXPANSION) ---
+  {
+    id: "optim.nag",
+    name: "Nesterov Accelerated Gradient (NAG)",
+    category: "Optimization",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Lookahead momentum calculation with anticipatory gradient correction",
+    description: "Evaluates the objective gradient at an anticipated lookahead position theta - gamma * v, preventing momentum overshoot before reaching valley floors.",
+    mathEquation: "v_t = \\gamma v_{t-1} + \\eta \\nabla f(\\theta_t - \\gamma v_{t-1}), \\quad \\theta_{t+1} = \\theta_t - v_t",
+    learningObjectives: [
+      "Understand lookahead positioning and damping of inertia overshoots",
+      "Compare convergence trajectories against standard Polyak momentum",
+      "Inspect acceleration in ill-conditioned convex quadratics"
+    ],
+    assumptions: ["Objective function is convex and has Lipschitz-continuous gradients"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.05, min: 0.0001, max: 1.0, step: 0.01, description: "Base step size" },
+      { name: "momentum", type: "number", defaultVal: 0.9, min: 0.1, max: 0.99, step: 0.05, description: "Nesterov lookahead momentum coefficient" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "optim.lion",
+    name: "Lion (EvoLved Sign Momentum)",
+    category: "Optimization",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Memory-efficient sign-based momentum discovered via evolutionary AutoML",
+    description: "Tracks only first-order momentum and updates weights with uniform magnitudes via the sign operation, decoupled with weight decay.",
+    mathEquation: "c_t = \\mathrm{sign}(\\beta_1 m_{t-1} + (1-\\beta_1) g_t), \\quad \\theta_{t+1} = \\theta_t - \\eta (c_t + \\lambda \\theta_t)",
+    learningObjectives: [
+      "Understand sign-based uniform update magnitudes across disparate dimensions",
+      "Observe 50% memory savings compared to Adam (no second-moment buffer)",
+      "Analyze stability differences on noisy stochastic loss landscapes"
+    ],
+    assumptions: ["Gradient noise is bounded; decoupled weight decay lambda is regularized"],
+    hyperparameters: [
+      { name: "learningRate", type: "number", defaultVal: 0.0001, min: 0.00001, max: 0.01, step: 0.0001, description: "Step size (typically 3-10x smaller than Adam)" },
+      { name: "beta1", type: "number", defaultVal: 0.9, min: 0.5, max: 0.99, step: 0.01, description: "Interpolation momentum parameter" },
+      { name: "beta2", type: "number", defaultVal: 0.99, min: 0.5, max: 0.999, step: 0.01, description: "EMA momentum update parameter" },
+      { name: "weightDecay", type: "number", defaultVal: 0.01, min: 0.0, max: 0.5, step: 0.01, description: "Decoupled weight decay coefficient" }
+    ],
+    traceCapabilities: ["metrics.loss", "gradients.summary", "parameters.snapshot"],
+    visualizationModes: ["2D", "3D", "Auto"],
+    forkable: true,
+    status: "verified"
+  },
+  {
+    id: "neural.cnn",
+    name: "2D Convolutional Layer & Spatial Feature Maps",
+    category: "Deep Learning",
+    priority: "P1",
+    provenance: "native",
+    tagline: "Translation-invariant local receptive field spatial feature extraction",
+    description: "Convolves learnable 2D kernel tensors across input channels to extract edges, textures, and high-level spatial representations.",
+    mathEquation: "(I * K)(i, j) = \\sum_m \\sum_n I(i-m, j-n) K(m, n)",
+    learningObjectives: [
+      "Inspect spatial activation maps across depth channels",
+      "Understand receptive field growth through progressive convolutions",
+      "Analyze edge-detector and Sobel kernel activations interactively"
+    ],
+    assumptions: ["Spatial locality and translation equivariance in input tensors"],
+    hyperparameters: [
+      { name: "kernelSize", type: "number", defaultVal: 3, min: 1, max: 7, step: 2, description: "Spatial filter dimension (odd integer)" },
+      { name: "stride", type: "number", defaultVal: 1, min: 1, max: 3, step: 1, description: "Kernel slide stride" }
+    ],
+    traceCapabilities: ["activations.tensor"],
+    visualizationModes: ["2D", "Auto"],
+    demoRoute: "/studio/insights",
+    forkable: false,
+    status: "verified"
   }
 ];
 

@@ -101,3 +101,16 @@ export async function deleteRunById(id: string): Promise<void> {
     req.onerror = () => reject(req.error);
   });
 }
+
+export async function clearAllRuns(): Promise<void> {
+  const db = await openDatabase();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE_NAME, "readwrite");
+    const store = tx.objectStore(STORE_NAME);
+    const req = store.clear();
+
+    req.onsuccess = () => resolve();
+    req.onerror = () => reject(req.error);
+  });
+}
+

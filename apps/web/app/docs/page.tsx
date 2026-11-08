@@ -103,6 +103,22 @@ export default function DocsPage() {
                 OKLCH color tokens, 4px baseline grid, keyboard-first accessibility (WCAG 2.2 AA), and brand lockup hierarchy.
               </p>
             </div>
+
+            <div className="p-5 rounded-xl bg-[var(--surface)] border border-cyan-500/30 space-y-2">
+              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider block">Algorithms (v1.0)</span>
+              <h3 className="text-sm font-bold text-white">Algorithm Catalogue Specification</h3>
+              <p className="text-xs text-[var(--text-muted)]">
+                20+ verified machine learning algorithms across optimization (SGD, NAG, Lion, AdamW), supervised ML, neural networks, and RL.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-[var(--surface)] border border-violet-500/30 space-y-2">
+              <span className="text-[10px] font-mono text-violet-400 uppercase tracking-wider block">Forge Engine (v1.0)</span>
+              <h3 className="text-sm font-bold text-white">Algorithm Forge & AST Validator</h3>
+              <p className="text-xs text-[var(--text-muted)]">
+                Sandboxed algorithmic authoring via Mode A (Fork), Mode B (Node DAG), and Mode C (Formula DSL) with strict runtime safety bounds.
+              </p>
+            </div>
           </div>
         </section>
 

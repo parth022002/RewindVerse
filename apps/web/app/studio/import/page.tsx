@@ -141,6 +141,40 @@ export default function ImportCenterPage() {
     setCsvErrors(errors);
   };
 
+  const handleApplyPreset = (preset: "generic" | "tensorboard" | "mlflow" | "wandb") => {
+    if (!csvPreview) return;
+    const headers = csvPreview.headers;
+    const findCol = (candidates: string[]) => {
+      const lower = candidates.map((c) => c.toLowerCase());
+      return headers.find((h) => lower.includes(h.toLowerCase())) || "";
+    };
+
+    let mapping: CsvColumnMapping = {};
+    if (preset === "tensorboard") {
+      mapping = {
+        stepColumn: findCol(["step", "Step", "index"]),
+        lossColumn: findCol(["value", "Value", "loss", "train_loss"]),
+        lrColumn: findCol(["learning_rate", "lr"]),
+      };
+    } else if (preset === "mlflow") {
+      mapping = {
+        stepColumn: findCol(["step", "Step"]),
+        lossColumn: findCol(["value", "Value", "metric_value", "loss"]),
+      };
+    } else if (preset === "wandb") {
+      mapping = {
+        stepColumn: findCol(["_step", "step", "epoch"]),
+        lossColumn: findCol(["loss", "train/loss", "train_loss"]),
+        valLossColumn: findCol(["val_loss", "validation/loss", "eval/loss"]),
+        lrColumn: findCol(["lr", "learning_rate", "lr-AdamW"]),
+        accuracyColumn: findCol(["accuracy", "acc", "val_accuracy"]),
+      };
+    } else {
+      mapping = csvPreview.detectedMapping;
+    }
+    handleRecomputeCsv(mapping);
+  };
+
   const handleSaveToWorkspace = async () => {
     try {
       if (fileType === "rvtrace" && rvtsResult?.trace) {
@@ -274,9 +308,42 @@ export default function ImportCenterPage() {
 
           {/* Column Mapping Controls */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-3">
-              Column Mapping
-            </h4>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+                Column Mapping
+              </h4>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="text-[10px] font-mono text-[var(--text-muted)] mr-1">Presets:</span>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPreset("generic")}
+                  className="px-2 py-1 rounded bg-[var(--surface-raised)] border border-[var(--border)] hover:border-cyan-500/50 text-[11px] font-mono text-cyan-300 transition-colors"
+                >
+                  Auto-Detect
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPreset("tensorboard")}
+                  className="px-2 py-1 rounded bg-[var(--surface-raised)] border border-[var(--border)] hover:border-amber-500/50 text-[11px] font-mono text-amber-300 transition-colors"
+                >
+                  TensorBoard
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPreset("mlflow")}
+                  className="px-2 py-1 rounded bg-[var(--surface-raised)] border border-[var(--border)] hover:border-blue-500/50 text-[11px] font-mono text-blue-300 transition-colors"
+                >
+                  MLflow
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPreset("wandb")}
+                  className="px-2 py-1 rounded bg-[var(--surface-raised)] border border-[var(--border)] hover:border-violet-500/50 text-[11px] font-mono text-violet-300 transition-colors"
+                >
+                  W&B
+                </button>
+              </div>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
               <div>
                 <label className="block text-[11px] font-medium text-white mb-1">

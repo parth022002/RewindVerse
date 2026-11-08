@@ -156,3 +156,76 @@ export function detectLrInstability(steps: RvtsStepRecord[]): DiagnosticFinding 
 
   return null;
 }
+
+/**
+ * Detects overfitting onset where training loss continues decreasing while validation loss increases.
+ * Adheres strictly to FR-DIAG-004:
+ * "Requires train and validation signals; no inference when validation signal absent."
+ */
+export function detectOverfitting(
+  steps: RvtsStepRecord[],
+  patience: number = 4
+): DiagnosticFinding | null {
+  const hasValLoss = steps.some(
+    (s) =>
+      typeof (
+        s.metrics?.val_loss ??
+        (s.metrics as Record<string, unknown> | undefined)?.validation_loss
+      ) === "number"
+  );
+
+  // Strict non-inference: if validation metrics are absent, return null immediately
+  if (!hasValLoss || steps.length < patience * 2) {
+    return null;
+  }
+
+  let overfitStreak = 0;
+  let onsetStep = -1;
+
+  for (let i = 1; i < steps.length; i++) {
+    const prevTrain = steps[i - 1].metrics?.loss;
+    const currTrain = steps[i].metrics?.loss;
+    const prevVal =
+      steps[i - 1].metrics?.val_loss ??
+      (steps[i - 1].metrics as Record<string, unknown> | undefined)?.validation_loss;
+    const currVal =
+      steps[i].metrics?.val_loss ??
+      (steps[i].metrics as Record<string, unknown> | undefined)?.validation_loss;
+
+    if (
+      typeof prevTrain === "number" &&
+      typeof currTrain === "number" &&
+      typeof prevVal === "number" &&
+      typeof currVal === "number"
+    ) {
+      if (currTrain <= prevTrain && currVal > prevVal) {
+        if (overfitStreak === 0) onsetStep = steps[i - 1].step;
+        overfitStreak++;
+        if (overfitStreak >= patience) {
+          return {
+            id: `diag_overfit_${onsetStep}`,
+            detectorName: "OverfitDetector",
+            detectorVersion: "1.0.0",
+            category: "overfitting",
+            title: "Potential Generalization Divergence / Overfitting Onset",
+            severity: "warning",
+            stepRange: [onsetStep, steps[i].step],
+            summary: `Training loss decreased while validation loss increased across ${overfitStreak} consecutive evaluation steps.`,
+            evidenceExplanation: `Between steps ${onsetStep} and ${steps[i].step}, training loss decreased (${prevTrain.toFixed(4)} → ${currTrain.toFixed(4)}) while validation loss worsened to ${currVal.toFixed(4)}.`,
+            signalsUsed: ["metrics.loss", "metrics.val_loss"],
+            recommendations: [
+              `Consider checkpointing or early stopping near step ${onsetStep}.`,
+              "Introduce or increase regularization (L2 weight decay, dropout).",
+              "Expand training dataset or apply data augmentation.",
+            ],
+          };
+        }
+      } else {
+        overfitStreak = 0;
+      }
+    }
+  }
+
+  return null;
+}
+

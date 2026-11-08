@@ -33,6 +33,9 @@
 | **Phase 13** | Visual Experience & 3D Design Implementation (`docs/design`) | P0 | 🟢 Completed (Multi-layer background, Hero Orbit demo) |
 | **Phase 14** | Website Performance & Optimization Standard (`docs/engineering`) | P0 | 🟢 Completed (103–122 kB First Load JS, Context Loss Recovery) |
 | **Phase 15** | Directory Cleanliness, Structure Optimization & Package Docs | P0 | 🟢 Completed (Root README, Package READMEs, Docs Index) |
+| **Phase 16** | Algorithm Catalogue & Algorithm Forge Architecture | P0 | 🟢 Completed (Modes A/B/C, AST Validator, Sandboxed Replay) |
+| **Phase 17** | Document Audit, Settings Route & Ergonomic Enhancements | P0 | 🟢 Completed (30/30 Vitest, 30 Routes Compiled) |
+
 
 ---
 
@@ -340,6 +343,43 @@
   - [x] `tests/unit/optimizers.test.ts` (3 tests covering AdamW weight decay, RMSProp ravine dampening, Adagrad monotonic accumulation).
   - [x] 100% unit tests passing (28/28 tests across 6 suites).
   - [x] 0 TypeScript compiler errors across all monorepo workspaces.
+
+---
+
+## 🛠️ Phase 17: Document Audit, Settings Route & Ergonomic Enhancements
+
+- [x] **New Route `/settings` and `/studio/settings`**:
+  - [x] Implemented `/settings` fulfilling Sitemap node `Q[Settings]` and Route Definition Table in `RewindVerse_Website_Design_and_Engineering_Standards.md`.
+  - [x] Visual Appearance & Theme selector: Obsidian Void, Slate Neutral, System Synchronized.
+  - [x] Reduced Motion toggle persisting to local preferences and enforcing WCAG 2.2 AA non-continuous motion.
+  - [x] Replay Engine defaults: Playback speed (0.5x, 1.0x, 2.0x, 5.0x), trajectory tail windowing.
+  - [x] Privacy & Data Sovereignty: 100% client-side Web Worker execution guarantee, telemetry opt-in/opt-out.
+  - [x] Local Storage (IndexedDB) Manager: Display approximate storage used, total saved runs, 1-click JSON backup export, and safe destructive clear.
+  - [x] Cloud connectivity indicator: Neon Serverless Postgres and Neon S3 Object Storage status.
+- [x] **API Health Endpoints (`/api/v1/health` and `/api/health`)**:
+  - [x] Created `GET /api/v1/health` and `GET /api/health` fulfilling Section 19.2 P0 readiness signal.
+- [x] **Accessibility: Media Query `prefers-reduced-motion`**:
+  - [x] Added `@media (prefers-reduced-motion: reduce)` in `apps/web/styles/globals.css` halting continuous aurora orbs, trajectory dasharrays, and star pulses.
+- [x] **3D Surface Viewer Camera Presets & Wireframe Toggle (`ThreeSurfaceViewer.tsx`)**:
+  - [x] Added Camera Angle Presets: Isometric, Top-Down, Side Elevation.
+  - [x] Added interactive Wireframe Mesh toggle button to HUD.
+- [x] **Diagnostic Detector: `detectOverfitting`**:
+  - [x] Implemented `detectOverfitting` in `packages/diagnostics/src/detectors.ts` conforming strictly to `FR-DIAG-004` (train and validation loss divergence; zero inference when validation loss is absent).
+  - [x] Added Vitest tests in `tests/unit/diagnostics.test.ts`.
+- [x] **Training Intelligence Report Export in `/studio/insights`**:
+  - [x] Added "Export Report" button downloading a formatted Markdown (`.md`) report fulfilling `FR-COMP-003`.
+- [x] **Importer Quick-Select Presets in `/studio/import`**:
+  - [x] Added 1-click column mapping presets for Generic CSV, TensorBoard, MLflow, and Weights & Biases exports (`FR-IMP-003`, `FR-IMP-004`, `FR-IMP-005`).
+- [x] **Algorithm Catalogue Expansion**:
+  - [x] Added Nesterov Accelerated Gradient (NAG), Lion (EvoLved Sign Momentum), and 2D Spatial CNN to `packages/rewindml/src/catalog.ts` bringing registry to 20 verified entries.
+- [x] **Documentation Shell Expansion (`/docs`)**:
+  - [x] Added cards for `docs/algorithms/ALGORITHM_CATALOG.md` and `docs/forge/ALGORITHM_FORGE_SPECIFICATION.md`.
+- [x] **Security Headers**:
+  - [x] Configured `headers()` in `apps/web/next.config.ts` enforcing strict security headers (CSP, nosniff, DENY, Permissions-Policy).
+- [x] **Verification**:
+  - [x] 30/30 unit tests passing in Vitest (2.7s).
+  - [x] 0 TypeScript compiler errors across all workspace packages and apps/web.
+  - [x] 30/30 routes compiled cleanly in Next.js production build with 0 ESLint warnings.
 
 ---
 

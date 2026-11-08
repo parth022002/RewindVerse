@@ -17,6 +17,7 @@ import {
   Compass,
   Wrench,
   BookOpen,
+  Settings,
 } from "lucide-react";
 
 const NAV_GROUPS = [
@@ -48,6 +49,12 @@ const NAV_GROUPS = [
     items: [
       { href: "/studio/academy", label: "Academy", icon: GraduationCap },
       { href: "/studio/import", label: "Import Center", icon: UploadCloud },
+    ],
+  },
+  {
+    title: "Preferences & System",
+    items: [
+      { href: "/studio/settings", label: "Settings & Storage", icon: Settings },
     ],
   },
 ];
