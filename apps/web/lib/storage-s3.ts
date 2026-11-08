@@ -43,11 +43,19 @@ export function getS3Client(): S3Client | null {
  * Checks the status and configuration of Neon S3 Object Storage.
  */
 export function getS3ConfigSummary() {
+  let endpointHost: string | null = null;
+  if (endpoint) {
+    try {
+      endpointHost = new URL(endpoint).host;
+    } catch {
+      endpointHost = endpoint;
+    }
+  }
   return {
     configured: isS3Configured,
     bucket: defaultBucket,
     region,
-    endpointHost: endpoint ? new URL(endpoint).host : null,
+    endpointHost,
   };
 }
 
