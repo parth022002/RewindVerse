@@ -20,3 +20,4 @@ Target budget: Shared First Load JS ≤ 200 kB gzip.
 - **Context Loss Handling:** Dynamic listeners attached on `canvas.addEventListener("webglcontextlost")` and `webglcontextrestored`.
 - **Buffer Geometry Cleanup:** Explicit disposal of geometries, materials, and textures on component unmount to prevent GPU VRAM memory leaks.
 - **Frame Rate Parity:** 60 FPS trajectory playback with requestAnimationFrame throttling.
+

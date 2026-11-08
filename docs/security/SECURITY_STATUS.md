@@ -31,3 +31,4 @@
 | **Denial of Service (DoS)** | Hard step counter / fuel limits (max 500,000 steps); payload size caps (50 MB). | **PASS** | Worker halts immediately upon reaching budget without crashing browser UI thread. |
 | **Data Privacy & Exfiltration** | Client-side IndexedDB persistence; zero automated cloud transmission. | **PASS** | Verified via browser network inspector; 0 outbound telemetry requests. |
 | **Cloud Asset Integrity** | SHA-256 content hashes, short-lived presigned URLs, read-only DB grants. | **PASS** | Cloud share tokens validated with cryptographically secure random bytes. |
+

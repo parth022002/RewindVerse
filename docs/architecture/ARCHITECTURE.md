@@ -49,3 +49,4 @@ RewindVerse is structured around a **Local-First, Decoupled-Compute Model**:
 11. **Research Notebook (`/studio/notebook`)**: Executable scientific notebook combining markdown, KaTeX math, code cells, and visualizer frames.
 12. **Reproduction Studio (`/studio/reproduce`)**: `.rvcapsule` verification workspace with epsilon-tolerance numerical diffing.
 13. **Compute Profiler (`/studio/profiler`)**: Runtime latency, step throughput, and memory allocation inspector.
+

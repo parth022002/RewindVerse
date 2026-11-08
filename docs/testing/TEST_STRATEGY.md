@@ -35,3 +35,4 @@ pnpm --filter @rewindverse/web exec tsc --noEmit
 4. `tests/unit/rewindml.test.ts`: Continuous loss surface generation, gradient accuracy.
 5. `tests/unit/diagnostics.test.ts`: Divergence, loss plateaus, vanishing/exploding gradients.
 6. `tests/unit/forge.test.ts`: AST token allowlisting, safety checks, cycle detection.
+

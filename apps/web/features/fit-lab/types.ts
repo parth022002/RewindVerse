@@ -58,3 +58,4 @@ export interface FitReport {
   limitations: string[];
   generatedAt: string;
 }
+

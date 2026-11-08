@@ -25,3 +25,4 @@
 | **REQ-019** | Reproduction Studio | Complete Spec §15.0 | Trace export/import | Build `/studio/reproduce` for `.rvcapsule` verification | P2 | `IN_PROGRESS` | Numerical tolerance diff checking against recorded runs. |
 | **REQ-020** | Compute & Training Profiler | Complete Spec §20.0 | Fuel counter in worker | Build `/studio/profiler` with latency and memory meters | P2 | `IN_PROGRESS` | Step duration, throughput, and bottleneck diagnostics. |
 | **REQ-021** | Security & AST Sandbox | Security Std §2.0 | `packages/rewindml/src/forge` | Recursive-descent AST interpreter with fuel budget | P0 | `VERIFIED` | 7 Vitest unit tests passing; zero dynamic code execution. |
+

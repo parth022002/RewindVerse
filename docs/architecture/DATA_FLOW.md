@@ -41,3 +41,4 @@ flowchart TD
 1. **Zero Data Leakage:** Preprocessing transformations (scaling, imputation, encoding) are strictly fitted on training splits only and applied downstream to validation/test partitions.
 2. **Deterministic Replay:** Every frame index is tied to monotonic iteration numbers, preserving parameter snapshots, loss values, and gradient norms.
 3. **Trace Immutability:** Exported `.rvtrace` files are cryptographically fingerprinted to ensure research provenance.
+

@@ -35,6 +35,9 @@
 | **Phase 15** | Directory Cleanliness, Structure Optimization & Package Docs | P0 | 🟢 Completed (Root README, Package READMEs, Docs Index) |
 | **Phase 16** | Algorithm Catalogue & Algorithm Forge Architecture | P0 | 🟢 Completed (Modes A/B/C, AST Validator, Sandboxed Replay) |
 | **Phase 17** | Document Audit, Settings Route & Ergonomic Enhancements | P0 | 🟢 Completed (30/30 Vitest, 30 Routes Compiled) |
+| **Phase 18** | Advanced Algorithm Forge Research Workbench (`/studio/forge`) | P0 | 🟢 Completed (Data, Eq, Flow, Code, Bench Studios & Jacobian Verifier) |
+| **Phase 19** | Complete Research Platform Expansion (Fit Lab, Data Lab, Trust, Explainability, Benchmarks) | P0 | 🟢 Completed (39 Routes, 33/33 Vitest Tests) |
+| **Phase 20** | Deep Directory Cleaning, Monorepo Reordering & Python Examples | P0 | 🟢 Completed (Empty Scaffolding Pruned, Working Examples Added) |
 
 
 ---
@@ -380,6 +383,75 @@
   - [x] 30/30 unit tests passing in Vitest (2.7s).
   - [x] 0 TypeScript compiler errors across all workspace packages and apps/web.
   - [x] 30/30 routes compiled cleanly in Next.js production build with 0 ESLint warnings.
+
+---
+
+## Phase 18: Advanced Algorithm Forge Research Workbench (`/studio/forge`)
+- [x] **Data Workbench**:
+  - [x] Synthetic objective generator (Anisotropic Ravine, Rosenbrock Banana, 2D Gaussian Blobs).
+  - [x] Custom CSV/TSV statistical profiler (count, nulls, mean, std, min, max, dtype).
+  - [x] Train/Val/Test partitioning slider with zero-leakage enforcement.
+  - [x] Feature preprocessing pipeline selector (Raw, Z-score, Min-Max).
+- [x] **Equation Studio**:
+  - [x] Mathematical symbol palette with 1-click token insertion.
+  - [x] Live LaTeX formula preview rendering.
+  - [x] Central finite-difference Jacobian and gradient verification ($g_i \approx \frac{f(\theta+\epsilon e_i) - f(\theta-\epsilon e_i)}{2\epsilon}$) with real-time Pass/Fail error badge.
+- [x] **Visual Algorithm Builder**:
+  - [x] Conceptual algorithmic lifecycle flowchart (Intake $\to$ Forward $\to$ Loss $\to$ Backprop $\to$ Update $\to$ Convergence $\to$ Checkpoint).
+  - [x] Executable computational DAG with real-time cycle detection (`isAcyclic`).
+- [x] **Code Studio**:
+  - [x] Python Research Runtime Contract (§8.3) and TypeScript Browser Worker Contract (§8.4).
+  - [x] Allowlisted static AST safety analysis (zero dynamic `eval()` execution).
+  - [x] 1-Click "Export .py Script" downloading standalone Python harness (`run_custom_algorithm.py`).
+- [x] **Benchmark Comparator**:
+  - [x] Simultaneous convergence race against Vanilla SGD, Polyak Momentum, and Adam on identical coordinates.
+
+---
+
+## Phase 19: Complete Research Platform Workspaces
+- [x] **Data-to-Algorithm Fit Lab (`/studio/fit-lab`)**:
+  - [x] Problem specification contract (`ProblemSpec` with task families, constraints, metrics).
+  - [x] Algorithm compatibility and recommendation engine with inclusion/exclusion rationales.
+  - [x] Baseline model comparisons (Naive Mean, Majority Class) under strict validation strategies.
+  - [x] Conditional recommendation fit report with 1-click Markdown export.
+- [x] **Data Lab & Dataset Observatory (`/studio/data`)**:
+  - [x] Schema profiling, missingness patterns, distinct cardinality, and quantile distributions.
+  - [x] Preprocessing pipelines and cryptographic dataset versioning (`rvds-sha256-...`).
+- [x] **Experiment Intelligence & What-if Branching (`/studio/experiments`)**:
+  - [x] Multi-run tracking, tag grouping, and parameter-metric correlation matrices.
+  - [x] What-if checkpoint branching: fork from step $t$, adjust hyperparameters ($\eta$, $\beta$), and restore exact optimizer state.
+- [x] **RewindBench (`/studio/benchmarks`)**:
+  - [x] Standardized benchmark tracks (Optimization, Classical ML, Robustness).
+  - [x] Multi-tier verifiable leaderboards (Verified, Reproducible, Self-Reported).
+- [x] **Model Trust & Reliability Lab (`/studio/trust`)**:
+  - [x] Expected Calibration Error (ECE) and Maximum Calibration Error (MCE) with 10-bin reliability diagram.
+  - [x] Gaussian noise perturbation stress testing and covariate shift detection.
+- [x] **Explainability Workbench (`/studio/explainability`)**:
+  - [x] Permutation Feature Importance (PFI) with bar ranking.
+  - [x] Partial Dependence Plots (PDP) and Individual Conditional Expectation (ICE).
+- [x] **Research Notebook (`/studio/notebook`)**:
+  - [x] Interactive computational notebook with Markdown, LaTeX math, executable code cells, and Jupyter `.ipynb` export.
+- [x] **Reproduction Studio (`/studio/reproduce`)**:
+  - [x] `.rvcapsule` reproducibility capsule verification with epsilon-tolerance numerical diff checking ($\Delta \le 10^{-4}$).
+- [x] **Compute & Training Profiler (`/studio/profiler`)**:
+  - [x] Step latency breakdown, simulation throughput (steps/sec), and memory allocation inspector.
+- [x] **Studio Navigation Hub**:
+  - [x] Reorganized sidebar into 5 intuitive groups and added cards for all new workspaces.
+
+---
+
+## Phase 20: Deep Directory Cleaning, Reordering & Python Examples
+- [x] **Monorepo Directory Cleaning**:
+  - [x] Pruned all empty leftover scaffolding directories: `apps/web/app/(auth)`, `apps/web/app/(marketing)`, `apps/web/app/(studio)`, `apps/web/components/feedback|forms|layout|marketing|navigation|studio|ui|visualizations`, `apps/web/hooks`, `apps/web/tests`, `apps/web/content`, `tests/accessibility|benchmarks|contract|e2e|fixtures|integration|parity|performance|security`.
+- [x] **Functional Python SDK Examples**:
+  - [x] `sdk/python/examples/pytorch/train_quadratic_rvtrace.py`: PyTorch-style optimization loop logging loss, parameters, and gradients to RVTS.
+  - [x] `sdk/python/examples/scikit_learn/train_classifier_rvtrace.py`: Binary classification simulation with decision boundaries.
+  - [x] `sdk/python/examples/custom_loop/rosenbrock_optimization.py`: Polyak momentum descent on the Rosenbrock Banana landscape.
+- [x] **Automated Testing & Compilation**:
+  - [x] 33/33 Vitest unit tests passing across 7 test suites.
+  - [x] 3/3 Python unittest tests passing in `sdk/python/tests`.
+  - [x] 0 TypeScript compiler errors across all packages and apps.
+  - [x] 39/39 routes compiled cleanly in Next.js production build with 0 ESLint warnings.
 
 ---
 

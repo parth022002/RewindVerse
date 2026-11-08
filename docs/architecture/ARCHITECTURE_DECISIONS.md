@@ -24,3 +24,4 @@
 - **Context:** Some users prefer lightweight 2D top-down contour maps; others require immersive 3D spatial perspective.
 - **Decision:** Implement both 2D and 3D rendering modes with persistent user preferences, synchronized scrubbers, and WebGL context loss recovery.
 - **Consequences:** Seamless transitions between analytical 2D views and spatial 3D surfaces without loss of current step state.
+

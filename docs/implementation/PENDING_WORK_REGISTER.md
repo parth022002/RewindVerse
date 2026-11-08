@@ -11,3 +11,4 @@
 | **PWR-007** | Research Notebook | Standalone workspace `/studio/notebook` with interactive code cells, KaTeX math, and visualizer embeds. | P2 | v1.2.0 | None (In Progress) |
 | **PWR-008** | Reproduction Studio | Standalone workspace `/studio/reproduce` for `.rvcapsule` numerical tolerance verification. | P2 | v1.2.0 | None (In Progress) |
 | **PWR-009** | Compute & Training Profiler | Standalone workspace `/studio/profiler` with step duration and memory metrics. | P2 | v1.2.0 | None (In Progress) |
+
