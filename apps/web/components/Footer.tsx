@@ -149,19 +149,16 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 mt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[var(--text-muted)] font-mono">
-          <span>&copy; {new Date().getFullYear()} RewindVerse. Open-source under Apache 2.0.</span>
-          <div className="flex items-center gap-4">
-            <Link href="/how-it-works" className="hover:text-white transition-colors">
-              How It Works
-            </Link>
-            <Link href="/security" className="hover:text-white transition-colors">
-              Security
-            </Link>
-            <Link href="/roadmap" className="hover:text-white transition-colors">
-              Roadmap
-            </Link>
-          </div>
+        <div className="pt-8 mt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-center gap-6 text-[11px] text-[var(--text-muted)] font-mono">
+          <Link href="/how-it-works" className="hover:text-white transition-colors">
+            How It Works
+          </Link>
+          <Link href="/security" className="hover:text-white transition-colors">
+            Security
+          </Link>
+          <Link href="/roadmap" className="hover:text-white transition-colors">
+            Roadmap
+          </Link>
         </div>
       </div>
     </footer>
