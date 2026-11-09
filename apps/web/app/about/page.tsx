@@ -7,6 +7,7 @@ import { Footer } from "../../components/Footer";
 import {
   Sparkles,
   ArrowRight,
+  ArrowUpRight,
   RotateCcw,
   BookOpen,
   CheckCircle2,
@@ -16,6 +17,7 @@ import {
   Heart,
   Globe,
   Award,
+  Github,
 } from "lucide-react";
 
 export default function AboutPage() {
@@ -115,6 +117,38 @@ export default function AboutPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* Creator & Developer Spotlight */}
+        <section className="max-w-4xl mx-auto px-4 sm:px-6 mb-20">
+          <div className="p-8 sm:p-10 rounded-3xl glass-panel relative overflow-hidden border border-white/[0.1] bg-gradient-to-br from-cyan-950/20 via-transparent to-violet-950/20">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-cyan-500 to-violet-600 flex items-center justify-center text-white text-xl sm:text-2xl font-black shadow-lg shadow-cyan-500/25 shrink-0 tracking-wider">
+                PA
+              </div>
+              <div className="space-y-3 text-center sm:text-left flex-1">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-950/40 text-cyan-300 text-xs font-mono font-medium">
+                  Lead Architect & Developer
+                </div>
+                <h3 className="text-2xl font-extrabold text-white">Parth Ahuja</h3>
+                <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  Creator and primary engineer of RewindVerse. Built to transform high-dimensional machine learning optimization and training dynamics into deterministic, interactive, and inspectable visual narratives.
+                </p>
+                <div className="pt-2 flex items-center justify-center sm:justify-start gap-4 text-xs font-mono">
+                  <a
+                    href="https://github.com/parth022002"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-white hover:text-cyan-400 transition-colors font-medium"
+                  >
+                    <Github className="w-4 h-4" />
+                    <span>github.com/parth022002</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 

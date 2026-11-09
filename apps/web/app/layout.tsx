@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "RewindVerse — Every Model Has a Story",
   description:
     "Train a model, then replay how it learned. An interactive ML training replay, learning, and experiment intelligence platform.",
+  authors: [{ name: "Parth Ahuja", url: "https://github.com/parth022002" }],
+  creator: "Parth Ahuja",
   icons: {
     icon: "/brand/favicon.png",
     shortcut: "/brand/favicon.png",

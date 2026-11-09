@@ -149,16 +149,30 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 mt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-center gap-6 text-[11px] text-[var(--text-muted)] font-mono">
-          <Link href="/how-it-works" className="hover:text-white transition-colors">
-            How It Works
-          </Link>
-          <Link href="/security" className="hover:text-white transition-colors">
-            Security
-          </Link>
-          <Link href="/roadmap" className="hover:text-white transition-colors">
-            Roadmap
-          </Link>
+        <div className="pt-8 mt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[var(--text-muted)] font-mono">
+          <div className="flex items-center gap-1.5">
+            <span>Developed by</span>
+            <a
+              href="https://github.com/parth022002"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white hover:text-cyan-400 font-semibold transition-colors inline-flex items-center gap-1"
+            >
+              <span>Parth Ahuja</span>
+              <ArrowUpRight className="w-3 h-3 text-[var(--text-muted)]" />
+            </a>
+          </div>
+          <div className="flex items-center gap-6">
+            <Link href="/how-it-works" className="hover:text-white transition-colors">
+              How It Works
+            </Link>
+            <Link href="/security" className="hover:text-white transition-colors">
+              Security
+            </Link>
+            <Link href="/roadmap" className="hover:text-white transition-colors">
+              Roadmap
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
