@@ -29,6 +29,7 @@ An interactive machine learning training replay, learning, and experiment intell
 
 ## 📑 Table of Contents
 
+- [Live Platform Showcase](#-visual-showcase--live-platform-tour)
 - [Overview](#-overview)
 - [Key Features](#-key-features)
 - [Product Architecture & Studio Modules](#-product-architecture--studio-modules)
@@ -42,6 +43,41 @@ An interactive machine learning training replay, learning, and experiment intell
 - [Security & Privacy Architecture](#-security--privacy-architecture)
 - [Documentation Index](#-documentation-index)
 - [Contributing & License](#-license)
+
+---
+
+## 📸 Visual Showcase & Live Platform Tour
+
+Experience RewindVerse live in production at **[rewindverse.vercel.app](https://rewindverse.vercel.app/)**:
+
+<div align="center">
+
+### 🌌 Interactive 3D Loss Surface Hero & Landing
+![RewindVerse Landing Page](docs/assets/screenshots/01-landing-page.png)
+
+</div>
+
+<br />
+
+| **Interactive Training Lab (2D/3D Dynamics)** | **Algorithm Forge & Canvas Pipeline** |
+|:---:|:---:|
+| ![Interactive ML Lab](docs/assets/screenshots/15-studio-interactive-lab.png) | ![Algorithm Forge](docs/assets/screenshots/12-studio-forge.png) |
+| *Real-time continuous optimizer trajectory & decision boundary replay* | *Block-based DAG algorithm composition with instant validation* |
+
+| **Run Compare (Dual 3D Trajectory Overlays)** | **Data-to-Algorithm Fit Lab** |
+|:---:|:---:|
+| ![Run Compare](docs/assets/screenshots/17-studio-compare.png) | ![Fit Lab](docs/assets/screenshots/14-studio-fit-lab.png) |
+| *Synchronized step-scrubbed comparison across multiple runs* | *Zero-leakage dataset profiling & candidate benchmark engine* |
+
+| **3D Loss Landscapes Gallery** | **High-Dimensional Embeddings Projector** |
+|:---:|:---:|
+| ![Visualizations Gallery](docs/assets/screenshots/04-visualizations.png) | ![Embeddings Projector](docs/assets/screenshots/19-studio-embeddings.png) |
+| *Curated library of mathematical surfaces & optimization hazards* | *Hardware-accelerated PCA & dimensionality reduction in 3D* |
+
+| **Studio Dashboard & Mission Control** | **Algorithm Explorer & Catalog** |
+|:---:|:---:|
+| ![Studio Dashboard](docs/assets/screenshots/10-studio-overview.png) | ![Algorithm Catalogue](docs/assets/screenshots/11-studio-algorithms.png) |
+| *Local-first project management & recent trajectory runs* | *Searchable catalog of ML algorithms & verified benchmarks* |
 
 ---
 

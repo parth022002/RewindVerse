@@ -38,6 +38,8 @@ next-env.d.ts
 # Vercel Deployment Cache
 .vercel/
 **/.vercel/
+.playwright-mcp/
+**/.playwright-mcp/
 
 # Logs & Debugging
 *.log
