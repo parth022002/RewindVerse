@@ -84,13 +84,13 @@ export default function ProductPage() {
       action: "Enter Academy",
     },
     {
-      title: "RVTS Specification",
-      subtitle: "Open Trace Standard",
-      desc: "A capability-declared, versioned JSON Lines contract. Ensures trace portability between browser and Python training pipelines.",
+      title: "System Architecture",
+      subtitle: "Open Replay Pipeline",
+      desc: "A capability-declared, versioned trace contract ensuring replay fidelity between browser computation and Python training runs.",
       icon: FileCode,
       color: "text-slate-400",
-      href: "/docs",
-      action: "Read Specs",
+      href: "/how-it-works",
+      action: "Learn How It Works",
     },
   ];
 

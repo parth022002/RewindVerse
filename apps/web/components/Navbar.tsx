@@ -102,13 +102,6 @@ export function Navbar() {
             {resourcesOpen && (
               <div className="absolute top-full left-0 w-52 p-2 rounded-xl border border-white/[0.1] bg-[#0c1220]/95 backdrop-blur-2xl shadow-2xl space-y-1 z-50">
                 <Link
-                  href="/docs"
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.06] transition-colors"
-                >
-                  <FileText className="w-3.5 h-3.5 text-cyan-400" />
-                  <span>Documentation</span>
-                </Link>
-                <Link
                   href="/security"
                   className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-[var(--text-muted)] hover:text-white hover:bg-white/[0.06] transition-colors"
                 >
@@ -183,14 +176,6 @@ export function Navbar() {
             <span className="text-[10px] uppercase font-bold tracking-wider text-[var(--text-muted)] block">
               Resources
             </span>
-            <Link
-              href="/docs"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-2 py-1.5 text-xs text-[var(--text-muted)] hover:text-white"
-            >
-              <FileText className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Documentation</span>
-            </Link>
             <Link
               href="/security"
               onClick={() => setMobileMenuOpen(false)}

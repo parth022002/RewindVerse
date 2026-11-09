@@ -16,7 +16,7 @@ The primary web application for RewindVerse, built with Next.js 15 (App Router),
    - `/how-it-works`: 5-stage interactive workflow guide (Train → Record → Replay → Inspect → Understand).
    - `/visualizations`: Interactive 6-module 2D/3D visualization catalog with data provenance badges.
    - `/learn`: Academy challenge curricula and optimization learning journeys.
-   - `/docs`: Engineering, design, and security specifications index.
+   - `/how-it-works`: Interactive platform architecture and visual replay guide.
    - `/security`: Local-first trust architecture and data privacy standards.
    - `/about`: Mission statement, founding story, and engineering principles.
    - `/roadmap`: Public milestones and technical evolution plans.

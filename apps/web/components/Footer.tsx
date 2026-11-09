@@ -115,13 +115,13 @@ export function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/docs" className="hover:text-white transition-colors flex items-center gap-1">
-                  RVTS Schema & Docs <ArrowUpRight className="w-3 h-3 text-[var(--text-muted)]" />
+                <Link href="/how-it-works" className="hover:text-white transition-colors flex items-center gap-1">
+                  How It Works <ArrowUpRight className="w-3 h-3 text-[var(--text-muted)]" />
                 </Link>
               </li>
               <li>
                 <Link href="/security" className="hover:text-white transition-colors">
-                  Security Architecture
+                  Security & Trust
                 </Link>
               </li>
               <li>
@@ -152,11 +152,11 @@ export function Footer() {
         <div className="pt-8 mt-8 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-[var(--text-muted)] font-mono">
           <span>&copy; {new Date().getFullYear()} RewindVerse. Open-source under Apache 2.0.</span>
           <div className="flex items-center gap-4">
+            <Link href="/how-it-works" className="hover:text-white transition-colors">
+              How It Works
+            </Link>
             <Link href="/security" className="hover:text-white transition-colors">
               Security
-            </Link>
-            <Link href="/docs" className="hover:text-white transition-colors">
-              Docs
             </Link>
             <Link href="/roadmap" className="hover:text-white transition-colors">
               Roadmap

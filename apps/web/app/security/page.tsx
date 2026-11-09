@@ -188,10 +188,10 @@ export default function SecurityPage() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/docs"
+                href="/how-it-works"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-semibold bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
               >
-                Read Security Standard Spec →
+                Explore System Architecture →
               </Link>
             </div>
           </div>

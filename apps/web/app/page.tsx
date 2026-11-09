@@ -576,11 +576,11 @@ with RunRecorder("experiment_01", output_path="traces/run.rvtrace") as rec:
                   <ArrowRight className="w-5 h-5 ml-1" />
                 </Link>
                 <Link
-                  href="/docs"
+                  href="/how-it-works"
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl font-semibold text-base bg-[var(--surface-raised)] border border-white/[0.08] text-white hover:text-cyan-300 hover:border-cyan-500/40 transition-all"
                 >
                   <FileCode className="w-5 h-5 text-cyan-400" />
-                  <span>Explore Documentation</span>
+                  <span>Explore How It Works</span>
                 </Link>
               </div>
             </div>

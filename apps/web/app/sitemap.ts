@@ -4,7 +4,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://rewindverse.dev";
   const routes = [
     "",
-    "/docs",
     "/examples",
     "/learn",
     "/product",
