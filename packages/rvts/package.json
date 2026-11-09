@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "RewindVerse Training Trace Specification (RVTS) types, schemas, and validators",
+  "author": "Parth Ahuja <https://github.com/parth022002>",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {

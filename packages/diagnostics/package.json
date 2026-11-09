@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Evidence-backed heuristic diagnostics and training explanation engine for RewindVerse Insights",
+  "author": "Parth Ahuja <https://github.com/parth022002>",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {

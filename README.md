@@ -3,7 +3,8 @@
 # 🌌 RewindVerse
 
 **Every Model Has a Story.**  
-*Train a model, then replay how it learned.*
+*Train a model, then replay how it learned.*  
+Developed by [**Parth Ahuja**](https://github.com/parth022002).
 
 An interactive machine learning training replay, learning, and experiment intelligence platform.
 
@@ -20,7 +21,7 @@ An interactive machine learning training replay, learning, and experiment intell
 
 <br />
 
-[**Explore Rewind Studio**](http://localhost:3000/studio) • [**Algorithm Forge**](http://localhost:3000/studio/forge) • [**Catalogue**](http://localhost:3000/studio/algorithms) • [**Interactive Lab**](http://localhost:3000/studio/lab) • [**Documentation**](./docs/README.md)
+[**Explore Rewind Studio**](http://localhost:3000/studio) • [**Algorithm Forge**](http://localhost:3000/studio/forge) • [**Catalogue**](http://localhost:3000/studio/algorithms) • [**Interactive Lab**](http://localhost:3000/studio/lab) • [**How It Works**](http://localhost:3000/how-it-works) • [**Security**](http://localhost:3000/security)
 
 </div>
 
@@ -444,5 +445,5 @@ You may obtain a copy of the License at
 ---
 
 <div align="center">
-  <sub>Built with precision for machine learning engineers, researchers, and students.</sub>
+  <sub>Developed by <strong>Parth Ahuja</strong> (<a href="https://github.com/parth022002">@parth022002</a>). Built with precision for machine learning engineers, researchers, and students.</sub>
 </div>

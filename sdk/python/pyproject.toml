@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [
-  { name = "RewindVerse Product & Engineering" }
+  { name = "Parth Ahuja", email = "parthahuja021102@gmail.com" }
 ]
 classifiers = [
   "Programming Language :: Python :: 3",

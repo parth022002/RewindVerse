@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Interactive ML Training Replay, Learning and Experiment Intelligence Platform",
+  "author": "Parth Ahuja <https://github.com/parth022002>",
   "scripts": {
     "dev": "pnpm --filter @rewindverse/web dev",
     "build": "pnpm --filter \"@rewindverse/*\" build",

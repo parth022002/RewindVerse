@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "RewindVerse Website & Rewind Studio Application",
+  "author": "Parth Ahuja <https://github.com/parth022002>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
